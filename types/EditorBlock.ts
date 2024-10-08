@@ -9,3 +9,4 @@ export type EditorBlock = {
     innerHTML: string;
     innerContent: string[];
 };
+
