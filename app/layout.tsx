@@ -6,6 +6,7 @@ import { mergeClassNames } from "@/lib/utils";
 import ThemeProvider from "@/components/theme/ThemeProvider";
 import Navbar from "@/components/navbar/navbar";
 import Footer from "@/components/footer/footer";
+import Main from "@/components/main/main";
 
 const fontSans: NextFontWithVariable = FontSans({
     subsets: ["latin"],
@@ -34,7 +35,7 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
                     disableTransitionOnChange
                 >
                     <Navbar />
-                    <div>{children}</div>
+                    <Main>{children}</Main>
                     <Footer metadata={metadata} />
                 </ThemeProvider>
             </body>
