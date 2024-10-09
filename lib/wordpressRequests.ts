@@ -1,11 +1,11 @@
 import { Post } from "@/types/Post";
 import queryString from "query-string";
 
-const baseUrl = 'http://wordpress.local/';
+const baseUrl = 'http://localhost/wordpress/';
  
-const getUrl = (path: string, query?: Record<string, any>): string => {
-    const queryParameters: string | null = query ? queryString.stringify(query) : null;
-    return `${baseUrl}${path}${queryParameters ? `?${queryParameters}` : ''}`;
+const getUrl = (path: string, queryParametersRecord?: Record<string, any>): string => {
+    const stringifiedQueryParameters: string | null = queryParametersRecord ? queryString.stringify(queryParametersRecord) : null;
+    return `${baseUrl}${path}${stringifiedQueryParameters ? `?${stringifiedQueryParameters}` : ''}`;
 }
 
 export const getAllPosts = async (filterParameters: { 
@@ -13,7 +13,7 @@ export const getAllPosts = async (filterParameters: {
     tag?: string;
     category?: string
 }): Promise<Post[]> => {
-    const postsUrl = getUrl('/wp-json/wp/v2/posts', 
+    const postsUrl: string = getUrl('/wp-json/wp/v2/posts', 
         { 
             author: filterParameters?.author, 
             tags: filterParameters.tag, 
@@ -21,7 +21,7 @@ export const getAllPosts = async (filterParameters: {
         }
     );
     
-    const postsResponse = await fetch(postsUrl);
+    const postsResponse: Response = await fetch(postsUrl);
     const posts: Post[] = await postsResponse.json();
     
     return posts;
