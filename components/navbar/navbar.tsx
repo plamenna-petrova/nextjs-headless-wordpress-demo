@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { mergeClassNames } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
 import Logo from "@/public/next.svg";
@@ -14,7 +14,7 @@ type NavbarProps = {
 const Navbar = ({ className, children, id }: NavbarProps) => {
     return (
         <nav
-            className={cn(
+            className={mergeClassNames(
                 "sticky z-50 top-0 bg-background",
                 "border-b",
                 "fade-in",
@@ -34,9 +34,8 @@ const Navbar = ({ className, children, id }: NavbarProps) => {
                     <Image
                         src={Logo}
                         alt="Logo"
-                        className="dark:invert"
                         width={84}
-                        height={30.54}
+                        height={50.54}
                     ></Image>
                 </Link>
                 {children}
