@@ -6,6 +6,7 @@ import Logo from "@/public/next.svg";
 import { footerContentMenu, mainMenu } from "@/lib/constants";
 import { Metadata } from "next";
 import Balancer from "react-wrap-balancer";
+import { ThemeToggle } from "../theme/theme-toggle";
 
 type FooterProps = {
     metadata: Metadata;
@@ -24,9 +25,9 @@ const Footer = ({ metadata }: FooterProps) => {
                             <Image
                                 src={Logo}
                                 alt="Logo"
+                                className="hover:opacity-75 transition-all dark:invert"
                                 width={120}
                                 height={27.27}
-                                className="hover:opacity-75 transition-all"
                             ></Image>
                         </Link>
                         <p>
@@ -59,6 +60,7 @@ const Footer = ({ metadata }: FooterProps) => {
                     </div>
                 </Container>
                 <Container className="border-t not-prose flex flex-col md:flex-row md:gap-2 gap-6 justify-between md:items-center">
+                    <ThemeToggle />
                     <p className="text-muted-foreground">
                         © <a href="https://github.com/plamenna-petrova?tab=repositories">Plamenna Petrova</a>. All rights reserved.
                         {" "}{currentYear}-present.

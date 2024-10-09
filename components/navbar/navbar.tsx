@@ -6,12 +6,12 @@ import { mainMenu } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 
 type NavbarProps = {
+    id?: string;
     className?: string;
     children?: React.ReactNode;
-    id?: string;
 }
 
-const Navbar = ({ className, children, id }: NavbarProps) => {
+const Navbar = ({ id, className, children }: NavbarProps) => {
     return (
         <nav
             className={mergeClassNames(
@@ -34,6 +34,7 @@ const Navbar = ({ className, children, id }: NavbarProps) => {
                     <Image
                         src={Logo}
                         alt="Logo"
+                        className="dark:invert"
                         width={84}
                         height={50.54}
                     ></Image>
