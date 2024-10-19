@@ -3,7 +3,7 @@ import Container from "../container/container";
 import Link from "next/link";
 import Image from "next/image";
 import Logo from "@/public/next.svg";
-import { footerContentMenu, mainMenu } from "@/lib/constants";
+import { contentMenu, mainMenu } from "@/lib/constants";
 import { Metadata } from "next";
 import Balancer from "react-wrap-balancer";
 import { ThemeToggle } from "../theme/theme-toggle";
@@ -48,7 +48,7 @@ const Footer = ({ metadata }: FooterProps) => {
                     </div>
                     <div className="flex flex-col gap-2 text-sm">
                         <h5 className="font-medium text-base">Blog</h5>
-                        {Object.entries(footerContentMenu).map(([key, href]) => (
+                        {Object.entries(contentMenu).map(([key, href]) => (
                             <Link
                                 className="hover:underline underline-offset-4"
                                 key={href}

@@ -5,7 +5,7 @@ export const mainMenu = {
   blog: "/posts",
 };
 
-export const footerContentMenu = {
+export const contentMenu = {
   categories: "/posts/categories",
   tags: "/posts/tags",
   authors: "/posts/authors",

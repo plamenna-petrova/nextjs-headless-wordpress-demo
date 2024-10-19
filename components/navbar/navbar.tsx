@@ -4,6 +4,7 @@ import Image from "next/image";
 import Logo from "@/public/next.svg";
 import { mainMenu } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
+import MobileNavigation from "../mobile-navigation/MobileNavigation";
 
 type NavbarProps = {
     id?: string;
@@ -53,6 +54,7 @@ const Navbar = ({ id, className, children }: NavbarProps) => {
                     <Button asChild className="hidden sm:flex">
                         <Link href="/">Get Started</Link>
                     </Button>
+                    <MobileNavigation />
                 </div>
             </div>
         </nav>
