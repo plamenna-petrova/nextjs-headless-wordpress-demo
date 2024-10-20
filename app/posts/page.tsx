@@ -21,7 +21,6 @@ const Posts = async ({ searchParams }: { searchParams: { [key: string]: string |
         <Section>
             <Container>
                 <h1>Posts</h1>
-
                 {paginatedPosts.length > 0 ? (
                     <div className="grid md:grid-cols-3 gap-4 z-0">
                         {paginatedPosts.map((post: any) => (
@@ -33,16 +32,13 @@ const Posts = async ({ searchParams }: { searchParams: { [key: string]: string |
                         <p>No Results Found</p>
                     </div>
                 )}
-
                 <div className="mt-8 not-prose">
                     <Pagination>
                         <PaginationContent>
                             <PaginationItem>
                                 <PaginationPrevious
                                     className={currentPage === 1 ? "pointer-events-none text-muted" : ""}
-                                    href={`/posts?page=${Math.max(currentPage - 1, 1)}${category ? `&category=${category}` : ""
-                                        }${author ? `&author=${author}` : ""}${tag ? `&tag=${tag}` : ""
-                                        }`}
+                                    href={`/posts?page=${Math.max(currentPage - 1, 1)}${category ? `&category=${category}` : ""}${author ? `&author=${author}` : ""}${tag ? `&tag=${tag}` : ""}`}
                                 />
                             </PaginationItem>
                             <PaginationItem>
@@ -55,9 +51,7 @@ const Posts = async ({ searchParams }: { searchParams: { [key: string]: string |
                                     className={
                                         currentPage === totalPages ? "pointer-events-none text-muted" : ""
                                     }
-                                    href={`/posts?page=${Math.min(currentPage + 1, totalPages)}${category ? `&category=${category}` : ""
-                                        }${author ? `&author=${author}` : ""}${tag ? `&tag=${tag}` : ""
-                                        }`}
+                                    href={`/posts?page=${Math.min(currentPage + 1, totalPages)}${category ? `&category=${category}` : ""}${author ? `&author=${author}` : ""}${tag ? `&tag=${tag}` : ""}`}
                                 />
                             </PaginationItem>
                         </PaginationContent>
