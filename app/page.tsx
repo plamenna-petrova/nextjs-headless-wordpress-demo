@@ -10,7 +10,7 @@ const WordPressStarter = () => {
             <h1>
                 <Balancer>
                     Welcome to the Next.js and WordPress Starter by{" "}
-                    <a href="https://github.com/plamenna-petrova">Plamenna Petrova</a>.
+                    <a href="https://github.com/plamenna-petrova">plamenna-petrova</a>.
                 </Balancer>
             </h1>
             <div className="grid md:grid-cols-3 gap-4 mt-6 not-prose">
