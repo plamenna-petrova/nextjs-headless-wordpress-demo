@@ -7,6 +7,7 @@ import { getAllAuthors, getAllCategories, getAllPosts, getAllTags } from "@/lib/
 const Posts = async ({ searchParams }: { searchParams: { [key: string]: string | undefined } }) => {
   const { author, tag, category, page } = searchParams;
   const posts = await getAllPosts({ author, tag, category });
+  console.log("posts", posts);
   const authors = await getAllAuthors();
   const tags = await getAllTags();
   const categories = await getAllCategories();

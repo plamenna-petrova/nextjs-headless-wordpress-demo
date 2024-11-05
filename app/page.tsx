@@ -7,10 +7,9 @@ import { File, Pen, Tag, Boxes, User, Folder } from 'lucide-react';
 const WordPressStarter = () => {
   return (
     <article className="prose-m-none">
-      <h1>
+      <h1 className="text-center">
         <Balancer>
-          Welcome to the Next.js and WordPress Starter by{" "}
-          <a href="https://github.com/plamenna-petrova">plamenna-petrova</a>.
+          Welcome to the Next.js and WordPress Starter
         </Balancer>
       </h1>
       <div className="grid md:grid-cols-3 gap-4 mt-6 not-prose">
