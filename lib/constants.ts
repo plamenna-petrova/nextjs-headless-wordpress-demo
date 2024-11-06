@@ -1,6 +1,6 @@
 export const mainMenu = {
   home: "/",
-  about: "/about",
+  about: "https://github.com/plamenna-petrova/nextjs-headless-wordpress-demo",
   blog: "/posts",
 };
 

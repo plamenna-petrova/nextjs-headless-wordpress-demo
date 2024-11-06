@@ -40,15 +40,15 @@ const PostsFilter = ({ authors, tags, categories, selectedAuthor, selectedTag, s
   const handleFilterChange = (type: string, value: string): void => {
     console.log(`Filter changed: ${type} -> ${value}`);
 
-    const newParams = new URLSearchParams(window.location.search);
+    const newURLSearchParams = new URLSearchParams(window.location.search);
 
     if (value === "all") {
-      newParams.delete(type);
+      newURLSearchParams.delete(type);
     } else {
-      newParams.set(type, value);
+      newURLSearchParams.set(type, value);
     }
 
-    router.push(`/posts?${newParams.toString()}`);
+    router.push(`/posts?${newURLSearchParams.toString()}`);
   };
 
   const handleResetFilters = (): void => {
