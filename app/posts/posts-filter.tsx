@@ -59,7 +59,7 @@ const PostsFilter = ({ authors, tags, categories, selectedAuthor, selectedTag, s
     <div className="grid md:grid-cols-[1fr_1fr_1fr_0.5fr] gap-2 my-4 !z-10">
       <Select
         value={selectedTag || "all"}
-        onValueChange={(value) => handleFilterChange("tag", value)}
+        onValueChange={(value: string) => handleFilterChange("tag", value)}
       >
         <SelectTrigger>
           <SelectValue placeholder="All Tags" />
@@ -75,7 +75,7 @@ const PostsFilter = ({ authors, tags, categories, selectedAuthor, selectedTag, s
       </Select>
       <Select
         value={selectedCategory || "all"}
-        onValueChange={(value) => handleFilterChange("category", value)}
+        onValueChange={(value: string) => handleFilterChange("category", value)}
       >
         <SelectTrigger>
           <SelectValue placeholder="All Categories" />
@@ -91,7 +91,7 @@ const PostsFilter = ({ authors, tags, categories, selectedAuthor, selectedTag, s
       </Select>
       <Select
         value={selectedAuthor || "all"}
-        onValueChange={(value) => handleFilterChange("author", value)}
+        onValueChange={(value: string) => handleFilterChange("author", value)}
       >
         <SelectTrigger>
           <SelectValue placeholder="All Authors" />

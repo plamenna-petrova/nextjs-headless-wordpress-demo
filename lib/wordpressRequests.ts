@@ -6,7 +6,7 @@ import { Author } from "@/types/Author";
 import queryString from "query-string";
 import { FeaturedMedia } from "@/types/FeaturedMedia";
 
-const baseUrl: string = "http://wordpress.local";
+const baseUrl: string = "http://localhost/wordpress/";
 
 const getUrl = (
   path: string,
