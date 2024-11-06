@@ -20,167 +20,217 @@ const getUrl = (
   }`;
 };
 
-export const getAllPosts = async (filterParameters: {
-  author?: string;
-  tag?: string;
-  category?: string;
-}): Promise<Post[]> => {
+export const getAllPosts = async (
+  filterParameters: {
+    author?: string;
+    tag?: string;
+    category?: string;
+  },
+  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
+): Promise<Post[]> => {
   const postsUrl: string = getUrl("/wp-json/wp/v2/posts", {
     author: filterParameters?.author,
     tags: filterParameters.tag,
     categories: filterParameters.category,
   });
 
-  console.log(postsUrl)
-
-  const postsResponse: Response = await fetch(postsUrl);
+  const postsResponse: Response = await fetch(postsUrl, options);
   const posts: Post[] = await postsResponse.json();
 
   return posts;
 };
 
-export const getPostById = async (id: number): Promise<Post> => {
+export const getPostById = async (
+  id: number,
+  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
+): Promise<Post> => {
   const postByIdUrl: string = getUrl(`/wp-json/wp/v2/posts/${id}`);
-  const postByIdResponse: Response = await fetch(postByIdUrl);
+  const postByIdResponse: Response = await fetch(postByIdUrl, options);
   const postById: Post = await postByIdResponse.json();
   return postById;
 };
 
-export const getPostBySlug = async (slug: string): Promise<Post> => {
+export const getPostBySlug = async (
+  slug: string,
+  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
+): Promise<Post> => {
   const postBySlugUrl: string = getUrl("/wp-json/wp/v2/posts", { slug });
-  const postBySlugResponse: Response = await fetch(postBySlugUrl);
+  const postBySlugResponse: Response = await fetch(postBySlugUrl, options);
   const postBySlug: Post[] = await postBySlugResponse.json();
   return postBySlug[0];
 };
 
-export const getAllCategories = async (): Promise<Category[]> => {
+export const getAllCategories = async (
+  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
+): Promise<Category[]> => {
   const allCategoriesUrl: string = getUrl("/wp-json/wp/v2/categories");
-  const allCategoriesResponse: Response = await fetch(allCategoriesUrl);
+  const allCategoriesResponse: Response = await fetch(allCategoriesUrl, options);
   const allCategories: Category[] = await allCategoriesResponse.json();
   return allCategories;
 };
 
-export const getCategoryById = async (id: number): Promise<Category> => {
-  const categoryByIdUrl: string = getUrl(`/wp-json/wp/v2/categories/${id}`);
+export const getCategoryById = async (
+  id: number, 
+  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
+): Promise<Category> => {
+  const categoryByIdUrl: string = getUrl(`/wp-json/wp/v2/categories/${id}`, options);
   const categoryByIdResponse: Response = await fetch(categoryByIdUrl);
   const categoryById: Category = await categoryByIdResponse.json();
   return categoryById;
 };
 
-export const getCategoryBySlug = async (slug: string): Promise<Category> => {
+export const getCategoryBySlug = async (
+  slug: string,
+  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
+): Promise<Category> => {
   const categoryBySlugUrl: string = getUrl("/wp-json/wp/v2/categories", {
     slug,
   });
 
-  const categoryBySlugResponse: Response = await fetch(categoryBySlugUrl);
+  const categoryBySlugResponse: Response = await fetch(categoryBySlugUrl, options);
   const category: Category[] = await categoryBySlugResponse.json();
   
   return category[0];
 };
 
 export const getPostsByCategory = async (
-  categoryId: number
+  categoryId: number,
+  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
 ): Promise<Post[]> => {
   const postsByCategoryUrl: string = getUrl("/wp-json/wp/v2/posts", {
     categories: categoryId,
   });
 
-  const postsByCategoryResponse: Response = await fetch(postsByCategoryUrl);
+  const postsByCategoryResponse: Response = await fetch(postsByCategoryUrl, options);
   const postsByCategory: Post[] = await postsByCategoryResponse.json();
 
   return postsByCategory;
 };
 
-export const getPostsByTag = async (tagId: number): Promise<Post[]> => {
+export const getPostsByTag = async (
+  tagId: number,
+  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
+): Promise<Post[]> => {
   const postsByTagUrl: string = getUrl("/wp-json/wp/v2/posts", { tags: tagId });
-  const postsByTagResponse: Response = await fetch(postsByTagUrl);
+  const postsByTagResponse: Response = await fetch(postsByTagUrl, options);
   const postsByTag: Post[] = await postsByTagResponse.json();
   return postsByTag;
 };
 
-export const getAllTags = async (): Promise<Tag[]> => {
+export const getAllTags = async (
+  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
+): Promise<Tag[]> => {
   const allTagsUrl: string = getUrl("/wp-json/wp/v2/tags");
-  const allTagsResponse: Response = await fetch(allTagsUrl);
+  const allTagsResponse: Response = await fetch(allTagsUrl, options);
   const allTags: Tag[] = await allTagsResponse.json();
   return allTags;
 };
 
-export const getTagById = async (id: number): Promise<Tag> => {
+export const getTagById = async (
+  id: number,
+  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
+): Promise<Tag> => {
   const tagByIdUrl: string = getUrl(`/wp-json/wp/v2/tags/${id}`);
-  const tagByIdResponse: Response = await fetch(tagByIdUrl);
+  const tagByIdResponse: Response = await fetch(tagByIdUrl, options);
   const tagById: Tag = await tagByIdResponse.json();
   return tagById;
 };
 
-export const getTagBySlug = async (slug: string): Promise<Tag> => {
+export const getTagBySlug = async (
+  slug: string,
+  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
+): Promise<Tag> => {
   const tagBySlugUrl: string = getUrl("/wp-json/wp/v2/tags", { slug });
-  const tagBySlugResponse: Response = await fetch(tagBySlugUrl);
+  const tagBySlugResponse: Response = await fetch(tagBySlugUrl, options);
   const tagBySlug: Tag[] = await tagBySlugResponse.json();
   return tagBySlug[0];
 };
 
-export const getTagsByPost = async (postId: number): Promise<Tag[]> => {
+export const getTagsByPost = async (
+  postId: number,
+  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
+): Promise<Tag[]> => {
   const tagsByPostUrl: string = getUrl("/wp-json/wp/v2/tags", { post: postId });
-  const tagsByPostResponse: Response = await fetch(tagsByPostUrl);
+  const tagsByPostResponse: Response = await fetch(tagsByPostUrl, options);
   const tagsByPost: Tag[] = await tagsByPostResponse.json();
   return tagsByPost;
 };
 
-export const getAllPages = async (): Promise<Page[]> => {
+export const getAllPages = async (
+  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
+): Promise<Page[]> => {
   const allPagesUrl: string = getUrl("/wp-json/wp/v2/pages");
-  const allPagesResponse: Response = await fetch(allPagesUrl);
+  const allPagesResponse: Response = await fetch(allPagesUrl, options);
   const allPages: Page[] = await allPagesResponse.json();
   return allPages;
 };
 
-export const getPageById = async (id: number): Promise<Page> => {
+export const getPageById = async (
+  id: number,
+  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
+): Promise<Page> => {
   const pageByIdUrl: string = getUrl(`/wp-json/wp/v2/pages/${id}`);
-  const pageByIdResponse: Response = await fetch(pageByIdUrl);
+  const pageByIdResponse: Response = await fetch(pageByIdUrl, options);
   const pageById: Page = await pageByIdResponse.json();
   return pageById;
 };
 
-export const getPageBySlug = async (slug: string): Promise<Page> => {
+export const getPageBySlug = async (
+  slug: string,
+  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
+): Promise<Page> => {
   const pageBySlugUrl: string = getUrl("/wp-json/wp/v2/pages", { slug });
-  const pageBySlugResponse: Response = await fetch(pageBySlugUrl);
+  const pageBySlugResponse: Response = await fetch(pageBySlugUrl, options);
   const pageBySlug: Page[] = await pageBySlugResponse.json();
   return pageBySlug[0];
 };
 
-export const getAllAuthors = async (): Promise<Author[]> => {
+export const getAllAuthors = async (
+  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
+): Promise<Author[]> => {
   const allAuthorsUrl: string = getUrl("/wp-json/wp/v2/users");
-  const allAuthorsResponse: Response = await fetch(allAuthorsUrl);
+  const allAuthorsResponse: Response = await fetch(allAuthorsUrl, options);
   const allAuthors: Author[] = await allAuthorsResponse.json();
   return allAuthors;
 };
 
-export const getAuthorById = async (id: number): Promise<Author> => {
+export const getAuthorById = async (
+  id: number,
+  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
+): Promise<Author> => {
   const authorByIdUrl: string = getUrl(`/wp-json/wp/v2/users/${id}`);
-  const authorByIdResponse: Response = await fetch(authorByIdUrl);
+  const authorByIdResponse: Response = await fetch(authorByIdUrl, options);
   const authorById: Author = await authorByIdResponse.json();
   return authorById;
 };
 
-export const getAuthorBySlug = async (slug: string): Promise<Author> => {
+export const getAuthorBySlug = async (
+  slug: string,
+  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
+): Promise<Author> => {
   const authorBySlugUrl: string = getUrl("/wp-json/wp/v2/users", { slug });
-  const authorBySlugResponse: Response = await fetch(authorBySlugUrl);
+  const authorBySlugResponse: Response = await fetch(authorBySlugUrl, options);
   const authorBySlug: Author[] = await authorBySlugResponse.json();
   return authorBySlug[0];
 };
 
-export const getPostsByAuthorId = async (authorId: number): Promise<Post[]> => {
+export const getPostsByAuthorId = async (
+  authorId: number,
+  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
+): Promise<Post[]> => {
   const postsByAuthorIdUrl: string = getUrl("/wp-json/wp/v2/posts", {
     author: authorId,
   });
 
-  const postsByAuthorIdResponse: Response = await fetch(postsByAuthorIdUrl);
+  const postsByAuthorIdResponse: Response = await fetch(postsByAuthorIdUrl, options);
   const postsByAuthorId: Post[] = await postsByAuthorIdResponse.json();
 
   return postsByAuthorId;
 };
 
 export const getPostsByAuthorSlug = async (
-  authorSlug: string
+  authorSlug: string,
+  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
 ): Promise<Post[]> => {
   const authorBySlug: Author = await getAuthorBySlug(authorSlug);
 
@@ -188,14 +238,15 @@ export const getPostsByAuthorSlug = async (
     author: authorBySlug.id,
   });
 
-  const postsByAuthorSlugResponse: Response = await fetch(postsByAuthorSlugUrl);
+  const postsByAuthorSlugResponse: Response = await fetch(postsByAuthorSlugUrl, options);
   const postsByAuthorSlug: Post[] = await postsByAuthorSlugResponse.json();
 
   return postsByAuthorSlug;
 };
 
 export const getPostsByCategorySlug = async (
-  categorySlug: string
+  categorySlug: string,
+  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
 ): Promise<Post[]> => {
   const categoryBySlug: Category = await getCategoryBySlug(categorySlug);
 
@@ -203,30 +254,34 @@ export const getPostsByCategorySlug = async (
     categories: categoryBySlug.id,
   });
 
-  const postsByCategorySlugResponse = await fetch(postsByCategorySlugUrl);
+  const postsByCategorySlugResponse = await fetch(postsByCategorySlugUrl, options);
   const postsByCategorySlug: Post[] = await postsByCategorySlugResponse.json();
 
   return postsByCategorySlug;
 };
 
-export const getPostsByTagSlug = async (tagSlug: string): Promise<Post[]> => {
+export const getPostsByTagSlug = async (
+  tagSlug: string,
+  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
+): Promise<Post[]> => {
   const tagBySlug: Tag = await getTagBySlug(tagSlug);
 
   const postsByTagSlugUrl = getUrl("/wp-json/wp/v2/posts", {
     tags: tagBySlug.id,
   });
 
-  const postsByTagSlugResponse = await fetch(postsByTagSlugUrl);
+  const postsByTagSlugResponse = await fetch(postsByTagSlugUrl, options);
   const postsByTagSlug: Post[] = await postsByTagSlugResponse.json();
 
   return postsByTagSlug;
 };
 
 export const getFeaturedMediaById = async (
-  id: number
+  id: number,
+  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
 ): Promise<FeaturedMedia> => {
   const featuredMediaByIdUrl = getUrl(`/wp-json/wp/v2/media/${id}`);
-  const featuredMediaByIdResponse = await fetch(featuredMediaByIdUrl);
+  const featuredMediaByIdResponse = await fetch(featuredMediaByIdUrl, options);
   const featuredMediaById: FeaturedMedia = await featuredMediaByIdResponse.json();
   return featuredMediaById;
 };
