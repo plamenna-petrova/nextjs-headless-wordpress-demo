@@ -28,7 +28,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   const featuredMedia = await getFeaturedMediaById(postBySlug.featured_media);
   const author = await getAuthorById(postBySlug.author);
 
-  const date = new Date(postBySlug.date).toLocaleDateString("en-US", {
+  const date: string = new Date(postBySlug.date).toLocaleDateString("en-US", {
     month: "long",
     day: "numeric",
     year: "numeric",
@@ -70,7 +70,9 @@ export default async function Page({ params }: { params: { slug: string } }) {
             alt={postBySlug.title.rendered}
           />
         </div>
-        <Article dangerouslySetInnerHTML={{ __html: postBySlug.content.rendered }} />
+        <div className="flex w-full justify-center text-justify">
+          <Article dangerouslySetInnerHTML={{ __html: postBySlug.content.rendered }} />
+        </div>
       </Container>
     </Section>
   );

@@ -37,7 +37,7 @@ const MobileLink = ({ href, onOpenChange, className, children, ...props }: Mobil
 }
 
 const MobileNavigation = () => {
-  const [isMobileNavigationOpen, setIsMobileNavigationOpen] = useState(false);
+  const [isMobileNavigationOpen, setIsMobileNavigationOpen] = useState<boolean>(false);
 
   return (
     <Sheet open={isMobileNavigationOpen} onOpenChange={setIsMobileNavigationOpen}>
@@ -57,7 +57,7 @@ const MobileNavigation = () => {
           onOpenChange={setIsMobileNavigationOpen}
         >
           <ArrowRightSquare className="mr-2 h-4 w-4" />
-          <span className="text-muted-foreground">My Site</span>
+          <span className="text-muted-foreground">Next.js and WordPress Starter</span>
         </MobileLink>
         <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
           <div className="flex flex-col space-y-3">
