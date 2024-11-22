@@ -1,4 +1,3 @@
-
 export type Category = {
   id: number;
   count: number;

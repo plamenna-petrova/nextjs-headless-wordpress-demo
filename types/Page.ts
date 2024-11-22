@@ -1,4 +1,3 @@
-
 export type Page = {
   id: number;
   date: string;

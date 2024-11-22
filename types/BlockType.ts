@@ -1,4 +1,3 @@
-
 export type BlockType = {
   api_version: number;
   title: string;

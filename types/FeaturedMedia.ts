@@ -1,4 +1,3 @@
-
 export type FeaturedMedia = {
   id: number;
   date: string;

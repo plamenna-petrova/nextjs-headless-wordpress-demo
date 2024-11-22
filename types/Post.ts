@@ -1,4 +1,3 @@
-
 export type Post = {
   id: number;
   date: string;

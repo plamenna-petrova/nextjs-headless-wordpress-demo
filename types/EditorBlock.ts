@@ -1,4 +1,3 @@
-
 export type EditorBlock = {
   id: string;
   name: string;
