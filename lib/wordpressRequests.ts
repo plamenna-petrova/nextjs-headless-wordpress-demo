@@ -7,7 +7,7 @@ import { FeaturedMedia } from "@/types/FeaturedMedia";
 import { AN_UNKNOWN_ERROR_OCCURRED } from "./constants";
 import queryString from "query-string";
 
-const baseUrl: string = "http://wordpress.local/";
+const baseUrl: string = "http://localhost/wordpress/";
 
 const getUrl = (
   path: string,
