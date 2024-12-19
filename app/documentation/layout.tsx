@@ -1,7 +1,7 @@
 import glob from 'fast-glob'
 
 import { type Section } from '@/components/documentation/SectionProvider';
-import { Layout } from '@/components/documentation/Layout';
+import { DocumentationLayout } from '@/components/documentation/DocumentationLayout';
 
 export default async function Documentation({ children }: { children: React.ReactNode }) {
   let pages = await glob('**/*.mdx', { cwd: 'app' });
@@ -13,11 +13,11 @@ export default async function Documentation({ children }: { children: React.Reac
     ]),
   )) as Array<[string, Array<Section>]>;
   
-  let allSections = Object.fromEntries(allSectionsEntries)
+  let allSections = Object.fromEntries(allSectionsEntries);
 
   return (
     <div className="w-full mx-auto">
-      <Layout allSections={allSections}>{children}</Layout>
+      <DocumentationLayout allSections={allSections}>{children}</DocumentationLayout>
     </div>
   );
 }

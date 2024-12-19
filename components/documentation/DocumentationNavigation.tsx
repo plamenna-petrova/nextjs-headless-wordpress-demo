@@ -232,7 +232,7 @@ export const navigation: Array<NavGroup> = [
   },
 ]
 
-export function Navigation(props: React.ComponentPropsWithoutRef<'nav'>) {
+export function DocumentationNavigation(props: React.ComponentPropsWithoutRef<'nav'>) {
   return (
     <nav {...props}>
       <ul role="list">
