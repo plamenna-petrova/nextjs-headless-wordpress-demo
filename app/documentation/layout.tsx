@@ -6,18 +6,18 @@ import { DocumentationLayout } from '@/components/documentation/DocumentationLay
 export default async function Documentation({ children }: { children: React.ReactNode }) {
   let pages = await glob('**/*.mdx', { cwd: 'app' });
 
-  let allSectionsEntries = (await Promise.all(
+  let documentationSectionsEntries = (await Promise.all(
     pages.map(async (filename) => [
       '/' + filename.replace(/(^|\/)page\.mdx$/, ''),
       (await import(`./${filename}`)).sections,
     ]),
   )) as Array<[string, Array<Section>]>;
   
-  let allSections = Object.fromEntries(allSectionsEntries);
+  let documentationSections = Object.fromEntries(documentationSectionsEntries);
 
   return (
     <div className="w-full mx-auto">
-      <DocumentationLayout allSections={allSections}>{children}</DocumentationLayout>
+      <DocumentationLayout allSections={documentationSections}>{children}</DocumentationLayout>
     </div>
   );
 }
