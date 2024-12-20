@@ -4,9 +4,9 @@ import { NextFontWithVariable } from "next/dist/compiled/@next/font";
 import "./globals.css";
 import { mergeClassNames } from "@/lib/utils";
 import ThemeProvider from "@/components/theme/theme-provider";
-import Navbar from "@/components/navbar/navbar";
-import Footer from "@/components/footer/footer";
 import Main from "@/components/main/main";
+import NavbarWrapper from "@/components/navbar/navbar-wrapper";
+import FooterWrapper from "@/components/footer/footer-wrapper";
 
 const fontSans: NextFontWithVariable = FontSans({
   subsets: ["latin"],
@@ -46,9 +46,9 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
           enableSystem
           disableTransitionOnChange
         >
-          <Navbar />
+          <NavbarWrapper />
           <Main>{children}</Main>
-          <Footer metadata={metadata} />
+          <FooterWrapper metadata={metadata} />
         </ThemeProvider>
       </body>
     </html>
