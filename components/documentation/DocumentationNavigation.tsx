@@ -54,6 +54,8 @@ function NavLink({
   active?: boolean
   isAnchorLink?: boolean
 }) {
+  console.log("here");
+
   return (
     <Link
       href={href}
