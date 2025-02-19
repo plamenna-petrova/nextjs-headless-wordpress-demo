@@ -220,7 +220,7 @@ export const navigationGroups: Array<NavGroup> = [
   },
 ];
 
-const DocumentationNavigation = (props: React.ComponentPropsWithoutRef<'nav'>) => {
+export const DocumentationNavigation = (props: React.ComponentPropsWithoutRef<'nav'>) => {
   return (
     <nav {...props}>
       <ul role="list">
