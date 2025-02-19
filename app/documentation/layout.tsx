@@ -6,7 +6,7 @@ export default async function Documentation({ children }: { children: React.Reac
   let pages = await glob('documentation/**/*.mdx');
 
   let documentationSectionsEntries = (await Promise.all(
-    pages.map(async (filename) => [
+    pages.map(async (filename: string) => [
       '/' + filename.replace(/(^|\/)page\.mdx$/, ''),
       (await import(`./${filename}`)).sections,
     ]),

@@ -4,10 +4,37 @@ import { Post } from "@/types/Post";
 import { Tag } from "@/types/Tag";
 import { Author } from "@/types/Author";
 import { FeaturedMedia } from "@/types/FeaturedMedia";
-import { AN_UNKNOWN_ERROR_OCCURRED } from "./constants";
+import { 
+  GET_ALL_TAGS_ERROR_DETAILS, 
+  GET_ALL_CATEGORIES_ERROR_DETAILS, 
+  GET_CATEGORY_BY_ID_ERROR_DETAILS, 
+  GET_CATEGORY_BY_SLUG_ERROR_DETAILS, 
+  GET_POST_BY_ID_ERROR_DETAILS, 
+  GET_POST_BY_SLUG_ERROR_DETAILS, 
+  GET_POSTS_BY_CATEGORY_ERROR_DETAILS, 
+  GET_POSTS_BY_TAG_ERROR_DETAILS, 
+  GET_ALL_POSTS_ERROR_DETAILS, 
+  GET_TAG_BY_ID_ERROR_DETAILS,
+  GET_TAG_BY_SLUG_ERROR_DETAILS,
+  GET_TAGS_BY_POST_ERROR_DETAILS,
+  GET_ALL_PAGES_ERROR_DETAILS,
+  GET_PAGE_BY_ID_ERROR_DETAILS,
+  GET_PAGE_BY_SLUG_ERROR_DETAILS,
+  GET_ALL_AUTHORS_ERROR_DETAILS,
+  GET_AUTHOR_BY_ERROR_DETAILS,
+  GET_AUTHOR_BY_SLUG_ERROR_DETAILS,
+  GET_POSTS_BY_AUTHOR_ID_ERROR_DETAILS,
+  GET_POSTS_BY_AUTHOR_SLUG_ERROR_DETAILS,
+  GET_POSTS_BY_CATEGORY_SLUG_ERROR_DETAILS,
+  GET_POSTS_BY_TAG_SLUG_ERROR_DETAILS,
+  GET_FEATURED_MEDIA_BY_ID_ERROR_DETAILS,
+  UNKNOWN_ERROR_DETAILS
+} from "./constants";
 import queryString from "query-string";
 
 const baseUrl: string = "http://localhost/wordpress/";
+
+const getUnknownErrorDetails = (error: unknown): string => error instanceof Error ? error.message : UNKNOWN_ERROR_DETAILS;
 
 const getUrl = (
   path: string,
@@ -40,8 +67,7 @@ export const getAllPosts = async (
 
     return posts;
   } catch (error: unknown) {
-    console.log("Error fetching posts:", error);
-    throw new Error(`Unable to retrieve posts. ${error instanceof Error ? error.message : AN_UNKNOWN_ERROR_OCCURRED}`);
+    throw new Error(`${GET_ALL_POSTS_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
   }
 };
 
@@ -55,8 +81,7 @@ export const getPostById = async (
     const postById: Post = await postByIdResponse.json();
     return postById;
   } catch (error: unknown) {
-    console.log("Error fetching post by Id:", error);
-    throw new Error(`Unable to retrieve post by Id. ${error instanceof Error ? error.message : AN_UNKNOWN_ERROR_OCCURRED}`);
+    throw new Error(`${GET_POST_BY_ID_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
   }
 };
 
@@ -70,8 +95,7 @@ export const getPostBySlug = async (
     const postBySlug: Post[] = await postBySlugResponse.json();
     return postBySlug[0];
   } catch (error: unknown) {
-    console.log("Error fetching post by slug:", error);
-    throw new Error(`Unable to retrieve post by slug. ${error instanceof Error ? error.message : AN_UNKNOWN_ERROR_OCCURRED}`);
+    throw new Error(`${GET_POST_BY_SLUG_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
   }
 };
 
@@ -84,8 +108,7 @@ export const getAllCategories = async (
     const allCategories: Category[] = await allCategoriesResponse.json();
     return allCategories;
   } catch (error: unknown) {
-    console.log("Error fetching categories:", error);
-    throw new Error(`Unable to retrieve categories. ${error instanceof Error ? error.message : AN_UNKNOWN_ERROR_OCCURRED}`);
+    throw new Error(`${GET_ALL_CATEGORIES_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
   }
 };
 
@@ -99,8 +122,7 @@ export const getCategoryById = async (
     const categoryById: Category = await categoryByIdResponse.json();
     return categoryById;
   } catch (error: unknown) {
-    console.log("Error fetching category by Id:", error);
-    throw new Error(`Unable to retrieve category by Id. ${error instanceof Error ? error.message : AN_UNKNOWN_ERROR_OCCURRED}`);
+    throw new Error(`${GET_CATEGORY_BY_ID_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
   }
 };
 
@@ -118,8 +140,7 @@ export const getCategoryBySlug = async (
 
     return category[0];
   } catch (error: unknown) {
-    console.log("Error fetching category by slug:", error);
-    throw new Error(`Unable to retrieve category by slug. ${error instanceof Error ? error.message : AN_UNKNOWN_ERROR_OCCURRED}`);
+    throw new Error(`${GET_CATEGORY_BY_SLUG_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
   }
 };
 
@@ -138,7 +159,7 @@ export const getPostsByCategory = async (
     return postsByCategory;
   } catch (error: unknown) {
     console.log("Error fetching posts by category:", error);
-    throw new Error(`Unable to retrieve posts by category. ${error instanceof Error ? error.message : AN_UNKNOWN_ERROR_OCCURRED}`);
+    throw new Error(`${GET_POSTS_BY_CATEGORY_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
   }
 };
 
@@ -152,8 +173,7 @@ export const getPostsByTag = async (
     const postsByTag: Post[] = await postsByTagResponse.json();
     return postsByTag;
   } catch (error: unknown) {
-    console.log("Error fetching posts by tag:", error);
-    throw new Error(`Unable to retrieve posts by tag. ${error instanceof Error ? error.message : AN_UNKNOWN_ERROR_OCCURRED}`);
+    throw new Error(`${GET_POSTS_BY_TAG_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
   }
 };
 
@@ -166,8 +186,7 @@ export const getAllTags = async (
     const allTags: Tag[] = await allTagsResponse.json();
     return allTags;
   } catch (error: unknown) {
-    console.log("Error fetching tags:", error);
-    throw new Error(`Unable to retrieve tags. ${error instanceof Error ? error.message : AN_UNKNOWN_ERROR_OCCURRED}`)
+    throw new Error(`${GET_ALL_TAGS_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`)
   }
 };
 
@@ -181,8 +200,7 @@ export const getTagById = async (
     const tagById: Tag = await tagByIdResponse.json();
     return tagById;
   } catch (error: unknown) {
-    console.log("Error fetching tag by Id:", error);
-    throw new Error(`Unable to retrieve tag by Id. ${error instanceof Error ? error.message : AN_UNKNOWN_ERROR_OCCURRED}`);
+    throw new Error(`${GET_TAG_BY_ID_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
   }
 };
 
@@ -196,8 +214,7 @@ export const getTagBySlug = async (
     const tagBySlug: Tag[] = await tagBySlugResponse.json();
     return tagBySlug[0];
   } catch (error: unknown) {
-    console.log("Error fetching tag by slug:", error);
-    throw new Error(`Unable to retrieve tag by slug. ${error instanceof Error ? error.message : AN_UNKNOWN_ERROR_OCCURRED}`);
+    throw new Error(`${GET_TAG_BY_SLUG_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
   }
 };
 
@@ -211,8 +228,7 @@ export const getTagsByPost = async (
     const tagsByPost: Tag[] = await tagsByPostResponse.json();
     return tagsByPost;
   } catch (error: unknown) {
-    console.log("Error fetching tags by post:", error);
-    throw new Error(`Unable to retrieve tags by post. ${error instanceof Error ? error.message : AN_UNKNOWN_ERROR_OCCURRED}`);
+    throw new Error(`${GET_TAGS_BY_POST_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
   }
 };
 
@@ -225,8 +241,7 @@ export const getAllPages = async (
     const allPages: Page[] = await allPagesResponse.json();
     return allPages;
   } catch (error: unknown) {
-    console.log("Error fetching pages:", error);
-    throw new Error(`Unable to retrieve pages. ${error instanceof Error ? error.message : AN_UNKNOWN_ERROR_OCCURRED}`);
+    throw new Error(`${GET_ALL_PAGES_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
   } 
 };
 
@@ -240,8 +255,7 @@ export const getPageById = async (
     const pageById: Page = await pageByIdResponse.json();
     return pageById;
   } catch (error: unknown) {
-    console.log("Error fetching page by Id:", error);
-    throw new Error(`Unable to retrieve page by Id. ${error instanceof Error ? error.message : AN_UNKNOWN_ERROR_OCCURRED}`);
+    throw new Error(`${GET_PAGE_BY_ID_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
   }
 };
 
@@ -255,8 +269,7 @@ export const getPageBySlug = async (
     const pageBySlug: Page[] = await pageBySlugResponse.json();
     return pageBySlug[0];
   } catch (error: unknown) {
-    console.log("Error fetching page by slug:", error);
-    throw new Error(`Unable to retrieve page by slug. ${error instanceof Error ? error.message : AN_UNKNOWN_ERROR_OCCURRED}`);
+    throw new Error(`${GET_PAGE_BY_SLUG_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
   }
 };
 
@@ -269,8 +282,7 @@ export const getAllAuthors = async (
     const allAuthors: Author[] = await allAuthorsResponse.json();
     return allAuthors;
   } catch (error: unknown) {
-    console.log("Error fetching authors:", error);
-    throw new Error(`Unable to retrieve authors. ${error instanceof Error ? error.message : AN_UNKNOWN_ERROR_OCCURRED}`);
+    throw new Error(`${GET_ALL_AUTHORS_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
   }
 };
 
@@ -284,8 +296,7 @@ export const getAuthorById = async (
     const authorById: Author = await authorByIdResponse.json();
     return authorById;
   } catch (error: unknown) {
-    console.log("Error fetching author by Id:", error);
-    throw new Error(`Unable to retrieve author by Id. ${error instanceof Error ? error.message : AN_UNKNOWN_ERROR_OCCURRED}`);
+    throw new Error(`${GET_AUTHOR_BY_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
   }
 };
 
@@ -299,8 +310,7 @@ export const getAuthorBySlug = async (
     const authorBySlug: Author[] = await authorBySlugResponse.json();
     return authorBySlug[0];
   } catch (error: unknown) {
-    console.log("Error fetching author by slug:", error);
-    throw new Error(`Unable to retrieve author by slug. ${error instanceof Error ? error.message : AN_UNKNOWN_ERROR_OCCURRED}`);
+    throw new Error(`${GET_AUTHOR_BY_SLUG_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
   }
 };
 
@@ -318,8 +328,7 @@ export const getPostsByAuthorId = async (
   
     return postsByAuthorId;
   } catch (error: unknown) {
-    console.log("Error fetching posts by author Id:", error);
-    throw new Error(`Unable to retrieve posts by author Id. ${error instanceof Error ? error.message : AN_UNKNOWN_ERROR_OCCURRED}`);
+    throw new Error(`${GET_POSTS_BY_AUTHOR_ID_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
   }
 };
 
@@ -339,8 +348,7 @@ export const getPostsByAuthorSlug = async (
   
     return postsByAuthorSlug;
   } catch (error: unknown) {
-    console.log("Error fetching posts by author slug:", error);
-    throw new Error(`Unable to retrieve posts by author slug. ${error instanceof Error ? error.message : AN_UNKNOWN_ERROR_OCCURRED}`);
+    throw new Error(`${GET_POSTS_BY_AUTHOR_SLUG_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
   }
 };
 
@@ -360,8 +368,7 @@ export const getPostsByCategorySlug = async (
   
     return postsByCategorySlug;
   } catch (error: unknown) {
-    console.log("Error fetching posts by category slug:", error);
-    throw new Error(`Unable to retrieve posts by category slug. ${error instanceof Error ? error.message : AN_UNKNOWN_ERROR_OCCURRED}`);
+    throw new Error(`${GET_POSTS_BY_CATEGORY_SLUG_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
   }
 };
 
@@ -381,8 +388,7 @@ export const getPostsByTagSlug = async (
   
     return postsByTagSlug;
   } catch (error: unknown) {
-    console.log("Error fetching posts by tag slug:", error);
-    throw new Error(`Unable to retrieve posts by tag slug. ${error instanceof Error ? error.message : AN_UNKNOWN_ERROR_OCCURRED}`);
+    throw new Error(`${GET_POSTS_BY_TAG_SLUG_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
   }
 };
 
@@ -396,7 +402,6 @@ export const getFeaturedMediaById = async (
     const featuredMediaById: FeaturedMedia = await featuredMediaByIdResponse.json();
     return featuredMediaById;
   } catch (error: unknown) {
-    console.log("Error fetching featured media by Id:", error);
-    throw new Error(`Unable to retrieve featured media by Id. ${error instanceof Error ? error.message : AN_UNKNOWN_ERROR_OCCURRED}`);
+    throw new Error(`${GET_FEATURED_MEDIA_BY_ID_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
   }
 };

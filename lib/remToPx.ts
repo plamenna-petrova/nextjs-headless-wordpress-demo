@@ -1,4 +1,4 @@
-export const remToPx = (remValue: number) => {
+export const remToPx = (remValue: number): number => {
   let rootFontSize: number =
     typeof window === "undefined"
       ? 16

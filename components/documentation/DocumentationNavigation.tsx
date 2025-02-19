@@ -9,26 +9,17 @@ import { useSectionStore } from './SectionProvider'
 import { Tag } from './Tag'
 import { remToPx } from '@/lib/remToPx'
 
-interface NavGroup {
-  title: string
-  links: Array<{
-    title: string
-    href: string
-  }>
+const useInitialValue = <T,>(value: T, condition = true): T => {
+  let initialValueRef = useRef(value).current;
+  return condition ? initialValueRef : value;
+};
+
+interface TopLevelNavItemProps {
+  href: string;
+  children: React.ReactNode;
 }
 
-function useInitialValue<T>(value: T, condition = true) {
-  let initialValue = useRef(value).current
-  return condition ? initialValue : value
-}
-
-function TopLevelNavItem({
-  href,
-  children,
-}: {
-  href: string
-  children: React.ReactNode
-}) {
+const TopLevelNavItem = ({ href, children }: TopLevelNavItemProps)=> {
   return (
     <li className="md:hidden">
       <Link
@@ -41,21 +32,15 @@ function TopLevelNavItem({
   )
 }
 
-function NavLink({
-  href,
-  children,
-  tag,
-  active = false,
-  isAnchorLink = false,
-}: {
-  href: string
-  children: React.ReactNode
-  tag?: string
-  active?: boolean
-  isAnchorLink?: boolean
-}) {
-  console.log("here");
+interface NavLinkProps {
+  href: string;
+  children: React.ReactNode;
+  tag?: string;
+  active?: boolean;
+  isAnchorLink?: boolean;
+}
 
+const NavLink = ({ href, children, tag, active = false, isAnchorLink = false }: NavLinkProps) => {
   return (
     <Link
       href={href}
@@ -78,35 +63,39 @@ function NavLink({
   )
 }
 
-function VisibleSectionHighlight({
-  group,
-  pathname,
-}: {
-  group: NavGroup
-  pathname: string
-}) {
+interface NavGroup {
+  title: string;
+  links: Array<{ title: string, href: string }>;
+}
+
+interface VisibleSectionHighlightProps {
+  group: NavGroup;
+  pathname: string;
+}
+
+const VisibleSectionHighlight = ({ group, pathname }: VisibleSectionHighlightProps) => {
   let [sections, visibleSections] = useInitialValue(
     [
       useSectionStore((s) => s.sections),
       useSectionStore((s) => s.visibleSections),
     ],
     // useIsInsideMobileNavigation(),
-  )
+  );
 
-  let isPresent = useIsPresent()
-  let firstVisibleSectionIndex = Math.max(
+  let isPresent: boolean = useIsPresent();
+
+  let firstVisibleSectionIndex: number = Math.max(
     0,
     [{ id: '_top' }, ...sections].findIndex(
       (section) => section.id === visibleSections[0],
     ),
-  )
-  let itemHeight = remToPx(2)
-  let height = isPresent
-    ? Math.max(1, visibleSections.length) * itemHeight
-    : itemHeight
-  let top =
-    group.links.findIndex((link) => link.href === pathname) * itemHeight +
-    firstVisibleSectionIndex * itemHeight
+  );
+
+  let itemHeight: number = remToPx(2);
+
+  let height: number = isPresent ? Math.max(1, visibleSections.length) * itemHeight : itemHeight;
+  let foundLinkIndex: number = group.links.findIndex((link) => link.href === pathname);
+  let top: number = foundLinkIndex * itemHeight + firstVisibleSectionIndex * itemHeight;
 
   return (
     <motion.div
@@ -120,17 +109,16 @@ function VisibleSectionHighlight({
   )
 }
 
-function ActivePageMarker({
-  group,
-  pathname,
-}: {
-  group: NavGroup
-  pathname: string
-}) {
-  let itemHeight = remToPx(2)
-  let offset = remToPx(0.25)
-  let activePageIndex = group.links.findIndex((link) => link.href === pathname)
-  let top = offset + activePageIndex * itemHeight
+interface ActivePageMarkerProps {
+  group: NavGroup;
+  pathname: string;
+}
+
+const ActivePageMarker = ({ group, pathname }: ActivePageMarkerProps) => {
+  let itemHeight: number = remToPx(2);
+  let offset: number = remToPx(0.25);
+  let activePageIndex: number = group.links.findIndex((link) => link.href === pathname);
+  let top: number = offset + activePageIndex * itemHeight;
 
   return (
     <motion.div
@@ -144,21 +132,19 @@ function ActivePageMarker({
   )
 }
 
-function NavigationGroup({
-  group,
-  className,
-}: {
-  group: NavGroup
-  className?: string
-}) {
+interface NavigationGroupProps {
+  group: NavGroup;
+  className?: string;
+}
+
+const NavigationGroup = ({ group, className }: NavigationGroupProps) => {
 //   let isInsideMobileNavigation = useIsInsideMobileNavigation()
   let [pathname, sections] = useInitialValue(
     [usePathname(), useSectionStore((s) => s.sections)],
     // isInsideMobileNavigation,
-  )
+  );
 
-  let isActiveGroup =
-    group.links.findIndex((link) => link.href === pathname) !== -1
+  let isActiveGroup = group.links.findIndex((link) => link.href === pathname) !== -1
 
   return (
     <li className={clsx('relative mt-6', className)}>
@@ -225,25 +211,25 @@ function NavigationGroup({
   )
 }
 
-export const navigation: Array<NavGroup> = [
+export const navigationGroups: Array<NavGroup> = [
   {
     title: 'Guides',
     links: [
       { title: 'Quickstart', href: '/quickstart' }
     ],
   },
-]
+];
 
-export function DocumentationNavigation(props: React.ComponentPropsWithoutRef<'nav'>) {
+const DocumentationNavigation = (props: React.ComponentPropsWithoutRef<'nav'>) => {
   return (
     <nav {...props}>
       <ul role="list">
         <TopLevelNavItem href="/api">API</TopLevelNavItem>
-        {navigation.map((group, groupIndex) => (
+        {navigationGroups.map((navigationGroup, navigationGroupIndex) => (
           <NavigationGroup
-            key={group.title}
-            group={group}
-            className={groupIndex === 0 ? 'md:mt-0' : ''}
+            key={navigationGroup.title}
+            group={navigationGroup}
+            className={navigationGroupIndex === 0 ? 'md:mt-0' : ''}
           />
         ))}
       </ul>
