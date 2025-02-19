@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import clsx from 'clsx'
 
-function ArrowIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
+const ArrowIcon = (props: React.ComponentPropsWithoutRef<'svg'>) => {
   return (
     <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" {...props}>
       <path
@@ -34,20 +34,14 @@ type ButtonProps = {
     | (React.ComponentPropsWithoutRef<'button'> & { href?: undefined })
   )
 
-export function Button({
-  variant = 'primary',
-  className,
-  children,
-  arrow,
-  ...props
-}: ButtonProps) {
-  className = clsx(
+export const Button = ({ variant = 'primary', className, children, arrow, ...props}: ButtonProps) => {
+  const combinedClassName = clsx(
     'inline-flex gap-0.5 justify-center overflow-hidden text-sm font-medium transition',
     variantStyles[variant],
     className,
-  )
+  );
 
-  let arrowIcon = (
+  const arrowIcon = (
     <ArrowIcon
       className={clsx(
         'mt-0.5 h-5 w-5',
@@ -59,7 +53,7 @@ export function Button({
     />
   )
 
-  let inner = (
+  const innerButtonPart = (
     <>
       {arrow === 'left' && arrowIcon}
       {children}
@@ -70,15 +64,15 @@ export function Button({
 
   if (typeof props.href === 'undefined') {
     return (
-      <button className={className} {...props}>
-        {inner}
+      <button className={combinedClassName} {...props}>
+        {innerButtonPart}
       </button>
     )
   }
 
   return (
     <Link className={className} {...props}>
-      {inner}
+      {innerButtonPart}
     </Link>
   )
 }

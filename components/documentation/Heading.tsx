@@ -8,7 +8,7 @@ import { useSectionStore } from './SectionProvider'
 import { Tag } from './Tag'
 import { convertRemToPx } from '@/lib/remToPx'
 
-function AnchorIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
+const AnchorIcon = (props: React.ComponentPropsWithoutRef<'svg'>) => {
   return (
     <svg
       viewBox="0 0 20 20"
@@ -22,9 +22,14 @@ function AnchorIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
   )
 }
 
-function Eyebrow({ tag, label }: { tag?: string; label?: string }) {
+interface EyebrowProps {
+  tag?: string; 
+  label?: string;
+}
+
+const Eyebrow = ({ tag, label }: EyebrowProps) => {
   if (!tag && !label) {
-    return null
+    return null;
   }
 
   return (
@@ -40,21 +45,19 @@ function Eyebrow({ tag, label }: { tag?: string; label?: string }) {
   )
 }
 
-function Anchor({
-  id,
-  inView,
-  children,
-}: {
-  id: string
-  inView: boolean
-  children: React.ReactNode
-}) {
+interface AnchorProps {
+  id: string;
+  isInView: boolean;
+  children: React.ReactNode;
+}
+
+const Anchor = ({ id, isInView, children }: AnchorProps) => {
   return (
     <Link
       href={`#${id}`}
       className="group text-inherit no-underline hover:text-inherit"
     >
-      {inView && (
+      {isInView && (
         <div className="absolute ml-[calc(-1*var(--width))] mt-1 hidden w-[var(--width)] opacity-0 transition [--width:calc(2.625rem+0.5px+50%-min(50%,calc(theme(maxWidth.lg)+theme(spacing.8))))] group-hover:opacity-100 group-focus:opacity-100 md:block lg:z-50 2xl:[--width:theme(spacing.10)]">
           <div className="group/anchor block h-5 w-5 rounded-lg bg-zinc-50 ring-1 ring-inset ring-zinc-300 transition hover:ring-zinc-500 dark:bg-zinc-800 dark:ring-zinc-700 dark:hover:bg-zinc-700 dark:hover:ring-zinc-600">
             <AnchorIcon className="h-5 w-5 stroke-zinc-500 transition dark:stroke-zinc-400 dark:group-hover/anchor:stroke-white" />
@@ -66,6 +69,14 @@ function Anchor({
   )
 }
 
+interface HeadingProps {
+  id: string;
+  tag?: string;
+  label?: string;
+  level?: number;
+  anchor?: boolean
+}
+
 export function Heading<Level extends 2 | 3>({
   children,
   tag,
@@ -73,45 +84,39 @@ export function Heading<Level extends 2 | 3>({
   level,
   anchor = true,
   ...props
-}: React.ComponentPropsWithoutRef<`h${Level}`> & {
-  id: string
-  tag?: string
-  label?: string
-  level?: Level
-  anchor?: boolean
-}) {
-  level = level ?? (2 as Level)
-  let Component = `h${level}` as 'h2' | 'h3'
-  let ref = useRef<HTMLHeadingElement>(null)
-  let registerHeading = useSectionStore((s) => s.registerHeading)
+}: React.ComponentPropsWithoutRef<`h${Level}`> & HeadingProps) {
+  let currentLevel = level ?? (2 as Level);
+  let HeadingComponent = `h${level}` as 'h2' | 'h3';
+  let ref = useRef<HTMLHeadingElement>(null);
+  let registerHeading = useSectionStore((s) => s.registerHeading);
 
-  let inView = useInView(ref, {
+  let isAnchorInView = useInView(ref, {
     margin: `${convertRemToPx(-3.5)}px 0px 0px 0px`,
     amount: 'all',
-  })
+  });
 
   useEffect(() => {
-    if (level === 2) {
-      registerHeading({ id: props.id, ref, offsetRem: tag || label ? 8 : 6 })
+    if (currentLevel === 2) {
+      registerHeading({ id: props.id, ref, offsetRem: tag || label ? 8 : 6 });
     }
-  })
+  });
 
   return (
     <>
       <Eyebrow tag={tag} label={label} />
-      <Component
+      <HeadingComponent
         ref={ref}
         className={tag || label ? 'mt-2 scroll-mt-32' : 'scroll-mt-24'}
         {...props}
       >
         {anchor ? (
-          <Anchor id={props.id} inView={inView}>
+          <Anchor id={props.id} isInView={isAnchorInView }>
             {children}
           </Anchor>
         ) : (
           children
         )}
-      </Component>
+      </HeadingComponent>
     </>
   )
 }

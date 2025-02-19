@@ -6,13 +6,12 @@ import { motion } from 'framer-motion'
 import { DocumentationNavigation } from './DocumentationNavigation'
 import { type Section, SectionProvider } from './SectionProvider'
 
-export function DocumentationLayout({
-  children,
-  allSections,
-}: {
-  children: React.ReactNode
-  allSections: Record<string, Array<Section>>
-}) {
+interface DocumentationLayoutProps {
+  children: React.ReactNode;
+  allSections: Record<string, Array<Section>>;
+}
+
+export function DocumentationLayout({ children, allSections }: DocumentationLayoutProps) {
   let pathname = usePathname()
 
   return (
