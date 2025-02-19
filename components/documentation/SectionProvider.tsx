@@ -9,7 +9,7 @@ import {
 } from 'react'
 import { type StoreApi, createStore, useStore } from 'zustand'
 
-import { remToPx } from '@/lib/remToPx'
+import { convertRemToPx } from '@/lib/remToPx'
 
 export interface Section {
   id: string
@@ -82,7 +82,7 @@ function useVisibleSections(sectionStore: StoreApi<SectionState>) {
           continue
         }
 
-        let offset = remToPx(offsetRem)
+        let offset = convertRemToPx(offsetRem)
         let top = headingRef.current.getBoundingClientRect().top + scrollY
 
         if (sectionIndex === 0 && top - offset > scrollY) {
@@ -94,7 +94,7 @@ function useVisibleSections(sectionStore: StoreApi<SectionState>) {
           (nextSection?.headingRef?.current?.getBoundingClientRect().top ??
             Infinity) +
           scrollY -
-          remToPx(nextSection?.offsetRem ?? 0)
+          convertRemToPx(nextSection?.offsetRem ?? 0)
 
         if (
           (top > scrollY && top < scrollY + innerHeight) ||

@@ -3,7 +3,7 @@ import { type Section } from '@/components/documentation/SectionProvider';
 import { DocumentationLayout } from '@/components/documentation/DocumentationLayout';
 
 export default async function Documentation({ children }: { children: React.ReactNode }) {
-  let pages = await glob('documentation/**/*.mdx');
+  let pages: string[] = await glob('documentation/**/*.mdx');
 
   let documentationSectionsEntries = (await Promise.all(
     pages.map(async (filename: string) => [
@@ -12,7 +12,7 @@ export default async function Documentation({ children }: { children: React.Reac
     ]),
   )) as Array<[string, Array<Section>]>;
   
-  let documentationSections = Object.fromEntries(documentationSectionsEntries);
+  let documentationSections: { [key: string]: Section[] } = Object.fromEntries(documentationSectionsEntries);
 
   return (
     <div className="w-full mx-auto">

@@ -6,7 +6,7 @@ import { useInView } from 'framer-motion'
 
 import { useSectionStore } from './SectionProvider'
 import { Tag } from './Tag'
-import { remToPx } from '@/lib/remToPx'
+import { convertRemToPx } from '@/lib/remToPx'
 
 function AnchorIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
   return (
@@ -86,7 +86,7 @@ export function Heading<Level extends 2 | 3>({
   let registerHeading = useSectionStore((s) => s.registerHeading)
 
   let inView = useInView(ref, {
-    margin: `${remToPx(-3.5)}px 0px 0px 0px`,
+    margin: `${convertRemToPx(-3.5)}px 0px 0px 0px`,
     amount: 'all',
   })
 
