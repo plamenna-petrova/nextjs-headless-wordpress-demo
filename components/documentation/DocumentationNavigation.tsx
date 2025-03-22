@@ -215,7 +215,8 @@ export const navigationGroups: Array<NavigationGroup> = [
   {
     title: 'Guides',
     links: [
-      { title: 'Quickstart', href: '/quickstart' }
+      { title: 'Introduction', href: '/documentation' },
+      { title: 'Quickstart', href: '/documentation/quickstart' },
     ],
   },
 ];
