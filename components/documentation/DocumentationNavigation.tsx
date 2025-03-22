@@ -74,13 +74,14 @@ interface VisibleSectionHighlightProps {
 }
 
 const VisibleSectionHighlight = ({ navigationGroup, pathname }: VisibleSectionHighlightProps) => {
-  let [sections, visibleSections] = useInitialValue(
-    [
-      useSectionStore((s) => s.sections),
-      useSectionStore((s) => s.visibleSections),
-    ],
-    // useIsInsideMobileNavigation(),
-  );
+  let sections = useSectionStore((s) => s.sections);
+  let visibleSections = useSectionStore((s) => s.visibleSections);
+
+  console.log('sections to highlight');
+  console.log(sections);
+
+  console.log('visible sections');
+  console.log(visibleSections);
 
   let isPresent: boolean = useIsPresent();
 
