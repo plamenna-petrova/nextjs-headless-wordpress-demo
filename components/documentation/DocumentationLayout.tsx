@@ -12,13 +12,7 @@ interface DocumentationLayoutProps {
 }
 
 export function DocumentationLayout({ children, allSections }: DocumentationLayoutProps) {
-  console.log('all sections');
-  console.log(allSections);
-
   let pathname = usePathname();
-
-  console.log('pathname');
-  console.log(pathname);
 
   return (
     <SectionProvider sections={allSections[pathname] ?? []}>

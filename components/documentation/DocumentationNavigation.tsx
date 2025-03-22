@@ -144,9 +144,6 @@ const NavigationGroupListItem = ({ navigationGroup, className }: NavigationGroup
     // isInsideMobileNavigation,
   );
 
-  console.log('navigation group sections');
-  console.log(sections);
-
   let isNavigationGroupActive = navigationGroup.links.findIndex((link) => link.href === pathname) !== -1;
 
   return (

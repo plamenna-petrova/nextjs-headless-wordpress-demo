@@ -1,5 +1,6 @@
 import { HeroPattern } from '@/components/documentation/HeroPattern'
 import { Guides } from '@/components/documentation/Guides';
+import { Features } from '@/components/documentation/Features';
 
 export const metadata = {
   title: 'WordPress As A Headless CMS Demo - Documentation',
@@ -8,7 +9,8 @@ export const metadata = {
 }
 
 export const sections = [
-  { title: 'Guides', id: 'guides' }
+  { title: 'Guides', id: 'guides' },
+  { title: 'Features', id: 'features' }
 ]
 
 <HeroPattern />
@@ -34,3 +36,5 @@ WordPress As A Headless CMS Demo features. {{ className: 'lead' }}
 </div>
 
 <Guides />
+
+<Features />
