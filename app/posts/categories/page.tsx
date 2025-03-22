@@ -4,6 +4,7 @@ import Container from "@/components/container/container";
 import { Metadata } from "next";
 import Link from "next/link";
 import BackButton from "@/components/back-button/back-button";
+import Main from "@/components/main/main";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -16,19 +17,21 @@ const Categories = async () => {
   const categories = await getAllCategories();
 
   return (
-    <Section>
-      <Container>
-        <BackButton />
-        <h2>All Categories</h2>
-        <div className="grid">
-          {categories.map((category: any) => (
-            <Link key={category.id} href={`/posts/?category=${category.id}`}>
-              {category.name}
-            </Link>
-          ))}
-        </div>
-      </Container>
-    </Section>
+    <Main>
+      <Section>
+        <Container>
+          <BackButton />
+          <h2>All Categories</h2>
+          <div className="grid">
+            {categories.map((category: any) => (
+              <Link key={category.id} href={`/posts/?category=${category.id}`}>
+                {category.name}
+              </Link>
+            ))}
+          </div>
+        </Container>
+      </Section>
+    </Main>
   );
 }
 

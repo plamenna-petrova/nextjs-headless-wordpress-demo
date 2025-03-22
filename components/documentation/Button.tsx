@@ -71,7 +71,7 @@ export const Button = ({ variant = 'primary', className, children, arrow, ...pro
   }
 
   return (
-    <Link className={className} {...props}>
+    <Link className={combinedClassName} {...props}>
       {innerButtonPart}
     </Link>
   )

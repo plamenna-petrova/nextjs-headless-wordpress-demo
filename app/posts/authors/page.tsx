@@ -4,6 +4,7 @@ import Container from "@/components/container/container";
 import Link from "next/link";
 import BackButton from "@/components/back-button/back-button";
 import { Metadata } from "next";
+import Main from "@/components/main/main";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -16,19 +17,21 @@ const Authors = async () => {
   const authors = await getAllAuthors();
 
   return (
-    <Section>
-      <Container>
-        <BackButton />
-        <h2>All Authors</h2>
-        <div className="grid">
-          {authors.map((author: any) => (
-            <Link key={author.id} href={`/posts/?author=${author.id}`}>
-              {author.name}
-            </Link>
-          ))}
-        </div>
-      </Container>
-    </Section>
+    <Main>
+      <Section>
+        <Container>
+          <BackButton />
+          <h2>All Authors</h2>
+          <div className="grid">
+            {authors.map((author: any) => (
+              <Link key={author.id} href={`/posts/?author=${author.id}`}>
+                {author.name}
+              </Link>
+            ))}
+          </div>
+        </Container>
+      </Section>
+    </Main>
   );
 }
 

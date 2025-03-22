@@ -47,7 +47,7 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
           disableTransitionOnChange
         >
           <NavbarWrapper />
-          <Main>{children}</Main>
+          {children}
           <FooterWrapper metadata={metadata} />
         </ThemeProvider>
       </body>

@@ -32,7 +32,7 @@ import {
 } from "./constants";
 import queryString from "query-string";
 
-const baseUrl: string = "http://localhost/wordpress/";
+const baseUrl: string = "http://wordpress.local/";
 
 const getUnknownErrorDetails = (error: unknown): string => error instanceof Error ? error.message : UNKNOWN_ERROR_DETAILS;
 
