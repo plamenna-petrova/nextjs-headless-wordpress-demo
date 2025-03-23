@@ -3,8 +3,11 @@
 import { usePathname } from 'next/navigation'
 import { motion } from 'framer-motion'
 
-import { DocumentationNavigation } from './DocumentationNavigation'
+import { DocumentationNavigation } from '@/components/documentation/DocumentationNavigation'
+import { DocumentationHeader } from '@/components/documentation/DocumentationHeader'
+import { Logo } from '@/components/documentation/Logo';
 import { type Section, SectionProvider } from './SectionProvider'
+import Link from 'next/link'
 
 interface DocumentationLayoutProps {
   children: React.ReactNode;
@@ -22,6 +25,12 @@ export function DocumentationLayout({ children, allSections }: DocumentationLayo
           className="contents lg:pointer-events-none lg:fixed lg:inset-0 lg:z-40 lg:flex"
         >
           <div className="contents lg:pointer-events-auto lg:block lg:w-72 lg:overflow-y-auto lg:border-r lg:border-zinc-900/10 lg:px-6 lg:pb-8 lg:pt-4 lg:dark:border-white/10 xl:w-80">
+            <div className="hidden lg:flex">
+              <Link href="/documentation" aria-label="Documentation">
+                <Logo />
+              </Link>
+            </div>
+            <DocumentationHeader />
             <DocumentationNavigation className="hidden lg:mt-10 lg:block" />
           </div>
         </motion.header>

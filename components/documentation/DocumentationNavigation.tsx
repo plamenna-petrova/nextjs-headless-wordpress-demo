@@ -230,7 +230,6 @@ export const DocumentationNavigation = (props: React.ComponentPropsWithoutRef<'n
   return (
     <nav {...props}>
       <ul role="list">
-        <TopLevelNavItem href="/api">API</TopLevelNavItem>
         {navigationGroups.map((navigationGroup, navigationGroupIndex) => (
           <NavigationGroupListItem
             key={navigationGroup.title}

@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   keywords: ["nextjs", "next14", "pwa", "next-pwa"],
   authors: [
     {
-      name: "imvinojanv",
+      name: "plamenna-petrova",
       url: "https://github.com/plamenna-petrova?tab=repositories",
     },
   ],
