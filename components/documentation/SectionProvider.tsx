@@ -40,19 +40,12 @@ function createSectionStore(sections: Array<Section>) {
     visibleSections: [],
     setVisibleSections: (visibleSections) =>
       set((state) => {
-        console.log('in state');
-        console.log(state.visibleSections);
-
-        console.log('to set');
-        console.log(visibleSections);
-
         return state.visibleSections.join() === visibleSections.join()
           ? {}
           : { visibleSections }
       }),
     registerHeading: ({ id, ref, offsetRem }) =>
       set((state) => {
-        console.log(`📌 Registering heading: ${id}`, ref.current);
         return {
           sections: state.sections.map((section) => {
             if (section.id === id) {
@@ -73,30 +66,20 @@ function useVisibleSections(sectionStore: StoreApi<SectionState>) {
   let setVisibleSections = useStore(sectionStore, (s) => s.setVisibleSections)
   let sections = useStore(sectionStore, (s) => s.sections)
 
-  console.log('sections in use');
-  console.log(sections);
-
   useEffect(() => {
-    console.log('🛠️ useVisibleSections: Setting up scroll listeners');
-
     function checkVisibleSections() {
       let { innerHeight, scrollY } = window;
       let newVisibleSections: string[] = [];
-
-      console.log('🟡 Running checkVisibleSections');
 
       for (let sectionIndex = 0; sectionIndex < sections.length; sectionIndex++) {
         let { id, headingRef, offsetRem = 0 } = sections[sectionIndex];
 
         if (!headingRef?.current) {
-          console.log(`⚠️ Skipping section "${id}" because headingRef is null`);
           continue;
         }
 
         let offset = convertRemToPx(offsetRem);
         let top = headingRef.current.getBoundingClientRect().top + scrollY;
-
-        console.log(`📍 Section "${id}" -> top: ${top}, scrollY: ${scrollY}`);
 
         if (sectionIndex === 0 && top - offset > scrollY) {
           newVisibleSections.push('_top');
@@ -116,8 +99,6 @@ function useVisibleSections(sectionStore: StoreApi<SectionState>) {
         }
       }
 
-      console.log('🟢 New visible sections:', newVisibleSections);
-
       setVisibleSections(newVisibleSections);
     }
 
@@ -126,7 +107,6 @@ function useVisibleSections(sectionStore: StoreApi<SectionState>) {
     window.addEventListener('resize', checkVisibleSections)
 
     return () => {
-      console.log('🛑 Removing scroll listeners');
       window.cancelAnimationFrame(raf);
       window.removeEventListener('scroll', checkVisibleSections);
       window.removeEventListener('resize', checkVisibleSections);
@@ -146,9 +126,6 @@ export function SectionProvider({
   sections: Array<Section>
   children: React.ReactNode
   }) {
-  console.log('received sections');
-  console.log(sections);
-  
   let [sectionStore] = useState(() => createSectionStore(sections))
 
   useVisibleSections(sectionStore)

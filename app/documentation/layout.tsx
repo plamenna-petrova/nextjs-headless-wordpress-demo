@@ -7,7 +7,7 @@ export default async function Documentation({ children }: { children: React.Reac
 
   let documentationSectionsEntries = (await Promise.all(
     pages.map(async (filename: string) => [
-      '/documentation' + filename.replace(/(^|\/)page\.mdx$/, ''),
+      !filename.startsWith('page') ? '/documentation/' + filename.replace(/(^|\/)page\.mdx$/, '') : '/documentation',
       (await import(`./${filename}`)).sections,
     ]),
   )) as Array<[string, Array<Section>]>;

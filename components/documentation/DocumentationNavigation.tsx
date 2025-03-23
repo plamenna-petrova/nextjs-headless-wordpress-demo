@@ -77,12 +77,6 @@ const VisibleSectionHighlight = ({ navigationGroup, pathname }: VisibleSectionHi
   let sections = useSectionStore((s) => s.sections);
   let visibleSections = useSectionStore((s) => s.visibleSections);
 
-  console.log('sections to highlight');
-  console.log(sections);
-
-  console.log('visible sections');
-  console.log(visibleSections);
-
   let isPresent: boolean = useIsPresent();
 
   let firstVisibleSectionIndex: number = Math.max(
@@ -118,6 +112,7 @@ interface ActivePageMarkerProps {
 const ActivePageMarker = ({ navigationGroup, pathname }: ActivePageMarkerProps) => {
   let navigationItemHeight: number = convertRemToPx(2);
   let offset: number = convertRemToPx(0.25);
+
   let activePageIndex: number = navigationGroup.links.findIndex((link) => link.href === pathname);
   let top: number = offset + activePageIndex * navigationItemHeight;
 
@@ -139,11 +134,8 @@ interface NavigationGroupProps {
 }
 
 const NavigationGroupListItem = ({ navigationGroup, className }: NavigationGroupProps) => {
-//   let isInsideMobileNavigation = useIsInsideMobileNavigation()
-  let [pathname, sections] = useInitialValue(
-    [usePathname(), useSectionStore((s) => s.sections)],
-    // isInsideMobileNavigation,
-  );
+  let pathname = usePathname();
+  let sections = useSectionStore((s) => s.sections);
 
   let isNavigationGroupActive = navigationGroup.links.findIndex((link) => link.href === pathname) !== -1;
 
@@ -219,7 +211,7 @@ export const navigationGroups: Array<NavigationGroup> = [
       { title: 'Introduction', href: '/documentation' },
       { title: 'Quickstart', href: '/documentation/quickstart' },
     ],
-  },
+  }
 ];
 
 export const DocumentationNavigation = (props: React.ComponentPropsWithoutRef<'nav'>) => {

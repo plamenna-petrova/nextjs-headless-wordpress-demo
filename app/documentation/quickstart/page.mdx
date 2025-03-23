@@ -1,0 +1,113 @@
+import { HeroPattern } from '@/components/documentation/HeroPattern'
+import { Button } from '@/components/documentation/Button'
+import Link from 'next/link'
+
+export const metadata = {
+  title: 'Why does the PWA use the WP REST API?',
+  description:
+    'The PWA utilizes the WordPress REST API for several key reasons, each contributing to creating an efficient, flexible, and secure headless CMS experience.',
+}
+
+<HeroPattern />
+
+# WordPress as a Headless CMS
+
+WordPress can be used as a Headless CMS by leveraging its REST API or GraphQL capabilities to serve content to external applications, such as Next.js, React, or Vue.
+
+<Note>WordPress as a Headless CMS decouples the frontend from the backend, allowing for greater flexibility and scalability.</Note>
+
+## REST API Overview
+
+<Row>
+  <Col>
+    WordPress provides a powerful REST API that allows you to retrieve and manipulate content using HTTP requests. This makes it easy to integrate WordPress with modern JavaScript frameworks and static site generators.
+
+    ## Benefits of Headless WordPress
+
+    <Properties>
+      <Property name="Flexibility">
+        Use any frontend framework, such as Next.js, React, or Vue.
+      </Property>
+      <Property name="Performance">
+        Faster load times by serving static content from a CDN.
+      </Property>
+      <Property name="Security">
+        Reduced attack surface since the frontend and backend are separated.
+      </Property>
+    </Properties>
+
+    <div className="not-prose">
+      <Button
+          href="https://developer.wordpress.org/rest-api/"
+          variant="text"
+          arrow="right"
+          target="_blank"
+      >
+          <>Read more about the WordPress REST API</>
+      </Button>
+    </div>
+
+    ## Key Considerations
+
+    <Properties>
+      <Property name="Authentication">
+        Use application passwords or JWT tokens for secure API access.
+      </Property>
+      <Property name="Caching">
+        Implement caching strategies to improve performance.
+      </Property>
+      <Property name="SEO">
+        Ensure meta tags, schema, and Open Graph data are handled on the frontend.
+      </Property>
+    </Properties>
+
+    ## Getting Started
+
+    <Properties>
+      <Property name="WordPress Setup">
+        Install and configure WordPress with the REST API or GraphQL plugin.
+      </Property>
+      <Property name="Frontend Framework">
+        Choose a framework like Next.js to consume the WordPress API.
+      </Property>
+    </Properties>
+
+    <div className="not-prose">
+      <Button
+          href="https://wordpress.org/support/article/application-passwords/"
+          variant="text"
+          arrow="right"
+          target="_blank"
+      >
+          <>Learn more about WordPress authentication</>
+      </Button>
+    </div>
+
+  </Col>
+  <Col sticky>
+
+    <CodeGroup title="Example Request" tag="GET" label="/wp-json/wp/v2/posts">
+    ```ts
+    import axios from 'axios';
+
+    const fetchPosts = async () => {
+      const response = await axios.get('https://localhost/wordpress/wp-json/wp/v2/posts');
+      return response.data;
+    };
+    ```
+    </CodeGroup>
+
+    <CodeGroup title="Example Response" tag="GET" label="/wp-json/wp/v2/posts">
+    ```ts
+    [
+      {
+        "id": 1,
+        "title": { "rendered": "Hello World" },
+        "content": { "rendered": "<p>Welcome to WordPress as a Headless CMS.</p>" },
+        "link": "https://localhost/wordpress/hello-world"
+      }
+    ]
+    ```
+    </CodeGroup>
+  </Col>
+</Row>
