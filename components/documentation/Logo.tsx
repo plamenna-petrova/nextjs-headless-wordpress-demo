@@ -8,7 +8,7 @@ export function Logo() {
         alt="Next.js Logo"
         width={48}
         height={48}
-        className="mr-1 h-full w-auto"
+        className="mr-1 h-full w-auto dark:invert"
       />
     </div>
   )

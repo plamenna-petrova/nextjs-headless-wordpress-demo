@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 
 import { DocumentationNavigation } from '@/components/documentation/DocumentationNavigation'
 import { DocumentationHeader } from '@/components/documentation/DocumentationHeader'
+import { DocumentationFooter } from '@/components/documentation/DocumentationFooter'
 import { Logo } from '@/components/documentation/Logo';
 import { type Section, SectionProvider } from './SectionProvider'
 import Link from 'next/link'
@@ -36,6 +37,7 @@ export function DocumentationLayout({ children, allSections }: DocumentationLayo
         </motion.header>
         <div className="relative flex h-full flex-col px-4 pt-14 sm:px-6 lg:px-8">
           <main className="flex-auto">{children}</main>
+          <DocumentationFooter />
         </div>
       </div>
     </SectionProvider>
