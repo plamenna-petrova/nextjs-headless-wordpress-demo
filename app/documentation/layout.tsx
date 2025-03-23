@@ -3,11 +3,11 @@ import { type Section } from '@/components/documentation/SectionProvider';
 import { DocumentationLayout } from '@/components/documentation/DocumentationLayout';
 
 export default async function Documentation({ children }: { children: React.ReactNode }) {
-  let pages: string[] = await glob('**/*.mdx', { cwd: 'app/documentation' });
+  let foundMDXPages: string[] = await glob('**/*.mdx', { cwd: 'app/documentation' });
 
   let documentationSectionsEntries = (await Promise.all(
-    pages.map(async (filename: string) => [
-      !filename.startsWith('page') ? '/documentation/' + filename.replace(/(^|\/)page\.mdx$/, '') : '/documentation',
+    foundMDXPages.map(async (filename: string) => [
+      filename.includes('/') ? '/documentation/' + filename.replace(/(^|\/)page\.mdx$/, '') : '/documentation',
       (await import(`./${filename}`)).sections,
     ]),
   )) as Array<[string, Array<Section>]>;

@@ -211,6 +211,12 @@ export const navigationGroups: Array<NavigationGroup> = [
       { title: 'Introduction', href: '/documentation' },
       { title: 'Quickstart', href: '/documentation/quickstart' },
     ],
+  },
+  {
+    title: 'Reference',
+    links: [
+      { title: 'REST API functions', href: '/documentation/rest-api-functions' }
+    ]
   }
 ];
 

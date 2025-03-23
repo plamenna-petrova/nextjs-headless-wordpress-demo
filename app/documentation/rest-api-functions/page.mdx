@@ -1,0 +1,136 @@
+export const metadata = {
+  title: 'REST API Functions',
+  description: 'Detailed information about the used REST API functions in the project',
+}
+
+# REST API Functions
+
+The REST API functions are a set of functions that can be used to retrieve data from the REST API.
+
+## getAllPosts {{ tag: 'GET', label: '/wp-json/wp/v2/posts?author={author}&tags={tag}&categories={category}' }}
+
+<Row>
+  <Col>
+    The `getAllPosts` function retrieves posts from a WordPress website using its REST API. It allows filtering posts based on the author, tag, and category.
+
+    ### **How It Works**
+    - The function constructs a request URL using the provided filter parameters.
+    - It fetches the data from the WordPress REST API.
+    - The response is parsed into an array of `Post` objects.
+
+    ### **Optional Parameters**
+    <Properties>
+      <Property name="author" type="string">
+        The ID or slug of the post's author.
+      </Property>
+      <Property name="tag" type="string">
+        A tag associated with the posts.
+      </Property>
+      <Property name="category" type="string">
+        A category associated with the posts.
+      </Property>
+    </Properties>
+
+    ### **Return Value**
+    <Properties>
+        <Property name="posts" type="Post[]">
+          An array of WordPress posts matching the filter criteria.
+        </Property>
+    </Properties>
+
+    ### **Example Usage**
+    ```ts
+    const posts = await getAllPosts({ author: "1", tag: "tech", category: "news" });
+    console.log(posts);
+    ```
+    
+    ### **Error Handling**
+    - If the fetch request fails, the function throws an error.
+    - The error message includes a descriptive string along with details of the encountered issue.
+
+    <div className="not-prose">
+      <Button
+        href="https://developer.wordpress.org/rest-api/reference/posts/"
+        variant="text"
+        arrow="right"
+        target="_blank"
+      >
+        <>Read more about the WordPress REST API Posts Endpoint</>
+      </Button>
+    </div>
+  </Col>
+
+  <Col sticky>
+    <CodeGroup title="Request">
+    ```ts
+      export const getAllPosts = async (
+        filterParameters: {
+          author?: string;
+          tag?: string;
+          category?: string;
+        },
+        options: { next: { revalidate: number } } = 
+        { next: { revalidate: 60 } }
+      ): Promise<Post[]> => {
+        try {
+          const postsUrl: string = getUrl("/wp-json/wp/v2/posts", {
+            author: filterParameters?.author,
+            tags: filterParameters.tag,
+            categories: filterParameters.category,
+          });
+
+          const postsResponse: Response = await fetch(
+            postsUrl, options
+          );
+          
+          const posts: Post[] = await postsResponse.json();
+
+          return posts;
+        } catch (error: unknown) {
+          throw new Error(`${GET_ALL_POSTS_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
+        }
+      };
+    ```
+    </CodeGroup>
+
+    ```ts {{ title: 'Return Type' }}
+      export type Post = {
+        id: number;
+        date: string;
+        date_gmt: string;
+        guid: {
+          rendered: string;
+        };
+        modified: string;
+        modified_gmt: string;
+        slug: string;
+        status: "publish" | "future" | "draft" | "pending" | "private";
+        type: string;
+        link: string;
+        title: {
+          rendered: string;
+        };
+        content: {
+          rendered: string;
+          protected: boolean;
+        };
+        excerpt: {
+          rendered: string;
+          protected: boolean;
+        };
+        author: number;
+        featured_media: number;
+        comment_status: "open" | "closed";
+        ping_status: "open" | "closed";
+        sticky: boolean;
+        template: string;
+        format: | "standard" | "aside" | "chat" | "gallery" | "link" | "image" | "quote" | "status" | "video" | "audio";
+        meta: any;
+        categories: number[];
+        tags: number[];
+      };
+    ```
+  </Col>
+</Row>
+
+---
