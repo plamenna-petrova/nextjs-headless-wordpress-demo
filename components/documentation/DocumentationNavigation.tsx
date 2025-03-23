@@ -217,6 +217,12 @@ export const navigationGroups: Array<NavigationGroup> = [
     links: [
       { title: 'REST API functions', href: '/documentation/rest-api-functions' }
     ]
+  },
+  {
+    title: 'Frequently Asked Questions',
+    links: [
+      { title: 'Why use WP Headless CMS?', href: '/documentation/faq' }
+    ]
   }
 ];
 
