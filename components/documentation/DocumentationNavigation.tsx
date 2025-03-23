@@ -134,7 +134,7 @@ interface NavigationGroupProps {
 }
 
 const NavigationGroupListItem = ({ navigationGroup, className }: NavigationGroupProps) => {
-  let pathname = usePathname();
+  let pathname: string = usePathname();
   let sections = useSectionStore((s) => s.sections);
 
   let isNavigationGroupActive = navigationGroup.links.findIndex((link) => link.href === pathname) !== -1;

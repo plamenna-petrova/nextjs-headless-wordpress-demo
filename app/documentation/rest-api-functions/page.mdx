@@ -1,9 +1,13 @@
+import { HeroPattern } from '@/components/documentation/HeroPattern'
+
 export const metadata = {
   title: 'REST API Functions',
   description: 'Detailed information about the used REST API functions in the project',
 }
 
-# REST API Functions
+<HeroPattern />
+
+# Used WordPress REST API Functions
 
 The REST API functions are a set of functions that can be used to retrieve data from the REST API.
 
@@ -40,8 +44,8 @@ The REST API functions are a set of functions that can be used to retrieve data 
 
     ### **Example Usage**
     ```ts
-    const posts = await getAllPosts({ author: "1", tag: "tech", category: "news" });
-    console.log(posts);
+    const allPosts = await getAllPosts({ author: "1", tag: "tech", category: "news" });
+    console.log(allPosts);
     ```
     
     ### **Error Handling**
@@ -134,3 +138,456 @@ The REST API functions are a set of functions that can be used to retrieve data 
 </Row>
 
 ---
+
+## getAllAuthors {{ tag: 'GET', label: '/wp-json/wp/v2/authors' }}
+
+<Row>
+  <Col>
+    The `getAllAuthors` function retrieves authors from a WordPress website using its REST API.
+
+    ### **How It Works**
+    - The function constructs a request URL.
+    - It fetches the data from the WordPress REST API.
+    - The response is parsed into an array of `Author` objects.
+
+    ### **Return Value**
+    <Properties>
+        <Property name="authors" type="Author[]">
+          An array of WordPress authors.
+        </Property>
+    </Properties>
+
+    ### **Example Usage**
+    ```ts
+    const allAuthors = await getAllAuthors();
+    console.log(allAuthors);
+    ```
+    
+    ### **Error Handling**
+    - If the fetch request fails, the function throws an error.
+    - The error message includes a descriptive string along with details of the encountered issue.
+
+    <div className="not-prose">
+      <Button
+        href="https://developer.wordpress.org/rest-api/reference/users/"
+        variant="text"
+        arrow="right"
+        target="_blank"
+      >
+        <>Read more about the WordPress REST API Authors Endpoint</>
+      </Button>
+    </div>
+  </Col>
+
+  <Col sticky>
+    <CodeGroup title="Request">
+    ```ts
+      export const getAllAuthors = async (
+        options: { next: { revalidate: number } } = 
+        { next: { revalidate: 60 } }
+      ): Promise<Author[]> => {
+        try {
+          const allAuthorsUrl: string = getUrl("/wp-json/wp/v2/users");
+
+          const allAuthorsResponse: Response = await fetch(
+            allAuthorsUrl, options
+          );
+
+          const allAuthors: Author[] = await allAuthorsResponse.json();
+
+          return allAuthors;
+        } catch (error: unknown) {
+          throw new Error(`${GET_ALL_AUTHORS_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
+        }
+      };
+    ```
+    </CodeGroup>
+
+    ```ts {{ title: 'Return Type' }}
+      export type Author = {
+        id: number;
+        name: string;
+        url: string;
+        description: string;
+        link: string;
+        slug: string;
+        avatar_urls: {
+          [key: string]: string;
+        };
+        meta: any;
+      };
+    ```
+  </Col>
+</Row>
+
+---
+
+## getAllTags {{ tag: 'GET', label: '/wp-json/wp/v2/tags' }}
+
+<Row>
+  <Col>
+    The `getAllTags` function retrieves tags from a WordPress website using its REST API.
+
+    ### **How It Works**
+    - The function constructs a request URL.
+    - It fetches the data from the WordPress REST API.
+    - The response is parsed into an array of `Tag` objects.
+
+    ### **Return Value**
+    <Properties>
+        <Property name="tags" type="Tag[]">
+          An array of WordPress tags.
+        </Property>
+    </Properties>
+
+    ### **Example Usage**
+    ```ts
+    const allTags = await getAllTags();
+    console.log(allTags);
+    ```
+    
+    ### **Error Handling**
+    - If the fetch request fails, the function throws an error.
+    - The error message includes a descriptive string along with details of the encountered issue.
+
+    <div className="not-prose">
+      <Button
+        href="https://developer.wordpress.org/rest-api/reference/tags/"
+        variant="text"
+        arrow="right"
+        target="_blank"
+      >
+        <>Read more about the WordPress REST API Tags Endpoint</>
+      </Button>
+    </div>
+  </Col>
+
+  <Col sticky>
+    <CodeGroup title="Request">
+    ```ts
+      export const getAllTags = async (
+        options: { next: { revalidate: number } } = 
+        { next: { revalidate: 60 } }
+      ): Promise<Tag[]> => {
+        try {
+          const allTagsUrl: string = getUrl("/wp-json/wp/v2/tags");
+
+          const allTagsResponse: Response = await fetch(
+            allTagsUrl, options
+          );
+
+          const allTags: Tag[] = await allTagsResponse.json();
+          return allTags;
+        } catch (error: unknown) {
+          throw new Error(`${GET_ALL_TAGS_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`)
+        }
+      };
+    ```
+    </CodeGroup>
+
+    ```ts {{ title: 'Return Type' }}
+      export type Tag = {
+        id: number;
+        count: number;
+        description: string;
+        link: string;
+        name: string;
+        slug: string;
+        taxonomy: "post_tag";
+        meta: any;
+      };
+    ```
+  </Col>
+</Row>
+
+---
+
+## getAllCategories {{ tag: 'GET', label: '/wp-json/wp/v2/categories' }}
+
+<Row>
+  <Col>
+    The `getAllCategories` function retrieves categories from a WordPress website using its REST API.
+
+    ### **How It Works**
+    - The function constructs a request URL.
+    - It fetches the data from the WordPress REST API.
+    - The response is parsed into an array of `Category` objects.
+
+    ### **Return Value**
+    <Properties>
+        <Property name="categories" type="Category[]">
+          An array of WordPress categories.
+        </Property>
+    </Properties>
+
+    ### **Example Usage**
+    ```ts
+    const allCategories = await getAllCategories();
+    console.log(allCategories);
+    ```
+    
+    ### **Error Handling**
+    - If the fetch request fails, the function throws an error.
+    - The error message includes a descriptive string along with details of the encountered issue.
+
+    <div className="not-prose">
+      <Button
+        href="https://developer.wordpress.org/rest-api/reference/categories/"
+        variant="text"
+        arrow="right"
+        target="_blank"
+      >
+        <>Read more about the WordPress REST API Categories Endpoint</>
+      </Button>
+    </div>
+  </Col>
+
+  <Col sticky>
+    <CodeGroup title="Request">
+    ```ts
+      export const getAllPages = async (
+        options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
+      ): Promise<Page[]> => {
+        try {
+          const allPagesUrl: string = getUrl("/wp-json/wp/v2/pages");
+
+          const allPagesResponse: Response = await fetch(
+            allPagesUrl, options
+          );
+
+          const allPages: Page[] = await allPagesResponse.json();
+          
+          return allPages;
+        } catch (error: unknown) {
+          throw new Error(`${GET_ALL_PAGES_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
+        } 
+      };
+    ```
+    </CodeGroup>
+
+    ```ts {{ title: 'Return Type' }}
+      export type Category = {
+        id: number;
+        count: number;
+        description: string;
+        link: string;
+        name: string;
+        slug: string;
+        taxonomy: "category";
+        parent: number;
+        meta: any[];
+      };
+    ```
+  </Col>
+</Row>
+
+---
+
+## getAllPages {{ tag: 'GET', label: '/wp-json/wp/v2/pages' }}
+
+<Row>
+  <Col>
+    The `getAllPages` function retrieves pages from a WordPress website using its REST API.
+
+    ### **How It Works**
+    - The function constructs a request URL.
+    - It fetches the data from the WordPress REST API.
+    - The response is parsed into an array of `Page` objects.
+
+    ### **Return Value**
+    <Properties>
+        <Property name="pages" type="Page[]">
+          An array of WordPress pages.
+        </Property>
+    </Properties>
+
+    ### **Example Usage**
+    ```ts
+    const allPages = await getAllPages();
+    console.log(allPages);
+    ```
+    
+    ### **Error Handling**
+    - If the fetch request fails, the function throws an error.
+    - The error message includes a descriptive string along with details of the encountered issue.
+
+    <div className="not-prose">
+      <Button
+        href="https://developer.wordpress.org/rest-api/reference/pages/"
+        variant="text"
+        arrow="right"
+        target="_blank"
+      >
+        <>Read more about the WordPress REST API Pages Endpoint</>
+      </Button>
+    </div>
+  </Col>
+
+  <Col sticky>
+    <CodeGroup title="Request">
+    ```ts
+      export const getAllPages = async (
+        options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
+      ): Promise<Page[]> => {
+        try {
+          const allPagesUrl: string = getUrl("/wp-json/wp/v2/pages");
+
+          const allPagesResponse: Response = await fetch(
+            allPagesUrl, options
+          );
+
+          const allPages: Page[] = await allPagesResponse.json();
+
+          return allPages;
+        } catch (error: unknown) {
+          throw new Error(`${GET_ALL_PAGES_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
+        } 
+      };
+    ```
+    </CodeGroup>
+
+    ```ts {{ title: 'Return Type' }}
+      export type Page = {
+        id: number;
+        date: string;
+        date_gmt: string;
+        guid: {
+          rendered: string;
+        };
+        modified: string;
+        modified_gmt: string;
+        slug: string;
+        status: "publish" | "future" | "draft" | "pending" | "private";
+        type: string;
+        link: string;
+        title: {
+          rendered: string;
+        };
+        content: {
+          rendered: string;
+          protected: boolean;
+        };
+        excerpt: {
+          rendered: string;
+          protected: boolean;
+        };
+        author: number;
+        featured_media: number;
+        parent: number;
+        menu_order: number;
+        comment_status: "open" | "closed";
+        ping_status: "open" | "closed";
+        template: string;
+        meta: any;
+      };
+    ```
+  </Col>
+</Row>
+
+---
+
+## getPostBySlug {{ tag: 'GET', label: '/wp-json/wp/v2/posts?slug={slug}' }}
+
+<Row>
+  <Col>
+    The `getPostBySlug` function retrieves post by slug from a WordPress website using its REST API.
+
+    ### **How It Works**
+    - The function constructs a request URL using the provided slug.
+    - It fetches the data from the WordPress REST API.
+    - The response is parsed into a `Post` object.
+
+    ### **Required Parameters**
+    <Properties>
+      <Property name="slug" type="string">
+        The slug of the post.
+      </Property>
+    </Properties>
+
+    ### **Return Value**
+    <Properties>
+        <Property name="posts" type="Post">
+          A WordPress post object matching the slug.
+        </Property>
+    </Properties>
+
+    ### **Example Usage**
+    ```ts
+    const postBySlug = await getPostBySlug({ slug: "new-post" });
+    console.log(postBySlug);
+    ```
+    
+    ### **Error Handling**
+    - If the fetch request fails, the function throws an error.
+    - The error message includes a descriptive string along with details of the encountered issue.
+
+    <div className="not-prose">
+      <Button
+        href="https://developer.wordpress.org/rest-api/reference/posts/"
+        variant="text"
+        arrow="right"
+        target="_blank"
+      >
+        <>Read more about the WordPress REST API Posts Endpoint</>
+      </Button>
+    </div>
+  </Col>
+
+  <Col sticky>
+    <CodeGroup title="Request">
+    ```ts
+      export const getPostBySlug = async (
+        slug: string,
+        options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
+      ): Promise<Post> => {
+        try {
+          const postBySlugUrl: string = getUrl("/wp-json/wp/v2/posts", { slug });
+          const postBySlugResponse: Response = await fetch(postBySlugUrl, options);
+          const postBySlug: Post[] = await postBySlugResponse.json();
+          return postBySlug[0];
+        } catch (error: unknown) {
+          throw new Error(`${GET_POST_BY_SLUG_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
+        }
+      };
+    ```
+    </CodeGroup>
+
+    ```ts {{ title: 'Return Type' }}
+      export type Post = {
+        id: number;
+        date: string;
+        date_gmt: string;
+        guid: {
+          rendered: string;
+        };
+        modified: string;
+        modified_gmt: string;
+        slug: string;
+        status: "publish" | "future" | "draft" | "pending" | "private";
+        type: string;
+        link: string;
+        title: {
+          rendered: string;
+        };
+        content: {
+          rendered: string;
+          protected: boolean;
+        };
+        excerpt: {
+          rendered: string;
+          protected: boolean;
+        };
+        author: number;
+        featured_media: number;
+        comment_status: "open" | "closed";
+        ping_status: "open" | "closed";
+        sticky: boolean;
+        template: string;
+        format: | "standard" | "aside" | "chat" | "gallery" | "link" | "image" | "quote" | "status" | "video" | "audio";
+        meta: any;
+        categories: number[];
+        tags: number[];
+      };
+    ```
+  </Col>
+</Row>
