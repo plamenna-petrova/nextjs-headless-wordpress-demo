@@ -3,6 +3,7 @@
 import {
   forwardRef,
   Fragment,
+  RefObject,
   Suspense,
   useCallback,
   useEffect,
@@ -34,7 +35,7 @@ type Autocomplete = AutocompleteApi<
 >
 
 function useAutocomplete({ close }: { close: () => void }) {
-  let id = useId();
+  let id: string = useId();
   let router = useRouter();
   let [autocompleteState, setAutocompleteState] = useState<AutocompleteState<Result> | EmptyObject>({});
 
@@ -88,7 +89,7 @@ function useAutocomplete({ close }: { close: () => void }) {
     }),
   )
 
-  return { autocomplete, autocompleteState }
+  return { autocomplete, autocompleteState, setAutocompleteState }
 }
 
 function SearchIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
@@ -232,7 +233,6 @@ function SearchResults({
   query: string
   collection: AutocompleteCollection<Result>
 }) {
-
   if (collection.items.length === 0) {
     return (
       <div className="p-6 text-center">
@@ -280,7 +280,7 @@ const SearchInput = forwardRef<
       <input
         ref={inputRef}
         className={clsx(
-          'flex-auto appearance-none bg-transparent pl-10 text-zinc-900 outline-none placeholder:text-zinc-500 focus:w-full focus:flex-none dark:text-white sm:text-sm [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden [&::-webkit-search-results-button]:hidden [&::-webkit-search-results-decoration]:hidden',
+          'flex-auto appearance-none bg-transparent pl-10 text-zinc-900 outline-none placeholder:text-zinc-500 focus:w-full focus:flex-none dark:text-white sm:text-sm [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden [&::-webkit-search-results-button]:hidden [&::-webkit-search-results-decoration]:hidden focus:outline-none',
           autocompleteState.status === 'stalled' ? 'pr-11' : 'pr-4',
         )}
         {...inputProps}
@@ -293,12 +293,12 @@ const SearchInput = forwardRef<
             // In Safari, closing the dialog with the escape key can sometimes cause the scroll position to jump to the
             // bottom of the page. This is a workaround for that until we can figure out a proper fix in Headless UI.
             if (document.activeElement instanceof HTMLElement) {
-              document.activeElement.blur()
+              document.activeElement.blur();
             }
 
             onClose()
           } else {
-            inputProps.onKeyDown(event)
+            inputProps.onKeyDown(event);
           }
         }}
       />
@@ -320,11 +320,11 @@ function SearchDialog({
   setOpen: (open: boolean) => void
   className?: string
 }) {
-  let formRef = useRef<React.ElementRef<'form'>>(null);
-  let panelRef = useRef<React.ElementRef<'div'>>(null);
-  let inputRef = useRef<React.ElementRef<typeof SearchInput>>(null);
-
-  let { autocomplete, autocompleteState } = useAutocomplete({
+  let formRef: RefObject<HTMLFormElement> = useRef<React.ElementRef<'form'>>(null);
+  let panelRef: RefObject<HTMLDivElement> = useRef<React.ElementRef<'div'>>(null);
+  let inputRef: RefObject<HTMLInputElement> = useRef<React.ElementRef<typeof SearchInput>>(null);
+  
+  let { autocomplete, autocompleteState, setAutocompleteState } = useAutocomplete({
     close() {
       setOpen(false);
     },
@@ -333,17 +333,38 @@ function SearchDialog({
   let pathname: string = usePathname();
   let searchParams: ReadonlyURLSearchParams = useSearchParams();
 
-  const handleSearchInputClose = (): void => {
-    if (document.activeElement instanceof HTMLElement) {
-      document.activeElement.blur();
-    }
+  useEffect(() => {
     setOpen(false);
-  }
+  }, [pathname, searchParams, setOpen]);
 
   useEffect(() => {
-    let timeout = setTimeout(() => setOpen(false), 100);
-    return () => clearTimeout(timeout);
-  }, [pathname, searchParams, setOpen]);
+    if (open) {
+      const focusInput = (): void => {
+        if (inputRef.current) {
+          autocomplete.setQuery('');
+          setAutocompleteState({});
+
+          inputRef.current.focus();
+          inputRef.current.click();
+
+          setTimeout(() => {
+            inputRef.current!.setSelectionRange(0, 0);
+          }, 0);
+        }
+      };
+
+      if (inputRef.current) {
+        focusInput();
+      } else {
+        const interval = setInterval(() => {
+          if (inputRef.current) {
+            focusInput();
+            clearInterval(interval);
+          }
+        }, 50);
+      }
+    }
+  }, [open, autocomplete, setAutocompleteState]);
 
   useEffect(() => {
     if (open) {
@@ -373,8 +394,6 @@ function SearchDialog({
       <Dialog
         onClose={setOpen}
         className={clsx('fixed inset-0 z-50', className)}
-        aria-hidden={!open}
-        inert={!open}
       >
         <TransitionChild
           as={Fragment}
@@ -390,14 +409,19 @@ function SearchDialog({
         <div className="fixed inset-0 overflow-y-auto px-4 py-4 sm:px-6 sm:py-20 md:py-32 lg:px-8 lg:py-[15vh]">
           <TransitionChild
             as={Fragment}
-            enter="ease-out duration-150"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-100"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
+            enter="ease-out duration-300"
+            enterFrom="opacity-0 scale-95"
+            enterTo="opacity-100 scale-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100 scale-100"
+            leaveTo="opacity-0 scale-95"
           >
-            <DialogPanel className="mx-auto transform-gpu overflow-hidden rounded-lg bg-zinc-50 shadow-xl ring-1 ring-zinc-900/7.5 dark:bg-zinc-900 dark:ring-zinc-800 sm:max-w-xl">
+            <DialogPanel
+              className={clsx(
+                "mx-auto transform-gpu overflow-hidden rounded-lg bg-zinc-50 shadow-xl ring-1 ring-zinc-900/7.5 dark:bg-zinc-900 dark:ring-zinc-800 sm:max-w-xl",
+                open ? "opacity-100" : "opacity-0"
+              )}
+            >
               <div {...autocomplete.getRootProps({})}>
                 <form
                   ref={formRef}
@@ -409,7 +433,7 @@ function SearchDialog({
                     ref={inputRef}
                     autocomplete={autocomplete}
                     autocompleteState={autocompleteState}
-                    onClose={handleSearchInputClose}
+                    onClose={() => setOpen(false)}
                   />
                   <div
                     ref={panelRef}
@@ -468,7 +492,7 @@ export function Search() {
   useEffect(() => {
     setModifierKey(
       /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform) ? '⌘' : 'Ctrl ',
-    );
+    )
   }, []);
 
   return (
