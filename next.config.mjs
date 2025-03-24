@@ -4,6 +4,8 @@ import { recmaPlugins } from './mdx/recma.mjs'
 import { rehypePlugins } from './mdx/rehype.mjs'
 import { remarkPlugins } from './mdx/remark.mjs'
 
+import withSearch from './mdx/search.mjs'
+
 import withPWA from 'next-pwa';
 
 const withMDX = nextMDX({
@@ -45,4 +47,4 @@ export default withPWA({
   disable: process.env.NODE_ENV === "development",
   register: true,
   skipWaiting: true,
-})(withMDX(nextConfig));
+})(withSearch(withMDX(nextConfig)));
