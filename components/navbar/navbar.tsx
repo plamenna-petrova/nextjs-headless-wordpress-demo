@@ -52,7 +52,7 @@ const Navbar = ({ id, className, children }: NavbarProps) => {
             ))}
           </div>
           <Button asChild className="hidden sm:flex">
-            <Link href="/">Get Started</Link>
+            <Link href="/documentation">Get Started</Link>
           </Button>
           <MobileNavigation />
         </div>
