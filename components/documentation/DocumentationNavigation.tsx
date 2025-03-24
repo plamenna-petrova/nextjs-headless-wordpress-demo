@@ -14,24 +14,6 @@ const useInitialValue = <T,>(value: T, condition = true): T => {
   return condition ? initialValueRef : value;
 };
 
-interface TopLevelNavItemProps {
-  href: string;
-  children: React.ReactNode;
-}
-
-const TopLevelNavItem = ({ href, children }: TopLevelNavItemProps)=> {
-  return (
-    <li className="md:hidden">
-      <Link
-        href={href}
-        className="block py-1 text-sm text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-      >
-        {children}
-      </Link>
-    </li>
-  )
-}
-
 interface NavLinkProps {
   href: string;
   children: React.ReactNode;

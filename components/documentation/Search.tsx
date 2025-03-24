@@ -75,10 +75,10 @@ function useAutocomplete({ close }: { close: () => void }) {
             {
               sourceId: 'documentation',
               getItems() {
-                return search(query, { limit: 5 })
+                return search(query, { limit: 5 });
               },
               getItemUrl({ item }) {
-                return item.url
+                return item.url;
               },
               onSelect: navigate,
             },
@@ -232,6 +232,7 @@ function SearchResults({
   query: string
   collection: AutocompleteCollection<Result>
 }) {
+
   if (collection.items.length === 0) {
     return (
       <div className="p-6 text-center">
@@ -332,8 +333,16 @@ function SearchDialog({
   let pathname: string = usePathname();
   let searchParams: ReadonlyURLSearchParams = useSearchParams();
 
-  useEffect(() => {
+  const handleSearchInputClose = (): void => {
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
     setOpen(false);
+  }
+
+  useEffect(() => {
+    let timeout = setTimeout(() => setOpen(false), 100);
+    return () => clearTimeout(timeout);
   }, [pathname, searchParams, setOpen]);
 
   useEffect(() => {
@@ -364,6 +373,8 @@ function SearchDialog({
       <Dialog
         onClose={setOpen}
         className={clsx('fixed inset-0 z-50', className)}
+        aria-hidden={!open}
+        inert={!open}
       >
         <TransitionChild
           as={Fragment}
@@ -379,12 +390,12 @@ function SearchDialog({
         <div className="fixed inset-0 overflow-y-auto px-4 py-4 sm:px-6 sm:py-20 md:py-32 lg:px-8 lg:py-[15vh]">
           <TransitionChild
             as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0 scale-95"
-            enterTo="opacity-100 scale-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100 scale-100"
-            leaveTo="opacity-0 scale-95"
+            enter="ease-out duration-150"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-100"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
           >
             <DialogPanel className="mx-auto transform-gpu overflow-hidden rounded-lg bg-zinc-50 shadow-xl ring-1 ring-zinc-900/7.5 dark:bg-zinc-900 dark:ring-zinc-800 sm:max-w-xl">
               <div {...autocomplete.getRootProps({})}>
@@ -398,7 +409,7 @@ function SearchDialog({
                     ref={inputRef}
                     autocomplete={autocomplete}
                     autocompleteState={autocompleteState}
-                    onClose={() => setOpen(false)}
+                    onClose={handleSearchInputClose}
                   />
                   <div
                     ref={panelRef}
@@ -439,7 +450,7 @@ function useSearchProps() {
       setOpen: useCallback(
         (open: boolean) => {
           let { width = 0, height = 0 } = buttonRef.current?.getBoundingClientRect() ?? {};
-          
+
           if (!open || (width !== 0 && height !== 0)) {
             setOpen(open);
           }
