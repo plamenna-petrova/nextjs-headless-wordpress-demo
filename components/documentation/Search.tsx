@@ -280,7 +280,7 @@ const SearchInput = forwardRef<
       <input
         ref={inputRef}
         className={clsx(
-          'flex-auto appearance-none bg-transparent pl-10 text-zinc-900 outline-none placeholder:text-zinc-500 focus:w-full focus:flex-none dark:text-white sm:text-sm [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden [&::-webkit-search-results-button]:hidden [&::-webkit-search-results-decoration]:hidden focus:outline-none',
+          'flex-auto appearance-none bg-transparent pl-10 text-zinc-900 outline-none placeholder:text-zinc-500 focus:w-full focus:flex-none dark:text-white sm:text-sm [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden [&::-webkit-search-results-button]:hidden [&::-webkit-search-results-decoration]:hidden focus:outline-none ring-0 focus:ring-0 focus:border-transparent',
           autocompleteState.status === 'stalled' ? 'pr-11' : 'pr-4',
         )}
         {...inputProps}
@@ -339,30 +339,34 @@ function SearchDialog({
 
   useEffect(() => {
     if (open) {
-      const focusInput = (): void => {
-        if (inputRef.current) {
-          autocomplete.setQuery('');
-          setAutocompleteState({});
+      requestAnimationFrame(() => {
+        try {
+          const focusInput = (): void => {
+            if (inputRef.current) {
+              autocomplete.setQuery('');
+              setAutocompleteState({});
+              inputRef.current.focus();
+              inputRef.current.click();
+              setTimeout(() => {
+                inputRef.current!.setSelectionRange(0, 0);
+              }, 0);
+            }
+          };
 
-          inputRef.current.focus();
-          inputRef.current.click();
-
-          setTimeout(() => {
-            inputRef.current!.setSelectionRange(0, 0);
-          }, 0);
-        }
-      };
-
-      if (inputRef.current) {
-        focusInput();
-      } else {
-        const interval = setInterval(() => {
           if (inputRef.current) {
             focusInput();
-            clearInterval(interval);
+          } else {
+            const interval = setInterval(() => {
+              if (inputRef.current) {
+                focusInput();
+                clearInterval(interval);
+              }
+            }, 50);
           }
-        }, 50);
-      }
+        } catch (error) {
+          console.error("Error in requestAnimationFrame:", error);
+        }
+      });
     }
   }, [open, autocomplete, setAutocompleteState]);
 
@@ -409,6 +413,7 @@ function SearchDialog({
         <div className="fixed inset-0 overflow-y-auto px-4 py-4 sm:px-6 sm:py-20 md:py-32 lg:px-8 lg:py-[15vh]">
           <TransitionChild
             as={Fragment}
+            beforeEnter={() => setTimeout(() => setOpen(true), 0)}
             enter="ease-out duration-300"
             enterFrom="opacity-0 scale-95"
             enterTo="opacity-100 scale-100"
@@ -419,7 +424,7 @@ function SearchDialog({
             <DialogPanel
               className={clsx(
                 "mx-auto transform-gpu overflow-hidden rounded-lg bg-zinc-50 shadow-xl ring-1 ring-zinc-900/7.5 dark:bg-zinc-900 dark:ring-zinc-800 sm:max-w-xl",
-                open ? "opacity-100" : "opacity-0"
+                open && "opacity-100"
               )}
             >
               <div {...autocomplete.getRootProps({})}>
