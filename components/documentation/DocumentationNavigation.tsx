@@ -1,18 +1,13 @@
 'use client'
-import { useRef } from 'react'
+
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import clsx from 'clsx'
 import { AnimatePresence, motion, useIsPresent } from 'framer-motion'
-// import { useIsInsideMobileNavigation } from '@/components/MobileNavigation'
+import { useIsInsideMobileNavigation } from '@/components/documentation/DocumentationMobileNavigation'
 import { useSectionStore } from './SectionProvider'
 import { Tag } from './Tag'
 import { convertRemToPx } from '@/lib/remToPx'
-
-const useInitialValue = <T,>(value: T, condition = true): T => {
-  let initialValueRef = useRef(value).current;
-  return condition ? initialValueRef : value;
-};
 
 interface NavLinkProps {
   href: string;
@@ -118,6 +113,7 @@ interface NavigationGroupProps {
 const NavigationGroupListItem = ({ navigationGroup, className }: NavigationGroupProps) => {
   let pathname: string = usePathname();
   let sections = useSectionStore((s) => s.sections);
+  let isInsideMobileNavigation = useIsInsideMobileNavigation();
 
   let isNavigationGroupActive = navigationGroup.links.findIndex((link) => link.href === pathname) !== -1;
 
@@ -130,7 +126,7 @@ const NavigationGroupListItem = ({ navigationGroup, className }: NavigationGroup
         {navigationGroup.title}
       </motion.h2>
       <div className="relative mt-3 pl-2">
-        <AnimatePresence>
+        <AnimatePresence initial={!isInsideMobileNavigation}>
           {isNavigationGroupActive  && (
             <VisibleSectionHighlight navigationGroup={navigationGroup} pathname={pathname} />
           )}

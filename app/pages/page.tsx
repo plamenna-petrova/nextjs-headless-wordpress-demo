@@ -3,6 +3,7 @@ import Section from "@/components/section/section";
 import Container from "@/components/container/container";
 import Link from "next/link";
 import Main from "@/components/main/main";
+import BackButton from "@/components/back-button/back-button";
 
 export default async function Page() {
   const pages = await getAllPages();
@@ -11,7 +12,7 @@ export default async function Page() {
     <Main>
       <Section>
         <Container>
-          <h1>Pages</h1>
+          <BackButton />
           <h2>All Pages</h2>
           <div className="grid">
             {pages.map((page: any) => (

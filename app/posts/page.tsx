@@ -49,11 +49,11 @@ const Posts = async ({ searchParams }: { searchParams: { [key: string]: string |
               <PaginationContent>
                 <PaginationItem>
                   <PaginationPrevious
-                    className={currentPage === 1 ? "pointer-events-none text-muted" : ""}
+                    className={currentPage === 1 ? "pointer-events-none" : ""}
                     href={`/posts?page=${Math.max(currentPage - 1, 1)}${category ? `&category=${category}` : ""}${author ? `&author=${author}` : ""}${tag ? `&tag=${tag}` : ""}`}
                   />
                 </PaginationItem>
-                <PaginationItem>
+                <PaginationItem className="text-white">
                   <PaginationLink href={`/posts?page=${currentPage}`}>
                     {page}
                   </PaginationLink>
@@ -61,7 +61,7 @@ const Posts = async ({ searchParams }: { searchParams: { [key: string]: string |
                 <PaginationItem>
                   <PaginationNext
                     className={
-                      currentPage === totalPages ? "pointer-events-none text-muted" : ""
+                      currentPage === totalPages ? "pointer-events-none" : ""
                     }
                     href={`/posts?page=${Math.min(currentPage + 1, totalPages)}${category ? `&category=${category}` : ""}${author ? `&author=${author}` : ""}${tag ? `&tag=${tag}` : ""}`}
                   />
