@@ -53,7 +53,7 @@ const Posts = async ({ searchParams }: { searchParams: { [key: string]: string |
                     href={`/posts?page=${Math.max(currentPage - 1, 1)}${category ? `&category=${category}` : ""}${author ? `&author=${author}` : ""}${tag ? `&tag=${tag}` : ""}`}
                   />
                 </PaginationItem>
-                <PaginationItem className="text-white">
+                <PaginationItem className="text-zinc-100">
                   <PaginationLink href={`/posts?page=${currentPage}`}>
                     {page}
                   </PaginationLink>

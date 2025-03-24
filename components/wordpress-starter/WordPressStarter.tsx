@@ -24,7 +24,7 @@ const links: LinkItem[] = [
     name: "Posts",
     description: "All posts from your WordPress",
     icon: Pen,
-    href: "/posts",
+    href: "/posts?page=1",
     pattern: { y: 16, squares: [[0, 1], [1, 3]] },
   },
   {
