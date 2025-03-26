@@ -57,3 +57,5 @@ export const GET_POSTS_BY_TAG_SLUG_ERROR_DETAILS = "Unable to retrieve posts by 
 export const GET_FEATURED_MEDIA_BY_ID_ERROR_DETAILS = "Unable to retrieve featured media by Id.";
 
 export const UNKNOWN_ERROR_DETAILS: string = "An unknown error occurred";
+
+export const WORDPRESS_FETCH_ERROR_DETAILS: string = "Error fetching from WordPress";

@@ -28,18 +28,57 @@ import {
   GET_POSTS_BY_CATEGORY_SLUG_ERROR_DETAILS,
   GET_POSTS_BY_TAG_SLUG_ERROR_DETAILS,
   GET_FEATURED_MEDIA_BY_ID_ERROR_DETAILS,
-  UNKNOWN_ERROR_DETAILS
+  UNKNOWN_ERROR_DETAILS,
+  WORDPRESS_FETCH_ERROR_DETAILS
 } from "./constants";
 import queryString from "query-string";
 
 const baseUrl: string = "http://localhost/wordpress/";
 
+const userAgent: string = "Next.js PWA WordPress Client";
+
 const getUnknownErrorDetails = (error: unknown): string => error instanceof Error ? error.message : UNKNOWN_ERROR_DETAILS;
 
-const getUrl = (
-  path: string,
-  queryParametersRecord?: Record<string, any>
-): string => {
+interface FetchOptions {
+  next?: {
+    revalidate?: number;
+    tags?: string[];
+  },
+  headers?: Record<string, any>
+}
+
+const defaultFetchOptions: FetchOptions = {
+  next: {
+    revalidate: 120,
+    tags: ["wordpress"]
+  }
+};
+
+const wordPressFetch = async <T>(wordPressAPIRequestURL: string, fetchOptions: FetchOptions = {}): Promise<T> => {
+  try {    
+    const response: Response = await fetch(wordPressAPIRequestURL, {
+      ...defaultFetchOptions,
+      ...fetchOptions,
+      headers: {
+        "User-Agent": userAgent,
+        ...(fetchOptions.headers || {})
+      }
+    });
+  
+    if (!response.ok) {
+      throw new Error(`WordPress API request failed: ${response.statusText}, status: ${response.status}, url: ${wordPressAPIRequestURL}`);
+    }
+
+    const responseData = await response.json() as T;
+  
+    return responseData;
+  } catch (error: any) {
+    console.log(WORDPRESS_FETCH_ERROR_DETAILS, error);
+    throw error;
+  }
+}
+
+const getUrl = (path: string, queryParametersRecord?: Record<string, any>): string => {
   const stringifiedQueryParameters: string | null = queryParametersRecord
     ? queryString.stringify(queryParametersRecord)
     : null;
@@ -47,98 +86,137 @@ const getUrl = (
   return `${baseUrl}${path}${stringifiedQueryParameters ? `?${stringifiedQueryParameters}` : ""}`;
 };
 
+const mergeQueryTags = (defaultQueryTags: string[] | undefined, newQueryTags: string[]): string[] => {
+  const allQueryTags: string[] = [...(defaultQueryTags || []), ...newQueryTags];
+  return Array.from(new Set(allQueryTags));
+}
+
 export const getAllPosts = async (
-  filterParameters: {
+  filterParams?: {
+    search?: string;
     author?: string;
     tag?: string;
     category?: string;
-  },
-  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
+  }
 ): Promise<Post[]> => {
   try {
-    const postsUrl: string = getUrl("/wp-json/wp/v2/posts", {
-      author: filterParameters?.author,
-      tags: filterParameters.tag,
-      categories: filterParameters.category,
-    });
+    const postsQuery: Record<string, any> = {};
 
-    const postsResponse: Response = await fetch(postsUrl, options);
-    const posts: Post[] = await postsResponse.json();
+    if (filterParams?.search) {
+      postsQuery.search = filterParams.search;
+    }
+
+    if (filterParams?.author) {
+      postsQuery.author = filterParams.author;
+    }
+
+    if (filterParams?.tag) {
+      postsQuery.tags = filterParams.tag;
+    }
+
+    if (filterParams?.category) {
+      postsQuery.categories = filterParams.category;
+    }
+
+    const postsUrl: string = getUrl("/wp-json/wp/v2/posts", postsQuery);
+
+    const posts = wordPressFetch<Post[]>(postsUrl, {
+      next: {
+        ...defaultFetchOptions.next,
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, ["posts"])
+      }
+    });
 
     return posts;
-  } catch (error: unknown) {
-    throw new Error(`${GET_ALL_POSTS_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
+  } catch (error: any) {
+    throw new Error(`${GET_ALL_POSTS_ERROR_DETAILS} ${error.message}`);
   }
 };
 
-export const getPostById = async (
-  id: number,
-  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
-): Promise<Post> => {
+export const getPostById = async (id: number): Promise<Post> => {
   try {
     const postByIdUrl: string = getUrl(`/wp-json/wp/v2/posts/${id}`);
-    const postByIdResponse: Response = await fetch(postByIdUrl, options);
-    const postById: Post = await postByIdResponse.json();
-    return postById;
-  } catch (error: unknown) {
-    throw new Error(`${GET_POST_BY_ID_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
-  }
-};
 
-export const getPostBySlug = async (
-  slug: string,
-  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
-): Promise<Post> => {
-  try {
-    const postBySlugUrl: string = getUrl("/wp-json/wp/v2/posts", { slug });
-    const postBySlugResponse: Response = await fetch(postBySlugUrl, options);
-    const postBySlug: Post[] = await postBySlugResponse.json();
-    return postBySlug[0];
-  } catch (error: unknown) {
-    throw new Error(`${GET_POST_BY_SLUG_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
-  }
-};
-
-export const getAllCategories = async (
-  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
-): Promise<Category[]> => {
-  try {
-    const allCategoriesUrl: string = getUrl("/wp-json/wp/v2/categories");
-    const allCategoriesResponse: Response = await fetch(allCategoriesUrl, options);
-    const allCategories: Category[] = await allCategoriesResponse.json();
-    return allCategories;
-  } catch (error: unknown) {
-    throw new Error(`${GET_ALL_CATEGORIES_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
-  }
-};
-
-export const getCategoryById = async (
-  id: number,
-  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
-): Promise<Category> => {
-  try {
-    const categoryByIdUrl: string = getUrl(`/wp-json/wp/v2/categories/${id}`, options);
-    const categoryByIdResponse: Response = await fetch(categoryByIdUrl);
-    const categoryById: Category = await categoryByIdResponse.json();
-    return categoryById;
-  } catch (error: unknown) {
-    throw new Error(`${GET_CATEGORY_BY_ID_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
-  }
-};
-
-export const getCategoryBySlug = async (
-  slug: string,
-  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
-): Promise<Category> => {
-  try {
-    const categoryBySlugUrl: string = getUrl("/wp-json/wp/v2/categories", {
-      slug,
+    const postById = await wordPressFetch<Post>(postByIdUrl, {
+      next: {
+        ...defaultFetchOptions.next,
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`post-${id}`])
+      }
     });
 
-    const categoryBySlugResponse: Response = await fetch(categoryBySlugUrl, options);
-    const category: Category[] = await categoryBySlugResponse.json();
+    return postById;
+  } catch (error: any) {
+    throw new Error(`${GET_POST_BY_ID_ERROR_DETAILS} ${error.message}`);
+  }
+};
 
-    return category[0];
+export const getPostBySlug = async (slug: string): Promise<Post> => {
+  try {
+    const postBySlugUrl: string = getUrl("/wp-json/wp/v2/posts", { slug });
+
+    const postBySlugResult = await wordPressFetch<Post[]>(postBySlugUrl, {
+      next: {
+        ...defaultFetchOptions.next,
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`post-${slug}`])
+      }
+    });
+
+    if (!postBySlugResult || postBySlugResult.length === 0) {
+      throw new Error(`Post with slug "${slug}" not found`);
+    }
+
+    return postBySlugResult[0];
+  } catch (error: any) {
+    throw new Error(`${GET_POST_BY_SLUG_ERROR_DETAILS} ${error.message}`);
+  }
+};
+
+export const getAllCategories = async (): Promise<Category[]> => {
+  try {
+    const allCategoriesUrl: string = getUrl("/wp-json/wp/v2/categories");
+
+    const allCategories = await wordPressFetch<Category[]>(allCategoriesUrl, {
+      next: {
+        ...defaultFetchOptions.next,
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, ['categories'])
+      }
+    });
+
+    return allCategories;
+  } catch (error: any) {
+    throw new Error(`${GET_ALL_CATEGORIES_ERROR_DETAILS} ${error.message}`);
+  }
+};
+
+export const getCategoryById = async (id: number): Promise<Category> => {
+  try {
+    const categoryByIdUrl: string = getUrl(`/wp-json/wp/v2/categories/${id}`);
+
+    const categoryById = await wordPressFetch<Category>(categoryByIdUrl, {
+      next: {
+        ...defaultFetchOptions.next,
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`category-${id}`])
+      }
+    });
+
+    return categoryById;
+  } catch (error: any) {
+    throw new Error(`${GET_CATEGORY_BY_ID_ERROR_DETAILS} ${error.message}`);
+  }
+};
+
+export const getCategoryBySlug = async (slug: string): Promise<Category> => {
+  try {
+    const categoryBySlugUrl: string = getUrl("/wp-json/wp/v2/categories", { slug });
+
+    const categoryBySlugResult = await wordPressFetch<Category[]>(categoryBySlugUrl, {
+      next: {
+        ...defaultFetchOptions.next,
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`category-${slug}`])
+      }
+    })
+
+    return categoryBySlugResult[0];
   } catch (error: unknown) {
     throw new Error(`${GET_CATEGORY_BY_SLUG_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
   }

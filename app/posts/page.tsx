@@ -1,9 +1,18 @@
+import { 
+  Pagination, 
+  PaginationContent, 
+  PaginationItem, 
+  PaginationLink, 
+  PaginationNext, 
+  PaginationPrevious 
+} from "@/components/ui/pagination";
+
+import { getAllAuthors, getAllCategories, getAllPosts, getAllTags } from "@/lib/wordpressRequests";
+
 import Container from "@/components/container/container";
 import PostCard from "@/components/posts/post-card";
 import Section from "@/components/section/section";
-import PostsFilter from "./posts-filter";
-import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
-import { getAllAuthors, getAllCategories, getAllPosts, getAllTags } from "@/lib/wordpressRequests";
+import PostsFilter from "@/components/posts/posts-filter";
 import Main from "@/components/main/main";
 
 const Posts = async ({ searchParams }: { searchParams: { [key: string]: string | undefined } }) => {

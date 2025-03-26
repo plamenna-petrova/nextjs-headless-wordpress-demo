@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+
 import {
   Select,
   SelectContent,
@@ -8,6 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
 import { Button } from "@/components/ui/button";
 
 interface Author {
@@ -38,15 +40,15 @@ const PostsFilter = ({ authors, tags, categories, selectedAuthor, selectedTag, s
   const router = useRouter();
 
   const handleFilterChange = (type: string, value: string): void => {
-    const newURLSearchParams: URLSearchParams = new URLSearchParams(window.location.search);
+    const urlSearchParams: URLSearchParams = new URLSearchParams(window.location.search);
 
     if (value === "all") {
-      newURLSearchParams.delete(type);
+      urlSearchParams.delete(type);
     } else {
-      newURLSearchParams.set(type, value);
+      urlSearchParams.set(type, value);
     }
 
-    router.push(`/posts?${newURLSearchParams.toString()}`);
+    router.push(`/posts?${urlSearchParams.toString()}`);
   };
 
   const handleResetFilters = (): void => {
