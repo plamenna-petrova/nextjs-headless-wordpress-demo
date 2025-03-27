@@ -139,7 +139,7 @@ export const getPostById = async (id: number): Promise<Post> => {
     const postById = await wordPressFetch<Post>(postByIdUrl, {
       next: {
         ...defaultFetchOptions.next,
-        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`post-${id}`])
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`post-by-id-${id}`])
       }
     });
 
@@ -156,7 +156,7 @@ export const getPostBySlug = async (slug: string): Promise<Post> => {
     const postBySlugResult = await wordPressFetch<Post[]>(postBySlugUrl, {
       next: {
         ...defaultFetchOptions.next,
-        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`post-${slug}`])
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`post-by-slug-${slug}`])
       }
     });
 
@@ -194,7 +194,7 @@ export const getCategoryById = async (id: number): Promise<Category> => {
     const categoryById = await wordPressFetch<Category>(categoryByIdUrl, {
       next: {
         ...defaultFetchOptions.next,
-        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`category-${id}`])
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`category-by-${id}`])
       }
     });
 
@@ -211,7 +211,7 @@ export const getCategoryBySlug = async (slug: string): Promise<Category> => {
     const categoryBySlugResult = await wordPressFetch<Category[]>(categoryBySlugUrl, {
       next: {
         ...defaultFetchOptions.next,
-        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`category-${slug}`])
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`category-by-slug-${slug}`])
       }
     });
 
@@ -232,7 +232,7 @@ export const getPostsByCategory = async (categoryId: number): Promise<Post[]> =>
     const postsByCategory = await wordPressFetch<Post[]>(postsByCategoryUrl, {
       next: {
         ...defaultFetchOptions.next,
-        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`posts-by-category-${categoryId}`])
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`posts-by-category-id-${categoryId}`])
       }
     });
 
@@ -266,7 +266,7 @@ export const getTagById = async (id: number): Promise<Tag> => {
     const tagById = await wordPressFetch<Tag>(tagByIdUrl, {
       next: {
         ...defaultFetchOptions.next?.tags,
-        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`tag-${id}`])
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`tag-by-${id}`])
       }
     });
 
@@ -283,7 +283,7 @@ export const getTagBySlug = async (slug: string): Promise<Tag> => {
     const tagBySlugResult = await wordPressFetch<Tag[]>(tagBySlugUrl, {
       next: {
         ...defaultFetchOptions.next?.tags,
-        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`tag-${slug}`])
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`tag-by-slug-${slug}`])
       }
     });
 
@@ -304,7 +304,7 @@ export const getPostsByTag = async (tagId: number): Promise<Post[]> => {
     const postsByTag = await wordPressFetch<Post[]>(postsByTagUrl, {
       next: {
         ...defaultFetchOptions.next,
-        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`posts-by-tag-${tagId}`])
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`posts-by-tag-id-${tagId}`])
       }
     });
 
@@ -321,7 +321,7 @@ export const getTagsByPost = async (postId: number): Promise<Tag[]> => {
     const tagsByPost = await wordPressFetch<Tag[]>(tagsByPostUrl, {
       next: {
         ...defaultFetchOptions.next,
-        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`tags-by-post-${postId}`])
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`tags-by-post-id-${postId}`])
       }
     });
 
@@ -355,7 +355,7 @@ export const getPageById = async (id: number): Promise<Page> => {
     const pageById = await wordPressFetch<Page>(pageByIdUrl, {
       next: {
         ...defaultFetchOptions.next,
-        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`page-${id}`])
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`page-by-id-${id}`])
       }
     });
 
@@ -372,7 +372,7 @@ export const getPageBySlug = async (slug: string): Promise<Page> => {
     const pageBySlugResult = await wordPressFetch<Page[]>(pageBySlugUrl, {
       next: {
         ...defaultFetchOptions.next,
-        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`page-${slug}`])
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`page-by-slug-${slug}`])
       }
     });
 
@@ -410,7 +410,7 @@ export const getAuthorById = async (id: number): Promise<Author> => {
     const authorById = await wordPressFetch<Author>(authorByIdUrl, {
       next: {
         ...defaultFetchOptions.next,
-        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`author-${id}`])
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`author-by-id-${id}`])
       }
     });
 
@@ -427,7 +427,7 @@ export const getAuthorBySlug = async (slug: string): Promise<Author> => {
     const authorBySlugResult = await wordPressFetch<Author[]>(authorBySlugUrl, {
       next: {
         ...defaultFetchOptions.next,
-        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`author-${slug}`])
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`author-by-slug-${slug}`])
       }
     });
 
@@ -444,7 +444,7 @@ export const getPostsByAuthorId = async (authorId: number): Promise<Post[]> => {
     const postsByAuthorId = await wordPressFetch<Post[]>(postsByAuthorIdUrl, {
       next: {
         ...defaultFetchOptions.next,
-        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`posts-by-author-${authorId}`])
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`posts-by-author-id-${authorId}`])
       }
     });
   
@@ -463,7 +463,7 @@ export const getPostsByAuthorSlug = async (authorSlug: string): Promise<Post[]> 
     const postsByAuthorSlug = await wordPressFetch<Post[]>(postsByAuthorSlugUrl, {
       next: {
         ...defaultFetchOptions.next,
-        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`posts-by-author-${authorBySlug}`])
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`posts-by-author-slug-${authorBySlug}`])
       }
     });
   
@@ -482,7 +482,7 @@ export const getPostsByCategorySlug = async (categorySlug: string): Promise<Post
     const postsByCategorySlug = await wordPressFetch<Post[]>(postsByCategorySlugUrl, {
       next: {
         ...defaultFetchOptions.next,
-        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`posts-by-category-${categorySlug}`])
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`posts-by-category-slug-${categorySlug}`])
       }
     });
   
@@ -501,7 +501,7 @@ export const getPostsByTagSlug = async (tagSlug: string): Promise<Post[]> => {
     const postsByTagSlug = await wordPressFetch<Post[]>(postsByTagSlugUrl, {
       next: {
         ...defaultFetchOptions.next,
-        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`posts-by-tag-${tagSlug}`])
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`posts-by-tag-slug-${tagSlug}`])
       }
     });
   
@@ -518,7 +518,7 @@ export const getFeaturedMediaById = async (id: number): Promise<FeaturedMedia> =
     const featuredMediaById = await wordPressFetch<FeaturedMedia>(featuredMediaByIdUrl, {
       next: {
         ...defaultFetchOptions.next,
-        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`featured-media-${id}`])
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`featured-media-by-id-${id}`])
       }
     });
 
