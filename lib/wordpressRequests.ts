@@ -28,16 +28,13 @@ import {
   GET_POSTS_BY_CATEGORY_SLUG_ERROR_DETAILS,
   GET_POSTS_BY_TAG_SLUG_ERROR_DETAILS,
   GET_FEATURED_MEDIA_BY_ID_ERROR_DETAILS,
-  UNKNOWN_ERROR_DETAILS,
   WORDPRESS_FETCH_ERROR_DETAILS
 } from "./constants";
 import queryString from "query-string";
 
-const baseUrl: string = "http://localhost/wordpress/";
+const WORDPRESS_INSTANCE_BASE_URL: string = "http://localhost/wordpress/";
 
-const userAgent: string = "Next.js PWA WordPress Client";
-
-const getUnknownErrorDetails = (error: unknown): string => error instanceof Error ? error.message : UNKNOWN_ERROR_DETAILS;
+const DEFAULT_APP_USER_AGENT: string = "Next.js PWA WordPress Client";
 
 interface FetchOptions {
   next?: {
@@ -60,13 +57,15 @@ const wordPressFetch = async <T>(wordPressAPIRequestURL: string, fetchOptions: F
       ...defaultFetchOptions,
       ...fetchOptions,
       headers: {
-        "User-Agent": userAgent,
+        "User-Agent": DEFAULT_APP_USER_AGENT,
         ...(fetchOptions.headers || {})
       }
     });
   
     if (!response.ok) {
-      throw new Error(`WordPress API request failed: ${response.statusText}, status: ${response.status}, url: ${wordPressAPIRequestURL}`);
+      throw new Error(`WordPress API request failed: ${response.statusText}` + 
+        `status: ${response.status}, url: ${wordPressAPIRequestURL}`
+      );
     }
 
     const responseData = await response.json() as T;
@@ -83,7 +82,7 @@ const getUrl = (path: string, queryParametersRecord?: Record<string, any>): stri
     ? queryString.stringify(queryParametersRecord)
     : null;
 
-  return `${baseUrl}${path}${stringifiedQueryParameters ? `?${stringifiedQueryParameters}` : ""}`;
+  return `${WORDPRESS_INSTANCE_BASE_URL}${path}${stringifiedQueryParameters ? `?${stringifiedQueryParameters}` : ""}`;
 };
 
 const mergeQueryTags = (defaultQueryTags: string[] | undefined, newQueryTags: string[]): string[] => {
@@ -214,271 +213,317 @@ export const getCategoryBySlug = async (slug: string): Promise<Category> => {
         ...defaultFetchOptions.next,
         tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`category-${slug}`])
       }
-    })
-
-    return categoryBySlugResult[0];
-  } catch (error: unknown) {
-    throw new Error(`${GET_CATEGORY_BY_SLUG_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
-  }
-};
-
-export const getPostsByCategory = async (
-  categoryId: number,
-  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
-): Promise<Post[]> => {
-  try {
-    const postsByCategoryUrl: string = getUrl("/wp-json/wp/v2/posts", {
-      categories: categoryId,
     });
 
-    const postsByCategoryResponse: Response = await fetch(postsByCategoryUrl, options);
-    const postsByCategory: Post[] = await postsByCategoryResponse.json();
+    if (!categoryBySlugResult || categoryBySlugResult.length === 0) {
+      throw new Error(`Category with slug "${slug}" not found`);
+    }
+
+    return categoryBySlugResult[0];
+  } catch (error: any) {
+    throw new Error(`${GET_CATEGORY_BY_SLUG_ERROR_DETAILS} ${error.message}`);
+  }
+};
+
+export const getPostsByCategory = async (categoryId: number): Promise<Post[]> => {
+  try {
+    const postsByCategoryUrl: string = getUrl("/wp-json/wp/v2/posts", { categories: categoryId });
+
+    const postsByCategory = await wordPressFetch<Post[]>(postsByCategoryUrl, {
+      next: {
+        ...defaultFetchOptions.next,
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`posts-by-category-${categoryId}`])
+      }
+    });
 
     return postsByCategory;
-  } catch (error: unknown) {
-    throw new Error(`${GET_POSTS_BY_CATEGORY_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
+  } catch (error: any) {
+    throw new Error(`${GET_POSTS_BY_CATEGORY_ERROR_DETAILS} ${error.message}`);
   }
 };
 
-export const getPostsByTag = async (
-  tagId: number,
-  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
-): Promise<Post[]> => {
-  try {
-    const postsByTagUrl: string = getUrl("/wp-json/wp/v2/posts", { tags: tagId });
-    const postsByTagResponse: Response = await fetch(postsByTagUrl, options);
-    const postsByTag: Post[] = await postsByTagResponse.json();
-    return postsByTag;
-  } catch (error: unknown) {
-    throw new Error(`${GET_POSTS_BY_TAG_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
-  }
-};
-
-export const getAllTags = async (
-  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
-): Promise<Tag[]> => {
+export const getAllTags = async (): Promise<Tag[]> => {
   try {
     const allTagsUrl: string = getUrl("/wp-json/wp/v2/tags");
-    const allTagsResponse: Response = await fetch(allTagsUrl, options);
-    const allTags: Tag[] = await allTagsResponse.json();
+
+    const allTags = await wordPressFetch<Tag[]>(allTagsUrl, {
+      next: {
+        ...defaultFetchOptions.next?.tags,
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, ['tags'])
+      }
+    });
+
     return allTags;
-  } catch (error: unknown) {
-    throw new Error(`${GET_ALL_TAGS_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`)
+  } catch (error: any) {
+    throw new Error(`${GET_ALL_TAGS_ERROR_DETAILS} ${error.message}`);
   }
 };
 
-export const getTagById = async (
-  id: number,
-  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
-): Promise<Tag> => {
+export const getTagById = async (id: number): Promise<Tag> => {
   try {
     const tagByIdUrl: string = getUrl(`/wp-json/wp/v2/tags/${id}`);
-    const tagByIdResponse: Response = await fetch(tagByIdUrl, options);
-    const tagById: Tag = await tagByIdResponse.json();
+  
+    const tagById = await wordPressFetch<Tag>(tagByIdUrl, {
+      next: {
+        ...defaultFetchOptions.next?.tags,
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`tag-${id}`])
+      }
+    });
+
     return tagById;
-  } catch (error: unknown) {
-    throw new Error(`${GET_TAG_BY_ID_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
+  } catch (error: any) {
+    throw new Error(`${GET_TAG_BY_ID_ERROR_DETAILS} ${error.message}`);
   }
 };
 
-export const getTagBySlug = async (
-  slug: string,
-  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
-): Promise<Tag> => {
+export const getTagBySlug = async (slug: string): Promise<Tag> => {
   try {
     const tagBySlugUrl: string = getUrl("/wp-json/wp/v2/tags", { slug });
-    const tagBySlugResponse: Response = await fetch(tagBySlugUrl, options);
-    const tagBySlug: Tag[] = await tagBySlugResponse.json();
-    return tagBySlug[0];
-  } catch (error: unknown) {
-    throw new Error(`${GET_TAG_BY_SLUG_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
+
+    const tagBySlugResult = await wordPressFetch<Tag[]>(tagBySlugUrl, {
+      next: {
+        ...defaultFetchOptions.next?.tags,
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`tag-${slug}`])
+      }
+    });
+
+    if (!tagBySlugResult || tagBySlugResult.length === 0) {
+      throw new Error(`Tag with slug "${slug}" not found`);
+    }
+
+    return tagBySlugResult[0];
+  } catch (error: any) {
+    throw new Error(`${GET_TAG_BY_SLUG_ERROR_DETAILS} ${error.message}`);
   }
 };
 
-export const getTagsByPost = async (
-  postId: number,
-  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
-): Promise<Tag[]> => {
+export const getPostsByTag = async (tagId: number): Promise<Post[]> => {
+  try {
+    const postsByTagUrl: string = getUrl("/wp-json/wp/v2/posts", { tags: tagId });
+    
+    const postsByTag = await wordPressFetch<Post[]>(postsByTagUrl, {
+      next: {
+        ...defaultFetchOptions.next,
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`posts-by-tag-${tagId}`])
+      }
+    });
+
+    return postsByTag;
+  } catch (error: any) {
+    throw new Error(`${GET_POSTS_BY_TAG_ERROR_DETAILS} ${error.message}`);
+  }
+};
+
+export const getTagsByPost = async (postId: number): Promise<Tag[]> => {
   try {
     const tagsByPostUrl: string = getUrl("/wp-json/wp/v2/tags", { post: postId });
-    const tagsByPostResponse: Response = await fetch(tagsByPostUrl, options);
-    const tagsByPost: Tag[] = await tagsByPostResponse.json();
+
+    const tagsByPost = await wordPressFetch<Tag[]>(tagsByPostUrl, {
+      next: {
+        ...defaultFetchOptions.next,
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`tags-by-post-${postId}`])
+      }
+    });
+
     return tagsByPost;
-  } catch (error: unknown) {
-    throw new Error(`${GET_TAGS_BY_POST_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
+  } catch (error: any) {
+    throw new Error(`${GET_TAGS_BY_POST_ERROR_DETAILS} ${error.message}`);
   }
 };
 
-export const getAllPages = async (
-  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
-): Promise<Page[]> => {
+export const getAllPages = async (): Promise<Page[]> => {
   try {
     const allPagesUrl: string = getUrl("/wp-json/wp/v2/pages");
-    const allPagesResponse: Response = await fetch(allPagesUrl, options);
-    const allPages: Page[] = await allPagesResponse.json();
+
+    const allPages = await wordPressFetch<Page[]>(allPagesUrl, {
+      next: {
+        ...defaultFetchOptions.next,
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, ['pages'])
+      }
+    });
+
     return allPages;
-  } catch (error: unknown) {
-    throw new Error(`${GET_ALL_PAGES_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
+  } catch (error: any) {
+    throw new Error(`${GET_ALL_PAGES_ERROR_DETAILS} ${error.message}`);
   } 
 };
 
-export const getPageById = async (
-  id: number,
-  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
-): Promise<Page> => {
+export const getPageById = async (id: number): Promise<Page> => {
   try {
     const pageByIdUrl: string = getUrl(`/wp-json/wp/v2/pages/${id}`);
-    const pageByIdResponse: Response = await fetch(pageByIdUrl, options);
-    const pageById: Page = await pageByIdResponse.json();
+
+    const pageById = await wordPressFetch<Page>(pageByIdUrl, {
+      next: {
+        ...defaultFetchOptions.next,
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`page-${id}`])
+      }
+    });
+
     return pageById;
-  } catch (error: unknown) {
-    throw new Error(`${GET_PAGE_BY_ID_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
+  } catch (error: any) {
+    throw new Error(`${GET_PAGE_BY_ID_ERROR_DETAILS} ${error.message}`);
   }
 };
 
-export const getPageBySlug = async (
-  slug: string,
-  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
-): Promise<Page> => {
+export const getPageBySlug = async (slug: string): Promise<Page> => {
   try {
     const pageBySlugUrl: string = getUrl("/wp-json/wp/v2/pages", { slug });
-    const pageBySlugResponse: Response = await fetch(pageBySlugUrl, options);
-    const pageBySlug: Page[] = await pageBySlugResponse.json();
-    return pageBySlug[0];
-  } catch (error: unknown) {
-    throw new Error(`${GET_PAGE_BY_SLUG_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
+
+    const pageBySlugResult = await wordPressFetch<Page[]>(pageBySlugUrl, {
+      next: {
+        ...defaultFetchOptions.next,
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`page-${slug}`])
+      }
+    });
+
+    if (!pageBySlugResult || pageBySlugResult.length === 0) {
+      throw new Error(`Page with slug "${slug}" not found`);
+    }
+
+    return pageBySlugResult[0];
+  } catch (error: any) {
+    throw new Error(`${GET_PAGE_BY_SLUG_ERROR_DETAILS} ${error.message}`);
   }
 };
 
-export const getAllAuthors = async (
-  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
-): Promise<Author[]> => {
+export const getAllAuthors = async (): Promise<Author[]> => {
   try {
     const allAuthorsUrl: string = getUrl("/wp-json/wp/v2/users");
-    const allAuthorsResponse: Response = await fetch(allAuthorsUrl, options);
-    const allAuthors: Author[] = await allAuthorsResponse.json();
+
+    const allAuthors = await wordPressFetch<Author[]>(allAuthorsUrl, {
+      next: {
+        ...defaultFetchOptions.next,
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, ['authors'])
+      }
+    });
+
     return allAuthors;
-  } catch (error: unknown) {
-    throw new Error(`${GET_ALL_AUTHORS_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
+  } catch (error: any) {
+    throw new Error(`${GET_ALL_AUTHORS_ERROR_DETAILS} ${error.message}`);
   }
 };
 
-export const getAuthorById = async (
-  id: number,
-  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
-): Promise<Author> => {
+export const getAuthorById = async (id: number): Promise<Author> => {
   try {
     const authorByIdUrl: string = getUrl(`/wp-json/wp/v2/users/${id}`);
-    const authorByIdResponse: Response = await fetch(authorByIdUrl, options);
-    const authorById: Author = await authorByIdResponse.json();
+
+    const authorById = await wordPressFetch<Author>(authorByIdUrl, {
+      next: {
+        ...defaultFetchOptions.next,
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`author-${id}`])
+      }
+    });
+
     return authorById;
-  } catch (error: unknown) {
-    throw new Error(`${GET_AUTHOR_BY_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
+  } catch (error: any) {
+    throw new Error(`${GET_AUTHOR_BY_ERROR_DETAILS} ${error.message}`);
   }
 };
 
-export const getAuthorBySlug = async (
-  slug: string,
-  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
-): Promise<Author> => {
+export const getAuthorBySlug = async (slug: string): Promise<Author> => {
   try {
     const authorBySlugUrl: string = getUrl("/wp-json/wp/v2/users", { slug });
-    const authorBySlugResponse: Response = await fetch(authorBySlugUrl, options);
-    const authorBySlug: Author[] = await authorBySlugResponse.json();
-    return authorBySlug[0];
-  } catch (error: unknown) {
-    throw new Error(`${GET_AUTHOR_BY_SLUG_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
+
+    const authorBySlugResult = await wordPressFetch<Author[]>(authorBySlugUrl, {
+      next: {
+        ...defaultFetchOptions.next,
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`author-${slug}`])
+      }
+    });
+
+    return authorBySlugResult[0];
+  } catch (error: any) {
+    throw new Error(`${GET_AUTHOR_BY_SLUG_ERROR_DETAILS} ${error.message}`);
   }
 };
 
-export const getPostsByAuthorId = async (
-  authorId: number,
-  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
-): Promise<Post[]> => {
+export const getPostsByAuthorId = async (authorId: number): Promise<Post[]> => {
   try {
-    const postsByAuthorIdUrl: string = getUrl("/wp-json/wp/v2/posts", {
-      author: authorId,
+    const postsByAuthorIdUrl: string = getUrl("/wp-json/wp/v2/posts", { author: authorId });
+
+    const postsByAuthorId = await wordPressFetch<Post[]>(postsByAuthorIdUrl, {
+      next: {
+        ...defaultFetchOptions.next,
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`posts-by-author-${authorId}`])
+      }
     });
   
-    const postsByAuthorIdResponse: Response = await fetch(postsByAuthorIdUrl, options);
-    const postsByAuthorId: Post[] = await postsByAuthorIdResponse.json();
-  
     return postsByAuthorId;
-  } catch (error: unknown) {
-    throw new Error(`${GET_POSTS_BY_AUTHOR_ID_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
+  } catch (error: any) {
+    throw new Error(`${GET_POSTS_BY_AUTHOR_ID_ERROR_DETAILS} ${error.message}`);
   }
 };
 
-export const getPostsByAuthorSlug = async (
-  authorSlug: string,
-  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
-): Promise<Post[]> => {
+export const getPostsByAuthorSlug = async (authorSlug: string): Promise<Post[]> => {
   try {
     const authorBySlug: Author = await getAuthorBySlug(authorSlug);
   
-    const postsByAuthorSlugUrl: string = getUrl("/wp-json/wp/v2/posts", {
-      author: authorBySlug.id,
+    const postsByAuthorSlugUrl: string = getUrl("/wp-json/wp/v2/posts", { author: authorBySlug.id });
+
+    const postsByAuthorSlug = await wordPressFetch<Post[]>(postsByAuthorSlugUrl, {
+      next: {
+        ...defaultFetchOptions.next,
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`posts-by-author-${authorBySlug}`])
+      }
     });
   
-    const postsByAuthorSlugResponse: Response = await fetch(postsByAuthorSlugUrl, options);
-    const postsByAuthorSlug: Post[] = await postsByAuthorSlugResponse.json();
-  
     return postsByAuthorSlug;
-  } catch (error: unknown) {
-    throw new Error(`${GET_POSTS_BY_AUTHOR_SLUG_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
+  } catch (error: any) {
+    throw new Error(`${GET_POSTS_BY_AUTHOR_SLUG_ERROR_DETAILS} ${error.message}`);
   }
 };
 
-export const getPostsByCategorySlug = async (
-  categorySlug: string,
-  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
-): Promise<Post[]> => {
+export const getPostsByCategorySlug = async (categorySlug: string): Promise<Post[]> => {
   try {
     const categoryBySlug: Category = await getCategoryBySlug(categorySlug);
   
-    const postsByCategorySlugUrl = getUrl("/wp-json/wp/v2/posts", {
-      categories: categoryBySlug.id,
+    const postsByCategorySlugUrl: string = getUrl("/wp-json/wp/v2/posts", { categories: categoryBySlug.id });
+
+    const postsByCategorySlug = await wordPressFetch<Post[]>(postsByCategorySlugUrl, {
+      next: {
+        ...defaultFetchOptions.next,
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`posts-by-category-${categorySlug}`])
+      }
     });
   
-    const postsByCategorySlugResponse = await fetch(postsByCategorySlugUrl, options);
-    const postsByCategorySlug: Post[] = await postsByCategorySlugResponse.json();
-  
     return postsByCategorySlug;
-  } catch (error: unknown) {
-    throw new Error(`${GET_POSTS_BY_CATEGORY_SLUG_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
+  } catch (error: any) {
+    throw new Error(`${GET_POSTS_BY_CATEGORY_SLUG_ERROR_DETAILS} ${error.message}`);
   }
 };
 
-export const getPostsByTagSlug = async (
-  tagSlug: string,
-  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
-): Promise<Post[]> => {
+export const getPostsByTagSlug = async (tagSlug: string): Promise<Post[]> => {
   try {
     const tagBySlug: Tag = await getTagBySlug(tagSlug);
   
-    const postsByTagSlugUrl = getUrl("/wp-json/wp/v2/posts", {
-      tags: tagBySlug.id,
+    const postsByTagSlugUrl = getUrl("/wp-json/wp/v2/posts", { tags: tagBySlug.id });
+
+    const postsByTagSlug = await wordPressFetch<Post[]>(postsByTagSlugUrl, {
+      next: {
+        ...defaultFetchOptions.next,
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`posts-by-tag-${tagSlug}`])
+      }
     });
   
-    const postsByTagSlugResponse = await fetch(postsByTagSlugUrl, options);
-    const postsByTagSlug: Post[] = await postsByTagSlugResponse.json();
-  
     return postsByTagSlug;
-  } catch (error: unknown) {
-    throw new Error(`${GET_POSTS_BY_TAG_SLUG_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
+  } catch (error: any) {
+    throw new Error(`${GET_POSTS_BY_TAG_SLUG_ERROR_DETAILS} ${error.message}`);
   }
 };
 
-export const getFeaturedMediaById = async (
-  id: number,
-  options: { next: { revalidate: number } } = { next: { revalidate: 60 } }
-): Promise<FeaturedMedia> => {
+export const getFeaturedMediaById = async (id: number): Promise<FeaturedMedia> => {
   try {
     const featuredMediaByIdUrl = getUrl(`/wp-json/wp/v2/media/${id}`);
-    const featuredMediaByIdResponse = await fetch(featuredMediaByIdUrl, options);
-    const featuredMediaById: FeaturedMedia = await featuredMediaByIdResponse.json();
+
+    const featuredMediaById = await wordPressFetch<FeaturedMedia>(featuredMediaByIdUrl, {
+      next: {
+        ...defaultFetchOptions.next,
+        tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`featured-media-${id}`])
+      }
+    });
+
     return featuredMediaById;
-  } catch (error: unknown) {
-    throw new Error(`${GET_FEATURED_MEDIA_BY_ID_ERROR_DETAILS} ${getUnknownErrorDetails(error)}`);
+  } catch (error: any) {
+    throw new Error(`${GET_FEATURED_MEDIA_BY_ID_ERROR_DETAILS} ${error.message}`);
   }
 };
