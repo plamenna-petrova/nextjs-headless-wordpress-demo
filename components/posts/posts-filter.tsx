@@ -52,7 +52,7 @@ const PostsFilter = ({ authors, tags, categories, selectedAuthor, selectedTag, s
   };
 
   const handleResetFilters = (): void => {
-    router.push("/posts");
+    router.push("/posts?page=1");
   };
 
   return (
