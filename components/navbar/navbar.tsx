@@ -1,9 +1,9 @@
+import { Button } from "@/components/ui/button";
+import { mainMenu } from "@/lib/constants";
 import { mergeClassNames } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
-import Logo from "@/public/next.svg";
-import { mainMenu } from "@/lib/constants";
-import { Button } from "@/components/ui/button";
+import Logo from "@/public/NextJS-Headless-WordPress-Demo-Logo.jpg";
 import MobileNavigation from "../mobile-navigation/MobileNavigation";
 
 type NavbarProps = {
@@ -35,9 +35,8 @@ const Navbar = ({ id, className, children }: NavbarProps) => {
           <Image
             src={Logo}
             alt="Logo"
-            className="dark:invert"
-            width={84}
-            height={50.54}
+            width={65}
+            height={35.54}
           ></Image>
         </Link>
         {children}
