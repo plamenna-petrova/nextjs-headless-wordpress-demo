@@ -61,16 +61,13 @@ const Posts = async ({ searchParams }: { searchParams: { [key: string]: string |
     <Main>
       <Section>
         <Container>
-          <h1>Posts</h1>
-
+          <h1>All Posts</h1>
           <p className="text-muted-foreground">
             {posts.length} {posts.length === 1 ? "post" : "posts"} found
-            {search && 'matching your search'}
+            {search && <>{" "}matching your search</>}
           </p>
-
-          <div className="space-y-4">
+          <div className="flex flex-col my-4">
             <PostsSearchInput defaultValue={search} />
-
             <PostsFilter
               authors={authors}
               tags={tags}
@@ -80,7 +77,6 @@ const Posts = async ({ searchParams }: { searchParams: { [key: string]: string |
               selectedCategory={category}
             />
           </div>
-
           {paginatedPosts.length > 0 ? (
             <div className="grid md:grid-cols-3 gap-4 z-0">
               {paginatedPosts.map((post: any) => (

@@ -5,6 +5,7 @@ import { useMotionValue, MotionValue } from "framer-motion";
 import { Pen, File, User, Tag, Boxes, Folder, LucideIcon } from "lucide-react";
 
 import { FeatureIcon, FeaturePattern } from "@/components/documentation/Features";
+import { useEffect, useRef } from "react";
 
 type LinkPattern = {
   y: number;
@@ -69,18 +70,28 @@ type WordPressStarterCardProps = {
 };
 
 function WordPressStarterCard({ link }: WordPressStarterCardProps) {
-  let mouseX: MotionValue<number> = useMotionValue(0);
-  let mouseY: MotionValue<number> = useMotionValue(0);
+  const wordPressStarterCardRef = useRef<HTMLDivElement | null>(null);
+  let mouseX: MotionValue<number> = useMotionValue(100);
+  let mouseY: MotionValue<number> = useMotionValue(50);
 
-  function onMouseMove(event: React.MouseEvent<HTMLDivElement>) {
+  const onMouseMove = (event: React.MouseEvent<HTMLDivElement>): void => {
     const { currentTarget, clientX, clientY } = event;
     const { left, top } = currentTarget.getBoundingClientRect();
     mouseX.set(clientX - left);
     mouseY.set(clientY - top);
   }
 
+  useEffect(() => {
+    if (wordPressStarterCardRef.current) {
+      const { width, height } = wordPressStarterCardRef.current.getBoundingClientRect();
+      mouseX.set(width / 2);
+      mouseY.set(height / 2);
+    }
+  }, [mouseX, mouseY]);
+
   return (
     <div
+      ref={wordPressStarterCardRef}
       key={link.name}
       onMouseMove={onMouseMove}
       className="group relative flex rounded-2xl bg-zinc-50 transition-shadow hover:shadow-md hover:shadow-zinc-900/5 dark:bg-white/2.5 dark:hover:shadow-black/5"

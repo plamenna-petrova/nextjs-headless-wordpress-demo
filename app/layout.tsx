@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
-import { Inter as FontSans } from "next/font/google";
-import { NextFontWithVariable } from "next/dist/compiled/@next/font";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { mergeClassNames } from "@/lib/utils";
 import ThemeProvider from "@/components/theme/theme-provider";
 import NavbarWrapper from "@/components/navbar/navbar-wrapper";
 import FooterWrapper from "@/components/footer/footer-wrapper";
 
-const fontSans: NextFontWithVariable = FontSans({
+const fontSans = Inter({
   subsets: ["latin"],
   variable: "--font-sans"
 });
@@ -30,12 +29,10 @@ export const metadata: Metadata = {
   ],
 };
 
-export const revalidate: number = 3600;
-
 const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   return (
     <html lang="en" suppressHydrationWarning={true}>
-      <head />
+      <head/>
       <body
         className={mergeClassNames("min-h-screen font-sans antialiased", fontSans.variable)}
       >
