@@ -64,7 +64,7 @@ const PostsFilter = ({ authors, tags, categories, selectedAuthor, selectedTag, s
         <SelectTrigger>
           <SelectValue placeholder="All Tags" />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="bg-background">
           <SelectItem value="all">All Tags</SelectItem>
           {tags.map((tag) => (
             <SelectItem key={tag.id} value={tag.id.toString()}>
@@ -80,7 +80,7 @@ const PostsFilter = ({ authors, tags, categories, selectedAuthor, selectedTag, s
         <SelectTrigger>
           <SelectValue placeholder="All Categories" />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="bg-background">
           <SelectItem value="all">All Categories</SelectItem>
           {categories.map((category) => (
             <SelectItem key={category.id} value={category.id.toString()}>
@@ -96,7 +96,7 @@ const PostsFilter = ({ authors, tags, categories, selectedAuthor, selectedTag, s
         <SelectTrigger>
           <SelectValue placeholder="All Authors" />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="bg-background">
           <SelectItem value="all">All Authors</SelectItem>
           {authors.map((author) => (
             <SelectItem key={author.id} value={author.id.toString()}>
