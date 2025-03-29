@@ -1,12 +1,12 @@
+import { contentMenu, mainMenu } from "@/lib/constants";
+import { Metadata } from "next";
+import { ThemeToggle } from "../theme/theme-toggle";
 import Section from "../section/section";
 import Container from "../container/container";
 import Link from "next/link";
 import Image from "next/image";
 import Logo from "@/public/next.svg";
-import { contentMenu, mainMenu } from "@/lib/constants";
-import { Metadata } from "next";
 import Balancer from "react-wrap-balancer";
-import { ThemeToggle } from "../theme/theme-toggle";
 
 type FooterProps = {
   metadata: Metadata;

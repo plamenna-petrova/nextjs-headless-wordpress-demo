@@ -50,7 +50,7 @@ const Navbar = ({ id, className, children }: NavbarProps) => {
               </Button>
             ))}
           </div>
-          <Button asChild className="hidden sm:flex">
+          <Button asChild className="hidden sm:flex bg-blue-500 hover:bg-blue-500 text-white">
             <Link href="/documentation">Get Started</Link>
           </Button>
           <MobileNavigation />

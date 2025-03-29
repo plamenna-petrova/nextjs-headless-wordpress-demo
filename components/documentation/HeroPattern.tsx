@@ -4,7 +4,7 @@ export function HeroPattern() {
   return (
     <div className="absolute inset-0 -z-10 mx-0 max-w-none overflow-hidden">
       <div className="absolute left-1/2 top-0 ml-[-38rem] h-[25rem] w-[81.25rem] dark:[mask-image:linear-gradient(white,transparent)]">
-        <div className="absolute inset-0 bg-gradient-to-r from-[#36b49f] to-[#DBFF75] opacity-40 [mask-image:radial-gradient(farthest-side_at_top,white,transparent)] dark:from-[#36b49f]/30 dark:to-[#DBFF75]/30 dark:opacity-100">
+        <div className="absolute inset-0 bg-gradient-to-r from-[#3B82F6] to-[#0EA5E9] opacity-50 [mask-image:radial-gradient(farthest-side_at_top,white,transparent)] dark:from-[#1D4ED8]/40 dark:to-[#1E40AF]/40 dark:opacity-100">
           <GridPattern
             width={72}
             height={56}
@@ -16,7 +16,7 @@ export function HeroPattern() {
               [7, 3],
               [10, 6],
             ]}
-            className="absolute inset-x-0 inset-y-[-50%] h-[200%] w-full skew-y-[-18deg] fill-black/40 stroke-black/50 mix-blend-overlay dark:fill-white/2.5 dark:stroke-white/5"
+            className="absolute inset-x-0 inset-y-[-50%] h-[200%] w-full skew-y-[-18deg] fill-black/50 stroke-black/40 mix-blend-overlay dark:fill-white/2.5 dark:stroke-white/5"
           />
         </div>
         <svg

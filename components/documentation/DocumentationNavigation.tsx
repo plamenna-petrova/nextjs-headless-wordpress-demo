@@ -96,7 +96,7 @@ const ActivePageMarker = ({ navigationGroup, pathname }: ActivePageMarkerProps) 
   return (
     <motion.div
       layout
-      className="absolute left-2 h-6 w-px bg-emerald-500"
+      className="absolute left-2 h-6 w-px bg-blue-500"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1, transition: { delay: 0.2 } }}
       exit={{ opacity: 0 }}
@@ -127,7 +127,7 @@ const NavigationGroupListItem = ({ navigationGroup, className }: NavigationGroup
       </motion.h2>
       <div className="relative mt-3 pl-2">
         <AnimatePresence initial={!isInsideMobileNavigation}>
-          {isNavigationGroupActive  && (
+          {isNavigationGroupActive && (
             <VisibleSectionHighlight navigationGroup={navigationGroup} pathname={pathname} />
           )}
         </AnimatePresence>

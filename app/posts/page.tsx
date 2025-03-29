@@ -34,7 +34,9 @@ const Posts = async ({ searchParams }: { searchParams: { [key: string]: string |
   const createPaginationUrl = (page: number): string => {
     const urlSearchParams: URLSearchParams = new URLSearchParams();
 
-    if (page > 1) {
+    if (page === 1) {
+      urlSearchParams.set("page", "1");
+    } else {
       urlSearchParams.set("page", page.toString());
     }
 
@@ -97,7 +99,7 @@ const Posts = async ({ searchParams }: { searchParams: { [key: string]: string |
                     href={createPaginationUrl(currentPage - 1)}
                   />
                 </PaginationItem>
-                <PaginationItem className="text-zinc-100">
+                <PaginationItem className="text-zinc-700 dark:text-zinc-300">
                   <PaginationLink href={createPaginationUrl(currentPage)}>
                     {page}
                   </PaginationLink>
