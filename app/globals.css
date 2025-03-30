@@ -76,27 +76,25 @@
   }
 
   :root {
-    --shiki-color-text: theme('colors.white');
-    --shiki-token-constant: theme('colors.blue.300');
-    --shiki-token-string: theme('colors.blue.300');
-    --shiki-token-comment: theme('colors.zinc.500');
-    --shiki-token-keyword: theme('colors.blue.300');
-    --shiki-token-parameter: theme('colors.pink.300');
-    --shiki-token-function: theme('colors.violet.300');
-    --shiki-token-string-expression: theme('colors.blue.300');
-    --shiki-token-punctuation: theme('colors.zinc.200');
+    --shiki-color-text: theme('colors.white'); /* Base text color */
+    --shiki-token-constant: theme('colors.blue.400'); /* #82aaff */
+    --shiki-token-string: theme('colors.green.400'); /* #addb67 */
+    --shiki-token-comment: theme('colors.zinc.400'); /* #637777 */
+    --shiki-token-keyword: theme('colors.purple.400'); /* #c792ea */
+    --shiki-token-parameter: theme('colors.orange.400'); /* #f78c6c */
+    --shiki-token-function: theme('colors.green.300'); /* #addb67 */
+    --shiki-token-string-expression: theme('colors.teal.400'); /* #4fd1c5 */
+    --shiki-token-punctuation: theme('colors.purple.400'); /* #c792ea */
+    
+    --shiki-token-type: theme('colors.amber.400');
+    --shiki-token-property: theme('colors.amber.400');
+    --shiki-token-variable: theme('colors.amber.400');
   }
 
   [inert] ::-webkit-scrollbar {
     display: none;
   }
 }
-
-/* @layer prose-m-none {
-  * {
-    @apply prose-headings:m-0;
-  }
-} */
 
 @layer utilities {
 

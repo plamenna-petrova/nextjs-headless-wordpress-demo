@@ -119,7 +119,7 @@ export function FeaturePattern({
           width={72}
           height={56}
           x="50%"
-          className="absolute inset-x-0 inset-y-[-30%] h-[160%] w-full skew-y-[-18deg] fill-black/50 stroke-black/70 dark:fill-white/2.5 dark:stroke-white/10"
+          className="absolute inset-x-0 inset-y-[-30%] h-[160%] w-full skew-y-[-18deg] fill-black/10 stroke-black/20 dark:fill-white/2.5 dark:stroke-white/10"
           {...gridProps}
         />
       </motion.div>
