@@ -108,7 +108,7 @@ export function Property({
         {type && (
           <>
             <dt className="sr-only">Type</dt>
-            <dd className="font-mono text-xs text-zinc-400 dark:text-zinc-500">
+            <dd className="font-mono text-xs text-zinc-500 dark:text-zinc-400">
               {type}
             </dd>
           </>

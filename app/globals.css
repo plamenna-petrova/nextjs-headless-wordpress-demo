@@ -76,19 +76,13 @@
   }
 
   :root {
-    --shiki-color-text: theme('colors.white'); /* Base text color */
-    --shiki-token-constant: theme('colors.blue.400'); /* #82aaff */
-    --shiki-token-string: theme('colors.green.400'); /* #addb67 */
-    --shiki-token-comment: theme('colors.zinc.400'); /* #637777 */
-    --shiki-token-keyword: theme('colors.purple.400'); /* #c792ea */
-    --shiki-token-parameter: theme('colors.orange.400'); /* #f78c6c */
-    --shiki-token-function: theme('colors.green.300'); /* #addb67 */
-    --shiki-token-string-expression: theme('colors.teal.400'); /* #4fd1c5 */
-    --shiki-token-punctuation: theme('colors.purple.400'); /* #c792ea */
-    
-    --shiki-token-type: theme('colors.amber.400');
-    --shiki-token-property: theme('colors.amber.400');
-    --shiki-token-variable: theme('colors.amber.400');
+    --shiki-color-text: theme('colors.white'); /* #ffffff */
+    --shiki-token-constant: theme('colors.blue.400'); /* #60a5fa */
+    --shiki-token-comment: theme('colors.zinc.400'); /* #71717a */
+    --shiki-token-keyword: theme('colors.purple.300'); /* #8b5cf6 */
+    --shiki-token-parameter: theme('colors.orange.400'); /* #f97316 */
+    --shiki-token-function: theme('colors.emerald.300'); /* #10b981 */
+    --shiki-token-string-expression: theme('colors.teal.400'); /* #14b8a6 */
   }
 
   [inert] ::-webkit-scrollbar {
