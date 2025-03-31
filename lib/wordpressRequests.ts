@@ -32,7 +32,7 @@ import {
 } from "./constants";
 import queryString from "query-string";
 
-const WORDPRESS_INSTANCE_BASE_URL: string = "http://wordpress.local/";
+const WORDPRESS_INSTANCE_BASE_URL: string = "http://wordpress.local";
 
 const DEFAULT_APP_USER_AGENT: string = "Next.js PWA WordPress Client";
 

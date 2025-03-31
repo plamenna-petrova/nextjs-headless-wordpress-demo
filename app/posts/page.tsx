@@ -59,14 +59,23 @@ const Posts = async ({ searchParams }: { searchParams: { [key: string]: string |
     return `/posts${searchParams.toString() ? `?${urlSearchParams.toString()}` : ''}`;
   }
 
+  const getPostsCountText = (): string => {
+    if (posts.length === 0) {
+      return "No posts found";
+    } else if (posts.length === 1) {
+      return "1 post found";
+    } else {
+      return `${posts.length} posts found`;
+    }
+  }
+
   return (
     <Main>
       <Section>
         <Container>
-          <h1>All Posts</h1>
+          <h1>Posts</h1>
           <p className="text-muted-foreground">
-            {posts.length} {posts.length === 1 ? "post" : "posts"} found
-            {search && <>{" "}matching your search</>}
+            {getPostsCountText()}{search && <>{" "}matching your search</>}
           </p>
           <div className="flex flex-col my-4">
             <PostsSearchInput defaultValue={search} />

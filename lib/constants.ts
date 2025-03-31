@@ -1,7 +1,7 @@
 export const mainMenu: Record<string, string> = {
   home: "/",
   about: "https://github.com/plamenna-petrova/nextjs-headless-wordpress-demo",
-  blog: "/posts",
+  blog: "/posts?page=1",
 };
 
 export const contentMenu: Record<string, string> = {
