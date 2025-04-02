@@ -7,50 +7,50 @@ export const metadata = {
 
 <HeroPattern />
 
-# Used WordPress REST API Functions
+# Използвани функции на приложно-програмния интерфейс на WordPress
 
-The REST API functions are a set of functions that can be used to retrieve data from the REST API.
+Те представляват набор от функции, предназначени за извличане на данни от уебсайт, направен с WordPress.
 
 ## getAllPosts {{ tag: 'GET', label: '/wp-json/wp/v2/posts?author={author}&tags={tag}&categories={category}' }}
 
 <Row>
   <Col>
-    The `getAllPosts` function retrieves posts from a WordPress website using its REST API. It allows filtering posts based on the author, tag, and category.
+    Функцията `getAllPosts` извлича публикации от WordPress уебсайт. Тя позволява филтриране на публикации по автор, етикет и категория.
 
-    ### **How It Works**
-    - The function constructs a request URL using the provided filter parameters.
-    - It fetches the data from the WordPress REST API.
-    - The response is parsed into an array of `Post` objects.
+    ### **Начин на работа**
+    - Функцията конструира URL адреса на заявката, използвайки предоставените параметри за филтриране.
+    - Тя извлича данните от приложно-програмния интерфейс на WordPress.
+    - Отговорът се трансформира в масив от обекти от тип `Post`.
 
-    ### **Optional Parameters**
+    ### **Незадължителни параметри**
     <Properties>
       <Property name="author" type="string">
-        The ID or slug of the post's author.
+        Идентификаторът или псевдонимът на автора на публикацията
       </Property>
       <Property name="tag" type="string">
-        A tag associated with the posts.
+        Таг, свързан с публикациите
       </Property>
       <Property name="category" type="string">
-        A category associated with the posts.
+        Категория, свързана с публикациите
       </Property>
     </Properties>
 
-    ### **Return Value**
+    ### **Връщана стойност**
     <Properties>
         <Property name="posts" type="Post[]">
-          An array of WordPress posts matching the filter criteria.
+          Масив от публикации, отговарящи на критериите за филтриране
         </Property>
     </Properties>
 
-    ### **Example Usage**
+    ### **Пример за използване**
     ```ts
     const allPosts = await getAllPosts({ author: "1", tag: "tech", category: "news" });
     console.log(allPosts);
     ```
     
-    ### **Error Handling**
-    - If the fetch request fails, the function throws an error.
-    - The error message includes a descriptive string along with details of the encountered issue.
+    ### **Обработка на грешки**
+    - Ако заявката за извличане не е успешна, функцията хвърля грешка.
+    - Съобщението за грешка включва описателен низ, заедно с подробности за възникналия проблем.
 
     <div className="not-prose">
       <Button
@@ -59,13 +59,13 @@ The REST API functions are a set of functions that can be used to retrieve data 
         arrow="right"
         target="_blank"
       >
-        <>Read more about the WordPress REST API Posts Endpoint</>
+        <>Прочетете повече за крайната точка на публикациите</>
       </Button>
     </div>
   </Col>
 
   <Col sticky>
-    <CodeGroup title="Request">
+    <CodeGroup title="Заявка">
     ```ts
       export const getAllPosts = async (
         filterParams?: {
@@ -111,7 +111,7 @@ The REST API functions are a set of functions that can be used to retrieve data 
     ```
     </CodeGroup>
 
-    ```ts {{ title: 'Return Type' }}
+    ```ts {{ title: 'Тип на връщаната стойност' }}
       export type Post = {
         id: number;
         date: string;
@@ -157,29 +157,29 @@ The REST API functions are a set of functions that can be used to retrieve data 
 
 <Row>
   <Col>
-    The `getAllAuthors` function retrieves authors from a WordPress website using its REST API.
+    Функцията `getAllAuthors` извлича потребители (автори на публикации) от WordPress уебсайт.
 
-    ### **How It Works**
-    - The function constructs a request URL.
-    - It fetches the data from the WordPress REST API.
-    - The response is parsed into an array of `Author` objects.
+    ### **Начин на работа**
+    - Функцията конструира URL адреса на заявката.
+    - Тя извлича данните от приложно-програмния интерфейс на WordPress.
+    - Отговорът се трансформира в масив от обекти от тип `Author`.
 
-    ### **Return Value**
+    ### **Връщана стойност**
     <Properties>
         <Property name="authors" type="Author[]">
-          An array of WordPress authors.
+          Масив от потребители (автори на публикации)
         </Property>
     </Properties>
 
-    ### **Example Usage**
+    ### **Пример за използване**
     ```ts
     const allAuthors = await getAllAuthors();
     console.log(allAuthors);
     ```
     
-    ### **Error Handling**
-    - If the fetch request fails, the function throws an error.
-    - The error message includes a descriptive string along with details of the encountered issue.
+    ### **Обработка на грешки**
+    - Ако заявката за извличане не е успешна, функцията хвърля грешка.
+    - Съобщението за грешка включва описателен низ, заедно с подробности за възникналия проблем.
 
     <div className="not-prose">
       <Button
@@ -188,13 +188,13 @@ The REST API functions are a set of functions that can be used to retrieve data 
         arrow="right"
         target="_blank"
       >
-        <>Read more about the WordPress REST API Authors Endpoint</>
+        <>Прочетете повече за крайната точка на потребителите</>
       </Button>
     </div>
   </Col>
 
   <Col sticky>
-    <CodeGroup title="Request">
+    <CodeGroup title="Заявка">
     ```ts
       export const getAllAuthors = async (): Promise<Author[]> => {
         try {
@@ -215,7 +215,7 @@ The REST API functions are a set of functions that can be used to retrieve data 
     ```
     </CodeGroup>
 
-    ```ts {{ title: 'Return Type' }}
+    ```ts {{ title: 'Тип на връщаната стойност' }}
       export type Author = {
         id: number;
         name: string;
@@ -238,29 +238,29 @@ The REST API functions are a set of functions that can be used to retrieve data 
 
 <Row>
   <Col>
-    The `getAllTags` function retrieves tags from a WordPress website using its REST API.
+    Функцията `getAllTags` извлича етикети от WordPress уебсайт.
 
-    ### **How It Works**
-    - The function constructs a request URL.
-    - It fetches the data from the WordPress REST API.
-    - The response is parsed into an array of `Tag` objects.
+    ### **Начин на работа**
+    - Функцията конструира URL адреса на заявката.
+    - Тя извлича данните от приложно-програмния интерфейс на WordPress.
+    - Отговорът се трансформира в масив от обекти от тип `Tag`.
 
-    ### **Return Value**
+    ### **Връщана стойност**
     <Properties>
         <Property name="tags" type="Tag[]">
-          An array of WordPress tags.
+          Масив от етикети
         </Property>
     </Properties>
 
-    ### **Example Usage**
+    ### **Пример за използване**
     ```ts
     const allTags = await getAllTags();
     console.log(allTags);
     ```
     
-    ### **Error Handling**
-    - If the fetch request fails, the function throws an error.
-    - The error message includes a descriptive string along with details of the encountered issue.
+    ### **Обработка на грешки**
+    - Ако заявката за извличане не е успешна, функцията хвърля грешка.
+    - Съобщението за грешка включва описателен низ, заедно с подробности за възникналия проблем.
 
     <div className="not-prose">
       <Button
@@ -269,13 +269,13 @@ The REST API functions are a set of functions that can be used to retrieve data 
         arrow="right"
         target="_blank"
       >
-        <>Read more about the WordPress REST API Tags Endpoint</>
+        <>Прочетете повече за крайната точка на етикетите</>
       </Button>
     </div>
   </Col>
 
   <Col sticky>
-    <CodeGroup title="Request">
+    <CodeGroup title="Заявка">
     ```ts
      export const getAllTags = async (): Promise<Tag[]> => {
       try {
@@ -296,7 +296,7 @@ The REST API functions are a set of functions that can be used to retrieve data 
     ```
     </CodeGroup>
 
-    ```ts {{ title: 'Return Type' }}
+    ```ts {{ title: 'Тип на връщаната стойност' }}
       export type Tag = {
         id: number;
         count: number;
@@ -317,29 +317,29 @@ The REST API functions are a set of functions that can be used to retrieve data 
 
 <Row>
   <Col>
-    The `getAllCategories` function retrieves categories from a WordPress website using its REST API.
+    Функцията `getAllCategories` извлича категории от WordPress уебсайт.
 
-    ### **How It Works**
-    - The function constructs a request URL.
-    - It fetches the data from the WordPress REST API.
-    - The response is parsed into an array of `Category` objects.
+    ### **Начин на работа**
+    - Функцията конструира URL адреса на заявката.
+    - Тя извлича данните от приложно-програмния интерфейс на WordPress.
+    - Отговорът се трансформира в масив от обекти от тип `Category`.
 
-    ### **Return Value**
+    ### **Връщана стойност**
     <Properties>
         <Property name="categories" type="Category[]">
-          An array of WordPress categories.
+          Масив от категории
         </Property>
     </Properties>
 
-    ### **Example Usage**
+    ### **Пример за използване**
     ```ts
     const allCategories = await getAllCategories();
     console.log(allCategories);
     ```
     
-    ### **Error Handling**
-    - If the fetch request fails, the function throws an error.
-    - The error message includes a descriptive string along with details of the encountered issue.
+    ### **Обработка на грешки**
+    - Ако заявката за извличане не е успешна, функцията хвърля грешка.
+    - Съобщението за грешка включва описателен низ, заедно с подробности за възникналия проблем.
 
     <div className="not-prose">
       <Button
@@ -348,13 +348,13 @@ The REST API functions are a set of functions that can be used to retrieve data 
         arrow="right"
         target="_blank"
       >
-        <>Read more about the WordPress REST API Categories Endpoint</>
+        <>Прочетете повече за крайната точка на категориите</>
       </Button>
     </div>
   </Col>
 
   <Col sticky>
-    <CodeGroup title="Request">
+    <CodeGroup title="Заявка">
     ```ts
       export const getAllCategories = async (): Promise<Category[]> => {
         try {
@@ -375,7 +375,7 @@ The REST API functions are a set of functions that can be used to retrieve data 
     ```
     </CodeGroup>
 
-    ```ts {{ title: 'Return Type' }}
+    ```ts {{ title: 'Тип на връщаната стойност' }}
       export type Category = {
         id: number;
         count: number;
@@ -397,29 +397,29 @@ The REST API functions are a set of functions that can be used to retrieve data 
 
 <Row>
   <Col>
-    The `getAllPages` function retrieves pages from a WordPress website using its REST API.
+    Функцията `getAllPages` извлича страници от WordPress уебсайт.
 
-    ### **How It Works**
-    - The function constructs a request URL.
-    - It fetches the data from the WordPress REST API.
-    - The response is parsed into an array of `Page` objects.
+    ### **Начин на работа**
+    - Функцията конструира URL адреса на заявката.
+    - Тя извлича данните от приложно-програмния интерфейс на WordPress.
+    - Отговорът се трансформира в масив от обекти от тип `Page`.
 
-    ### **Return Value**
+    ### **Връщана стойност**
     <Properties>
         <Property name="pages" type="Page[]">
-          An array of WordPress pages.
+          Масив от страници
         </Property>
     </Properties>
 
-    ### **Example Usage**
+    ### **Пример за използване**
     ```ts
     const allPages = await getAllPages();
     console.log(allPages);
     ```
     
-    ### **Error Handling**
-    - If the fetch request fails, the function throws an error.
-    - The error message includes a descriptive string along with details of the encountered issue.
+    ### **Обработка на грешки**
+    - Ако заявката за извличане не е успешна, функцията хвърля грешка.
+    - Съобщението за грешка включва описателен низ, заедно с подробности за възникналия проблем.
 
     <div className="not-prose">
       <Button
@@ -428,13 +428,13 @@ The REST API functions are a set of functions that can be used to retrieve data 
         arrow="right"
         target="_blank"
       >
-        <>Read more about the WordPress REST API Pages Endpoint</>
+        <>Прочетете повече за крайната точка на страниците</>
       </Button>
     </div>
   </Col>
 
   <Col sticky>
-    <CodeGroup title="Request">
+    <CodeGroup title="Заявка">
     ```ts
       export const getAllPages = async (): Promise<Page[]> => {
         try {
@@ -455,7 +455,7 @@ The REST API functions are a set of functions that can be used to retrieve data 
     ```
     </CodeGroup>
 
-    ```ts {{ title: 'Return Type' }}
+    ```ts {{ title: 'Тип на връщаната стойност' }}
       export type Page = {
         id: number;
         date: string;
@@ -499,36 +499,36 @@ The REST API functions are a set of functions that can be used to retrieve data 
 
 <Row>
   <Col>
-    The `getPostBySlug` function retrieves post by slug from a WordPress website using its REST API.
+    Функцията `getPostBySlug` извлича публикация по псевдоним от уебсайт на WordPress.
 
-    ### **How It Works**
-    - The function constructs a request URL using the provided slug.
-    - It fetches the data from the WordPress REST API.
-    - The response is parsed into a `Post` object.
+    ### **Начин на работа**
+    - Функцията конструира URL адреса на заявката, използвайки предоставения псевдоним.
+    - Тя извлича данните от приложно-програмния интерфейс на WordPress.
+    - Отговорът се трансформира в обект от тип `Post`.
 
-    ### **Required Parameters**
+    ### **Задължителни параметри**
     <Properties>
       <Property name="slug" type="string">
-        The slug of the post.
+        Псевдонимът на публикацията
       </Property>
     </Properties>
 
-    ### **Return Value**
+    ### **Връщана стойност**
     <Properties>
         <Property name="post" type="Post">
-          A WordPress post object matching the slug.
+          Обект на публикация, съответстваща на псевдонима
         </Property>
     </Properties>
 
-    ### **Example Usage**
+    ### **Пример за използване**
     ```ts
     const postBySlug = await getPostBySlug(slug: "example-post");
     console.log(postBySlug);
     ```
     
-    ### **Error Handling**
-    - If the fetch request fails, the function throws an error.
-    - The error message includes a descriptive string along with details of the encountered issue.
+    ### **Обработка на грешки**
+    - Ако заявката за извличане не е успешна, функцията хвърля грешка.
+    - Съобщението за грешка включва описателен низ, заедно с подробности за възникналия проблем.
 
     <div className="not-prose">
       <Button
@@ -537,13 +537,13 @@ The REST API functions are a set of functions that can be used to retrieve data 
         arrow="right"
         target="_blank"
       >
-        <>Read more about the WordPress REST API Posts Endpoint</>
+        <>Прочетете повече за крайната точка на публикациите</>
       </Button>
     </div>
   </Col>
 
   <Col sticky>
-    <CodeGroup title="Request">
+    <CodeGroup title="Заявка">
     ```ts
       export const getPostBySlug = async (slug: string): Promise<Post> => {
         try {
@@ -568,7 +568,7 @@ The REST API functions are a set of functions that can be used to retrieve data 
     ```
     </CodeGroup>
 
-    ```ts {{ title: 'Return Type' }}
+    ```ts {{ title: 'Тип на връщаната стойност' }}
       export type Post = {
         id: number;
         date: string;
@@ -614,36 +614,36 @@ The REST API functions are a set of functions that can be used to retrieve data 
 
 <Row>
   <Col>
-    The `getAuthorById` function retrieves author by Id from a WordPress website using its REST API.
+    Функцията `getAuthorById` извлича потребител (автор на публикации) по идентификатор от уебсайт на WordPress.
 
-    ### **How It Works**
-    - The function constructs a request URL using the provided Id.
-    - It fetches the data from the WordPress REST API.
-    - The response is parsed into a `Author` object.
+    ### **Начин на работа**
+    - Функцията конструира URL адреса на заявката, използвайки предоставения идентификатор.
+    - Тя извлича данните от приложно-програмния интерфейс на WordPress.
+    - Отговорът се трансформира в обект от тип `Author`.
 
-    ### **Required Parameters**
+    ### **Задължителни параметри**
     <Properties>
       <Property name="id" type="number">
-        The ID of the author.
+        Идентификаторът на потребителя (автора на публикации)
       </Property>
     </Properties>
 
-    ### **Return Value**
+    ### **Връщана стойност**
     <Properties>
         <Property name="author" type="Author">
-          A WordPress author object matching the Id.
+          Обект на потребител (автор на публикации), съответстващ на идентификатора
         </Property>
     </Properties>
 
-    ### **Example Usage**
+    ### **Пример за използване**
     ```ts
     const author = await getAuthorById(1);
     console.log(author);
     ```
     
-    ### **Error Handling**
-    - If the fetch request fails, the function throws an error.
-    - The error message includes a descriptive string along with details of the encountered issue.
+    ### **Обработка на грешки**
+    - Ако заявката за извличане не е успешна, функцията хвърля грешка.
+    - Съобщението за грешка включва описателен низ, заедно с подробности за възникналия проблем.
 
     <div className="not-prose">
       <Button
@@ -652,13 +652,13 @@ The REST API functions are a set of functions that can be used to retrieve data 
         arrow="right"
         target="_blank"
       >
-        <>Read more about the WordPress REST API Authors Endpoint</>
+        <>Прочетете повече за крайната точка на потребителите</>
       </Button>
     </div>
   </Col>
 
   <Col sticky>
-    <CodeGroup title="Request">
+    <CodeGroup title="Заявка">
     ```ts
       export const getAuthorById = async (id: number): Promise<Author> => {
         try {
@@ -679,7 +679,7 @@ The REST API functions are a set of functions that can be used to retrieve data 
     ```
     </CodeGroup>
 
-    ```ts {{ title: 'Return Type' }}
+    ```ts {{ title: 'Тип на връщаната стойност' }}
       export type Author = {
         id: number;
         name: string;
@@ -702,36 +702,36 @@ The REST API functions are a set of functions that can be used to retrieve data 
 
 <Row>
   <Col>
-    The `getCategoryById` function retrieves category by Id from a WordPress website using its REST API.
+    Функцията `getCategoryById` извлича категория по идентификатор от уебсайт на WordPress.
 
-    ### **How It Works**
-    - The function constructs a request URL using the provided Id.
-    - It fetches the data from the WordPress REST API.
-    - The response is parsed into a `Category` object.
+    ### **Начин на работа**
+    - Функцията конструира URL адреса на заявката, използвайки предоставения идентификатор.
+    - Тя извлича данните от приложно-програмния интерфейс на WordPress.
+    - Отговорът се трансформира в обект от тип `Category`.
 
-    ### **Required Parameters**
+    ### **Задължителни параметри**
     <Properties>
       <Property name="id" type="number">
-        The ID of the category.
+        Идентификаторът на категорията
       </Property>
     </Properties>
 
-    ### **Return Value**
+    ### **Връщана стойност**
     <Properties>
         <Property name="category" type="Category">
-          A WordPress category object matching the Id.
+          Обект на категория, съответстваща на идентификатора
         </Property>
     </Properties>
 
-    ### **Example Usage**
+    ### **Пример за използване**
     ```ts
     const category = await getCategoryById(1);
     console.log(category);
     ```
     
-    ### **Error Handling**
-    - If the fetch request fails, the function throws an error.
-    - The error message includes a descriptive string along with details of the encountered issue.
+    ### **Обработка на грешки**
+    - Ако заявката за извличане не е успешна, функцията хвърля грешка.
+    - Съобщението за грешка включва описателен низ, заедно с подробности за възникналия проблем.
 
     <div className="not-prose">
       <Button
@@ -740,13 +740,13 @@ The REST API functions are a set of functions that can be used to retrieve data 
         arrow="right"
         target="_blank"
       >
-        <>Read more about the WordPress REST API Categories Endpoint</>
+        <>Прочетете повече за крайната точка на категориите</>
       </Button>
     </div>
   </Col>
 
   <Col sticky>
-    <CodeGroup title="Request">
+    <CodeGroup title="Заявка">
     ```ts
       export const getCategoryById = async (id: number): Promise<Category> => {
         try {
@@ -767,7 +767,7 @@ The REST API functions are a set of functions that can be used to retrieve data 
     ```
     </CodeGroup>
 
-    ```ts {{ title: 'Return Type' }}
+    ```ts {{ title: 'Тип на връщаната стойност' }}
        export type Category = {
         id: number;
         count: number;
@@ -789,36 +789,36 @@ The REST API functions are a set of functions that can be used to retrieve data 
 
 <Row>
   <Col>
-    The `getPageBySlug` function retrieves page by slug from a WordPress website using its REST API.
+    Функцията `getPageBySlug` извлича страница по псевдоним от уебсайт на WordPress.
 
-    ### **How It Works**
-    - The function constructs a request URL using the provided slug.
-    - It fetches the data from the WordPress REST API.
-    - The response is parsed into a `Page` object.
+    ### **Начин на работа**
+    - Функцията конструира URL адреса на заявката, използвайки предоставения псевдоним.
+    - Тя извлича данните от приложно-програмния интерфейс на WordPress.
+    - Отговорът се трансформира в обект от тип `Page`.
 
-    ### **Required Parameters**
+    ### **Задължителни параметри**
     <Properties>
       <Property name="slug" type="string">
-        The slug of the page.
+        Псевдонимът на страницата
       </Property>
     </Properties>
 
-    ### **Return Value**
+    ### **Връщана стойност**
     <Properties>
         <Property name="page" type="Page">
-          A WordPress page object matching the slug.
+          Обект на страница, съответстваща на псевдонима
         </Property>
     </Properties>
 
-    ### **Example Usage**
+    ### **Пример за използване**
     ```ts
     const page = await getPageBySlug("example-page");
     console.log(page);
     ```
     
-    ### **Error Handling**
-    - If the fetch request fails, the function throws an error.
-    - The error message includes a descriptive string along with details of the encountered issue.
+    ### **Обработка на грешки**
+    - Ако заявката за извличане не е успешна, функцията хвърля грешка.
+    - Съобщението за грешка включва описателен низ, заедно с подробности за възникналия проблем.
 
     <div className="not-prose">
       <Button
@@ -827,13 +827,13 @@ The REST API functions are a set of functions that can be used to retrieve data 
         arrow="right"
         target="_blank"
       >
-        <>Read more about the WordPress REST API Pages Endpoint</>
+        <>Прочетете повече за крайната точка на страниците</>
       </Button>
     </div>
   </Col>
 
   <Col sticky>
-    <CodeGroup title="Request">
+    <CodeGroup title="Заявка">
     ```ts
       export const getPageBySlug = async (slug: string): Promise<Page> => {
         try {
@@ -858,7 +858,7 @@ The REST API functions are a set of functions that can be used to retrieve data 
     ```
     </CodeGroup>
 
-    ```ts {{ title: 'Return Type' }}
+    ```ts {{ title: 'Тип на връщаната стойност' }}
       export type Page = {
         id: number;
         date: string;
@@ -902,36 +902,36 @@ The REST API functions are a set of functions that can be used to retrieve data 
 
 <Row>
   <Col>
-    The `getFeaturedMediaById` function retrieves featured media by Id from a WordPress website using its REST API.
+    Функцията `getFeaturedMediaById` извлича избрано медийно съдържание по идентификатор от уебсайт на WordPress.
 
-    ### **How It Works**
-    - The function constructs a request URL using the provided Id.
-    - It fetches the data from the WordPress REST API.
-    - The response is parsed into a `FeaturedMedia` object.
+    ### **Начин на работа**
+    - Функцията конструира URL адреса на заявката, използвайки предоставения идентификатор.
+    - Тя извлича данните от приложно-програмния интерфейс на WordPress.
+    - Отговорът се трансформира в обект от тип `FeaturedMedia`.
 
-    ### **Required Parameters**
+    ### **Задължителни параметри**
     <Properties>
       <Property name="id" type="number">
-        The ID of the featured media.
+        Идентификаторът на избраното медийно съдържание
       </Property>
     </Properties>
 
-    ### **Return Value**
+    ### **Връщана стойност**
     <Properties>
         <Property name="featuredMedia" type="FeaturedMedia">
-          A WordPress featured media object matching the Id.
+          Обект на избрано медийно съдържание, съответстващо на идентификатора
         </Property>
     </Properties>
 
-    ### **Example Usage**
+    ### **Пример за използване**
     ```ts
     const featuredMedia = await getFeaturedMediaById (1);
     console.log(featuredMedia);
     ```
     
-    ### **Error Handling**
-    - If the fetch request fails, the function throws an error.
-    - The error message includes a descriptive string along with details of the encountered issue.
+    ### **Обработка на грешки**
+    - Ако заявката за извличане не е успешна, функцията хвърля грешка.
+    - Съобщението за грешка включва описателен низ, заедно с подробности за възникналия проблем.
 
     <div className="not-prose">
       <Button
@@ -940,13 +940,13 @@ The REST API functions are a set of functions that can be used to retrieve data 
         arrow="right"
         target="_blank"
       >
-        <>Read more about the WordPress REST API Featured Media Endpoint</>
+        <>Прочетете повече за крайната точка на медийното съдържание</>
       </Button>
     </div>
   </Col>
 
   <Col sticky>
-    <CodeGroup title="Request">
+    <CodeGroup title="Заявка">
     ```ts
       export const getFeaturedMediaById = async (id: number): Promise<FeaturedMedia> => {
         try {
@@ -968,7 +968,7 @@ The REST API functions are a set of functions that can be used to retrieve data 
     ```
     </CodeGroup>
 
-    ```ts {{ title: 'Return Type' }}
+    ```ts {{ title: 'Тип на връщаната стойност' }}
       export type FeaturedMedia = {
         id: number;
         date: string;

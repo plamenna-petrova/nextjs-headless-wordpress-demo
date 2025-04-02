@@ -191,9 +191,9 @@ export const navigationGroups: Array<NavigationGroup> = [
     ],
   },
   {
-    title: 'Reference',
+    title: 'Справка',
     links: [
-      { title: 'REST API functions', href: '/documentation/rest-api-functions' }
+      { title: 'Използвани функции', href: '/documentation/rest-api-functions' }
     ]
   },
   {
