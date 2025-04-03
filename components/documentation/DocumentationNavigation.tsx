@@ -188,6 +188,7 @@ export const navigationGroups: Array<NavigationGroup> = [
     links: [
       { title: 'Начало', href: '/documentation' },
       { title: 'Основни концепции', href: '/documentation/quickstart' },
+      { title: 'За приложението', href: '/documentation/about-the-application'}
     ],
   },
   {

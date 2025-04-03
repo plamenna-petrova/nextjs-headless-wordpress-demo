@@ -156,7 +156,7 @@ function CopyButton({ code }: { code: string }) {
         )}
       >
         <ClipboardIcon className="h-5 w-5 fill-zinc-500/20 stroke-zinc-500 transition-colors group-hover/button:stroke-zinc-400" />
-        Copy
+        Копиране
       </span>
       <span
         aria-hidden={!copied}
@@ -165,7 +165,7 @@ function CopyButton({ code }: { code: string }) {
           !copied && 'translate-y-1.5 opacity-0',
         )}
       >
-        Copied!
+        Копирано!
       </span>
     </button>
   )

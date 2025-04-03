@@ -9,6 +9,7 @@ import { Prose } from './Prose'
 export const a = Link
 export { Button } from './Button'
 export { CodeGroup, Code as code, Pre as pre } from '@/components/documentation/Code'
+export { Image } from '@/components/documentation/Image'
 
 export function wrapper({ children }: { children: React.ReactNode }) {
   return (
@@ -131,13 +132,13 @@ export function TABLE({
   children: React.ReactNode;
   striped?: boolean;
 }) {
-  const hasHead = React.Children.toArray(children).some(
+  const hasHead: boolean = React.Children.toArray(children).some(
     (child) => (child as React.ReactElement)?.type === THEAD
   );
 
   return (
     <div className="overflow-x-auto my-0">
-      <table className="min-w-full text-left text-sm whitespace-normal border-collapse separate border-spacing-0">
+      <table className="min-w-full text-left text-sm whitespace-normal border-collapse separate border-spacing-0 mb-0">
         {React.Children.map(children, (child) =>
           React.cloneElement(child as React.ReactElement, { striped, hasHead })
         )}
@@ -147,14 +148,14 @@ export function TABLE({
 }
 
 export function THEAD({ children }: { children: React.ReactNode }) {
-  const isEmpty = React.Children.toArray(children).every(
+  const isEmpty: boolean = React.Children.toArray(children).every(
     (child) => React.Children.count((child as React.ReactElement).props.children) === 0
   );
 
   return (
     <thead
       className={clsx(
-        !isEmpty && "uppercase tracking-wider border-b-2 dark:border-neutral-600 bg-neutral-50 dark:bg-neutral-800 border-t"
+        !isEmpty && "uppercase tracking-wider bg-neutral-50 dark:bg-neutral-800 border-t"
       )}
     >
       {children}
@@ -208,11 +209,12 @@ export function TR({
   );
 }
 
+
 export function TH({ children }: { children: React.ReactNode }) {
   return (
     <th
       scope="col"
-      className="px-6 py-4 border border-gray-300 dark:border-neutral-500"
+      className="px-6 py-4 border border-gray-300 dark:border-neutral-500 border-b-2"
     >
       {children}
     </th>
@@ -221,7 +223,7 @@ export function TH({ children }: { children: React.ReactNode }) {
 
 export function TD({ children }: { children: React.ReactNode }) {
   return (
-    <td className="px-6 py-4 border border-gray-300 dark:border-neutral-500 whitespace-normal break-words">
+    <td className="px-6 py-4 border border-gray-300 dark:border-neutral-500 whitespace-normal break-words cursor-pointer">
       {children}
     </td>
   );
