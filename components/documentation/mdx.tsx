@@ -1,3 +1,5 @@
+import React from 'react'
+
 import Link from 'next/link'
 import clsx from 'clsx'
 
@@ -120,4 +122,107 @@ export function Property({
       </dl>
     </li>
   )
+}
+
+export function TABLE({
+  children,
+  striped = true,
+}: {
+  children: React.ReactNode;
+  striped?: boolean;
+}) {
+  const hasHead = React.Children.toArray(children).some(
+    (child) => (child as React.ReactElement)?.type === THEAD
+  );
+
+  return (
+    <div className="overflow-x-auto my-0">
+      <table className="min-w-full text-left text-sm whitespace-normal border-collapse separate border-spacing-0">
+        {React.Children.map(children, (child) =>
+          React.cloneElement(child as React.ReactElement, { striped, hasHead })
+        )}
+      </table>
+    </div>
+  );
+}
+
+export function THEAD({ children }: { children: React.ReactNode }) {
+  const isEmpty = React.Children.toArray(children).every(
+    (child) => React.Children.count((child as React.ReactElement).props.children) === 0
+  );
+
+  return (
+    <thead
+      className={clsx(
+        !isEmpty && "uppercase tracking-wider border-b-2 dark:border-neutral-600 bg-neutral-50 dark:bg-neutral-800 border-t"
+      )}
+    >
+      {children}
+    </thead>
+  );
+}
+
+export function TBODY({
+  children,
+  striped = true,
+  hasHead = false,
+}: {
+  children: React.ReactNode;
+  striped?: boolean;
+  hasHead?: boolean;
+}) {
+  return (
+    <tbody className={clsx({ "border-t dark:border-neutral-600": !hasHead })}>
+      {React.Children.map(children, (child, index) =>
+        React.cloneElement(child as React.ReactElement, {
+          striped,
+          index,
+        })
+      )}
+    </tbody>
+  );
+}
+
+export function TR({
+  children,
+  striped,
+  index,
+}: {
+  children: React.ReactNode;
+  striped?: boolean;
+  index?: number;
+}) {
+  return (
+    <tr
+      className={clsx(
+        "border-b border-gray-300 dark:border-neutral-600",
+        "hover:bg-neutral-100 dark:hover:bg-neutral-600",
+        "hover:border hover:border-gray-400 dark:hover:border-neutral-500",
+        striped && index !== undefined && index % 2 !== 0
+          ? "bg-neutral-50 dark:bg-neutral-800"
+          : ""
+      )}
+    >
+      {children}
+    </tr>
+  );
+}
+
+export function TH({ children }: { children: React.ReactNode }) {
+  return (
+    <th
+      scope="col"
+      className="px-6 py-4 border border-gray-300 dark:border-neutral-500"
+    >
+      {children}
+    </th>
+  );
+}
+
+export function TD({ children }: { children: React.ReactNode }) {
+  return (
+    <td className="px-6 py-4 border border-gray-300 dark:border-neutral-500 whitespace-normal break-words">
+      {children}
+    </td>
+  );
 }

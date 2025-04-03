@@ -10,104 +10,92 @@ export const metadata = {
 
 <HeroPattern />
 
-# Using WordPress as a Headless CMS
+# WordPress като система за управление на съдържанието, базирана на ,,Headless’’ архитектурата
 
-WordPress can be used as a Headless CMS by leveraging its REST API or GraphQL capabilities to serve content to external applications, such as Next.js, React, or Vue.
+WordPress работи като система за управление на съдържанието, базирана на ,,Headless’’ архитектурата, използвайки своя приложно-програмен интерфейс, 
+за да доставя съдържание към външни приложения, разработени със софтуерни рамки и библиотеки. {{ className: "lead" }}
 
-<Note>WordPress as a Headless CMS decouples the frontend from the backend, allowing for greater flexibility and scalability.</Note>
+## Типове CMS
 
-## REST API Overview
+Системите за управление на съдържанието (CMS) могат да бъдат класифицирани в три основни категории
 
-<Row>
-  <Col>
-    WordPress provides a powerful REST API that allows you to retrieve and manipulate content using HTTP requests. This makes it easy to integrate WordPress with modern JavaScript frameworks and static site generators.
+- **Традиционни системи за управление на съдържанието**:
+  - са концептуализирани и разработени като платформи, предназначени да улеснят създаването и публикуването на HTML-базирано съдържание в интернет
+  - отличават се с интегрирана архитектура, управляваща целия жизнен цикъл на съдържанието
+  - подходящи са за потребители без задълбочени технически познания
+- **Системи за управление на съдържанието, базирани на ,,Headless’’ архитектурата**:
+  - те променят парадигмата в начина, по който се управлява и доставя дигитално съдържание
+  - отделят процеса на управление на съдържанието от презентационния му слой, служейки си с приложно-програмни интерфейси и премахвайки зависимостта от специфични софтуерни рамки
+  - позволяват съдържанието да се разпространява безпроблемно до различни крайни точки, например: мобилни приложения и носими технологии
+  - софтуерните разработчици могат да адаптират презентационния слой към уникалните изисквания на всяка платформа или устройство, персонализирайки потребителските интерфейси и подобрявайки потребителското изживяване
+- **Хибридни системи за управление на съдържанието**:
+  - съчетават предимствата на ,,Headless’’ архитектурата с удобството на традиционните системи за управление на съдържанието, предлагайки гъвкава и универсална платформа за създаване и управление на съдържание
+  - предоставят интуитивни инструменти за лесно актуализиране и модификация на съдържание
+  - позволяват създаването на потребителски интерфейси в софтуерни рамки по предпочитание на разработчиците
+  - обединяват всички функционалности в единна система, преодолявайки проблемите, свързани с непоследователността и допълнителната работа, присъщи на използването на отделни платформи
 
-    ## Benefits of Headless WordPress
+## WordPress
 
-    <Properties>
-      <Property name="Flexibility">
-        Use any frontend framework, such as Next.js, React, or Vue.
-      </Property>
-      <Property name="Performance">
-        Faster load times by serving static content from a CDN.
-      </Property>
-      <Property name="Security">
-        Reduced attack surface since the frontend and backend are separated.
-      </Property>
-    </Properties>
+WordPress може да се въприеме като хибридна система за управление на съдържанието в зависимост от това как бива конфигурирана и използвана. По подразбиране WordPress е традиционна система за управление на съдържанието, където бекендът и фронтендът са свързани помежду си. Въпреки това с въвеждането на приложно-програмен интерфейс за комуникация по HTTP/HTTPs протоколите и стила софтуерна архитектура за реализация на уеб услуги REST, WordPress може да функционира и като система за управление на съдържането, базирана на ,,Headless’’ архитектурата, което я превръща в универсално хибридно решение.
 
-    <div className="not-prose">
-      <Button
-          href="https://developer.wordpress.org/rest-api/"
-          variant="text"
-          arrow="right"
-          target="_blank"
-      >
-          <>Read more about the WordPress REST API</>
-      </Button>
-    </div>
+## Софтуерната рамка Next.js
 
-    ## Key Considerations
+Next.js е стабилна софтуерна рамка, базирана на софтуерната рамка React, която подобрява ефективността при изграждането на уебсайтове в следните аспекти:
 
-    <Properties>
-      <Property name="Authentication">
-        Use application passwords or JWT tokens for secure API access.
-      </Property>
-      <Property name="Caching">
-        Implement caching strategies to improve performance.
-      </Property>
-      <Property name="SEO">
-        Ensure meta tags, schema, and Open Graph data are handled on the frontend.
-      </Property>
-    </Properties>
+<TABLE>
+  <TBODY>
+    <TR>
+      <TD>Отзивчив дизайн</TD>
+      <TD>Интеграция на библиотеки за отзивчив дизайн за адаптиране към различни устройства и размери на екрана. Осигурява се атрактивно изживяване по отношение на визуализацията на всички платформи.</TD>
+    </TR>
+    <TR>
+      <TD>Подобрено потребителско изживяване</TD>
+      <TD>Интуитивна навигация, бързо зареждане на страниците и плавни преходи. Намалява се времето за изпълнение на действия и се повишава удовлетвореността на потребителите.</TD>
+    </TR>
+    <TR>
+      <TD>Оптимизация за търсещи машини</TD>
+      <TD>Улеснява индексирането чрез бързо зареждане на уебстраниците, семантично маркиране и създаване на структурирани данни.</TD>
+    </TR>
+  </TBODY>
+</TABLE>
 
-    ## Getting Started
+## Значението на UX
 
-    <Properties>
-      <Property name="WordPress Setup">
-        Install and configure WordPress with the REST API or GraphQL plugin.
-      </Property>
-      <Property name="Frontend Framework">
-        Choose a framework like Next.js to consume the WordPress API.
-      </Property>
-    </Properties>
+- Потребителско изживяване (UX) се отнася до взаимодействието на потребителя с даден уебсайт, приложение или дигитална платформа. То обхваща всички аспекти на взаимодействието - от функционалност и използваемост до визуален дизайн и емоционално възприятие. 
+- Основната цел на потребителското изживяване е да създаде удобна, интуитивна и ефективна среда, която да отговаря на нуждите на потребителите, като същевременно ги удовлетворява и ангажира.
+- Доброто потребителско изживяване води до по-голям престой в конкретния уебсайт, приложение или дигитална платформа.
+- Методите за измерване на потребителското изживяване включват метрики за използваемост, обратна връзка от страна на потребителите, инструменти за анализ на данни както и тестове за използваемост в реално време.
+- Сред методите за подобряване на потребителското изживяване са: насочен към потребителите дизайн, интуитивна навигация, мобилна съвместимост и отзивчив дизайн, провеждане на редовни тестове и анализ както и спазване на стандарти за уеб достъпност.
 
-    <div className="not-prose">
-      <Button
-          href="https://wordpress.org/support/article/application-passwords/"
-          variant="text"
-          arrow="right"
-          target="_blank"
-      >
-          <>Learn more about WordPress authentication</>
-      </Button>
-    </div>
+## WordPress и Next.js
 
-  </Col>
-  <Col>
+Може да бъде направена сравнителна характеристика между изграждането на уебсайтове с WordPress и Next.js, като се вземат предвид следните аспекти:
 
-    <CodeGroup title="Example Request" tag="GET" label="/wp-json/wp/v2/posts">
-    ```ts
-    import axios from 'axios';
+<TABLE>
+  <THEAD>
+    <TR>
+      <TH>&nbsp;</TH>
+      <TH>WordPress</TH>
+      <TH>Next.js</TH>
+    </TR>
+  </THEAD>
+  <TBODY>
+    <TR>
+      <TD>Производителност</TD>
+      <TD>Може да бъде оптимизиран с помощта на разширения, но разчита повече на обработка от страна на сървъра.</TD>
+      <TD>Отлична</TD>
+    </TR>
+    <TR>
+      <TD>Гъвкавост и персонализация</TD>
+      <TD>Огромен избор от теми и разширения. Ограничени възможности при сложни функционалности.</TD>
+      <TD>Възможност за създаване на сложни уеб приложения и преизползване на интерфейсни елементи.</TD>
+    </TR>
+    <TR>
+      <TD>Мащабируемост</TD>
+      <TD>Могат да бъдат срещнати трудности при мащабирането на уебсайтове с висок трафик.</TD>
+      <TD>Силно мащабируем благодарение на поддръжката си за внедряване без сървър, механизми за кеширане и оптимизирани стратегии за рендериране.</TD>
+    </TR>
+  </TBODY>
+</TABLE>
 
-    const fetchPosts = async () => {
-      const response = await axios.get('https://localhost/wordpress/wp-json/wp/v2/posts');
-      return response.data;
-    };
-    ```
-    </CodeGroup>
-
-    <CodeGroup title="Example Response" tag="GET" label="/wp-json/wp/v2/posts">
-    ```ts
-    [
-      {
-        "id": 1,
-        "title": { "rendered": "Hello World" },
-        "content": { "rendered": "<p>Welcome to WordPress as a Headless CMS.</p>" },
-        "link": "https://localhost/wordpress/hello-world"
-      }
-    ]
-    ```
-    </CodeGroup>
-  </Col>
-</Row>
+## Прогресивни уеб приложения

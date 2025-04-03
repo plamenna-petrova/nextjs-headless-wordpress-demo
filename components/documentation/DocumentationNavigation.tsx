@@ -184,22 +184,16 @@ const NavigationGroupListItem = ({ navigationGroup, className }: NavigationGroup
 
 export const navigationGroups: Array<NavigationGroup> = [
   {
-    title: 'Guides',
+    title: 'Ръководство',
     links: [
-      { title: 'Introduction', href: '/documentation' },
-      { title: 'Quickstart', href: '/documentation/quickstart' },
+      { title: 'Начало', href: '/documentation' },
+      { title: 'Основни концепции', href: '/documentation/quickstart' },
     ],
   },
   {
     title: 'Справка',
     links: [
       { title: 'Използвани функции', href: '/documentation/rest-api-functions' }
-    ]
-  },
-  {
-    title: 'Frequently Asked Questions',
-    links: [
-      { title: 'Why use WP Headless CMS?', href: '/documentation/faq' }
     ]
   }
 ];

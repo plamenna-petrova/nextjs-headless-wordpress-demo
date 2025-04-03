@@ -56,12 +56,12 @@ function PageNavigation() {
     <div className="flex">
       {previousPage && (
         <div className="flex flex-col items-start gap-3">
-          <PageLink label="Previous" page={previousPage} previous />
+          <PageLink label="Назад" page={previousPage} previous />
         </div>
       )}
       {nextPage && (
         <div className="ml-auto flex flex-col items-end gap-3">
-          <PageLink label="Next" page={nextPage} />
+          <PageLink label="Напред" page={nextPage} />
         </div>
       )}
     </div>

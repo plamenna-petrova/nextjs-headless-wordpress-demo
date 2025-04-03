@@ -59,7 +59,7 @@ function useAutocomplete({ close }: { close: () => void }) {
       React.KeyboardEvent
     >({
       id,
-      placeholder: 'Search in documentation...',
+      placeholder: 'Търси в документацията...',
       defaultActiveItemId: 0,
       onStateChange({ state }) {
         setAutocompleteState(state);
@@ -508,7 +508,7 @@ export function Search() {
         {...buttonProps}
       >
         <SearchIcon className="h-5 w-5 stroke-current" />
-        Search in documentation...
+        Търси в документацията...
         <kbd className="ml-auto text-2xs text-zinc-400 dark:text-zinc-500">
           <kbd className="font-sans">{modifierKey}</kbd>
           <kbd className="font-sans">K</kbd>

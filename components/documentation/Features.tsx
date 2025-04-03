@@ -27,10 +27,10 @@ interface Feature {
 
 const features: Array<Feature> = [
   {
-    name: 'Components',
+    name: 'REST API functions',
     description:
-      'Learn about the components and how to use them in your project.',
-    icon: SquaresPlusIcon,
+      'Learn about the REST API functions',
+    icon: ShapesIcon,
     pattern: {
       y: 16,
       squares: [
@@ -40,10 +40,10 @@ const features: Array<Feature> = [
     },
   },
   {
-    name: 'REST API functions',
+    name: 'Components',
     description:
-      'Learn about the REST API functions',
-    icon: ShapesIcon,
+      'Learn about the components and how to use them in your project.',
+    icon: SquaresPlusIcon,
     pattern: {
       y: -6,
       squares: [
