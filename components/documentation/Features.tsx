@@ -1,12 +1,6 @@
 'use client'
 
-import Link from 'next/link'
-import {
-  type MotionValue,
-  motion,
-  useMotionTemplate,
-  useMotionValue,
-} from 'framer-motion'
+import { type MotionValue, motion, useMotionTemplate, useMotionValue } from 'framer-motion'
 
 import { GridPattern } from '@/components/documentation/GridPattern'
 import { Heading } from '@/components/documentation/Heading'
@@ -14,6 +8,8 @@ import { ShapesIcon } from '@/components/documentation/icons/ShapesIcon'
 import { BoltIcon } from '@/components/documentation/icons/BoltIcon'
 import { SquaresPlusIcon } from '@/components/documentation/icons/SquaresPlusIcon'
 import { CogIcon } from '@/components/documentation/icons/CogIcon'
+
+import Link from 'next/link'
 
 interface Feature {
   name: string;
@@ -88,8 +84,8 @@ export function FeaturePattern({
   mouseX: MotionValue<number>
   mouseY: MotionValue<number>
 }) {
-  let maskImage = useMotionTemplate`radial-gradient(180px at ${mouseX}px ${mouseY}px, white, transparent)`
-  let style = { maskImage, WebkitMaskImage: maskImage }
+  let maskImage = useMotionTemplate`radial-gradient(180px at ${mouseX}px ${mouseY}px, white, transparent)`;
+  let style = { maskImage, WebkitMaskImage: maskImage };
 
   return (
     <div className="pointer-events-none">
@@ -123,17 +119,13 @@ export function FeaturePattern({
 }
 
 function Feature({ feature }: { feature: Feature }) {
-  let mouseX = useMotionValue(0)
-  let mouseY = useMotionValue(0)
+  let mouseX = useMotionValue(0);
+  let mouseY = useMotionValue(0);
 
-  function onMouseMove({
-    currentTarget,
-    clientX,
-    clientY,
-  }: React.MouseEvent<HTMLAnchorElement>) {
-    let { left, top } = currentTarget.getBoundingClientRect()
-    mouseX.set(clientX - left)
-    mouseY.set(clientY - top)
+  function onMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent<HTMLAnchorElement>) {
+    let { left, top } = currentTarget.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
   }
 
   return (

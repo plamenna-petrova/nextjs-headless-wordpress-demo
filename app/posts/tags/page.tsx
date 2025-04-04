@@ -1,7 +1,7 @@
 import { getAllTags } from "@/lib/wordpressRequests";
+import { Metadata } from "next";
 import Section from "@/components/section/section";
 import Container from "@/components/container/container";
-import { Metadata } from "next";
 import Link from "next/link";
 import BackButton from "@/components/back-button/back-button";
 import Main from "@/components/main/main";

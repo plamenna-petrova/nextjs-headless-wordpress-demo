@@ -9,11 +9,12 @@ import {
   useRef,
   useState,
 } from 'react'
-import { Tab } from '@headlessui/react'
-import clsx from 'clsx'
-import { create } from 'zustand'
 
+import { Tab } from '@headlessui/react'
+import { create } from 'zustand'
 import { Tag } from './Tag'
+
+import clsx from 'clsx'
 
 const languageNames: Record<string, string> = {
   js: 'JavaScript',
@@ -67,17 +68,18 @@ export function CodeButton({
   onClick?: () => void
   [key: string]: any
 }) {
-  let [clickCount, setClickCount] = useState(0)
-  let clicked = clickCount > 0
+  let [clickCount, setClickCount] = useState(0);
+  let clicked = clickCount > 0;
 
   useEffect(() => {
     if (clickCount > 0) {
-      let timeout = setTimeout(() => setClickCount(0), 1000)
+      let timeout = setTimeout(() => setClickCount(0), 1000);
+
       return () => {
-        clearTimeout(timeout)
+        clearTimeout(timeout);
       }
     }
-  }, [clickCount])
+  }, [clickCount]);
 
   return (
     <button
@@ -120,17 +122,18 @@ export function CodeButton({
 }
 
 function CopyButton({ code }: { code: string }) {
-  let [copyCount, setCopyCount] = useState(0)
-  let copied = copyCount > 0
+  let [copyCount, setCopyCount] = useState(0);
+  let copied = copyCount > 0;
 
   useEffect(() => {
     if (copyCount > 0) {
-      let timeout = setTimeout(() => setCopyCount(0), 1000)
+      let timeout = setTimeout(() => setCopyCount(0), 1000);
+
       return () => {
-        clearTimeout(timeout)
+        clearTimeout(timeout);
       }
     }
-  }, [copyCount])
+  }, [copyCount]);
 
   return (
     <button
@@ -173,7 +176,7 @@ function CopyButton({ code }: { code: string }) {
 
 function CodePanelHeader({ tag, label }: { tag?: string; label?: string }) {
   if (!tag && !label) {
-    return null
+    return null;
   }
 
   return (
@@ -194,44 +197,45 @@ function CodePanelHeader({ tag, label }: { tag?: string; label?: string }) {
 }
 
 function highlightPortions(code: string): React.ReactNode {
-  const regex = /{#(string|comment|keyword)}([\s\S]*?){#}/g
+  const regex = /{#(string|comment|keyword)}([\s\S]*?){#}/g;
 
-  const parts = []
-  let lastIndex = 0
+  const parts = [];
+  let lastIndex = 0;
 
   for (const match of Array.from(code.matchAll(regex))) {
-    const [fullMatch, tagType, p1] = match
-    const offset = match.index!
+    const [fullMatch, tagType, p1] = match;
+    const offset = match.index!;
 
-    let className = ''
+    let className = '';
 
     switch (tagType) {
       case 'string':
-        className = 'font-semibold text-[var(--shiki-token-string-expression)]'
+        className = 'font-semibold text-[var(--shiki-token-string-expression)]';
         break
       case 'comment':
-        className = 'text-[var(--shiki-token-comment)]'
+        className = 'text-[var(--shiki-token-comment)]';
         break
       case 'keyword':
-        className = 'text-[var(--shiki-token-keyword)]'
+        className = 'text-[var(--shiki-token-keyword)]';
         break
     }
 
     // Add text before the matched pattern
-    parts.push(code.substring(lastIndex, offset))
+    parts.push(code.substring(lastIndex, offset));
     // Add the highlighted part
     parts.push(
       <span key={offset} className={className}>
         {p1}
       </span>,
-    )
-    lastIndex = offset + fullMatch.length
+    );
+
+    lastIndex = offset + fullMatch.length;
   }
 
   // Add any remaining text after the last match
-  parts.push(code.substring(lastIndex))
+  parts.push(code.substring(lastIndex));
 
-  return parts
+  return parts;
 }
 
 function CodePanel({
@@ -247,26 +251,21 @@ function CodePanel({
   code?: string
   extraButton?: React.ReactNode
 }) {
-  let child = Children.only(children)
+  let child = Children.only(children);
 
   if (isValidElement(child)) {
-    tag = child.props.tag ?? tag
-    label = child.props.label ?? label
-    code = child.props.code ?? code
+    tag = child.props.tag ?? tag;
+    label = child.props.label ?? label;
+    code = child.props.code ?? code;
   }
 
   if (!code) {
-    throw new Error(
-      '`CodePanel` requires a `code` prop, or a child with a `code` prop.',
-    )
+    throw new Error('`CodePanel` requires a `code` prop, or a child with a `code` prop.');
   }
 
-  const highlightedCode = highlightPortions(code)
-  const isHighlighted = code?.includes('{#}')
-  const cleanedCode = code.replace(
-    /{#(string|comment|keyword)}([\s\S]*?){#}/g,
-    '$2',
-  )
+  const highlightedCode = highlightPortions(code);
+  const isHighlighted = code?.includes('{#}');
+  const cleanedCode = code.replace(/{#(string|comment|keyword)}([\s\S]*?){#}/g, '$2');
 
   return (
     <div className="group dark:bg-white/2.5">
@@ -294,10 +293,10 @@ function CodeGroupHeader({
   children: React.ReactNode
   selectedIndex: number
 }) {
-  let hasTabs = Children.count(children) > 1
+  let hasTabs = Children.count(children) > 1;
 
   if (!title && !hasTabs) {
-    return null
+    return null;
   }
 
   return (
@@ -331,7 +330,7 @@ function CodeGroupPanels({
   children,
   ...props
 }: React.ComponentPropsWithoutRef<typeof CodePanel>) {
-  let hasTabs = Children.count(children) > 1
+  let hasTabs = Children.count(children) > 1;
 
   if (hasTabs) {
     return (
@@ -349,13 +348,13 @@ function CodeGroupPanels({
 }
 
 function usePreventLayoutShift() {
-  let positionRef = useRef<HTMLElement>(null)
-  let rafRef = useRef<number>()
+  let positionRef = useRef<HTMLElement>(null);
+  let rafRef = useRef<number>();
 
   useEffect(() => {
     return () => {
       if (typeof rafRef.current !== 'undefined') {
-        window.cancelAnimationFrame(rafRef.current)
+        window.cancelAnimationFrame(rafRef.current);
       }
     }
   }, [])
@@ -364,17 +363,16 @@ function usePreventLayoutShift() {
     positionRef,
     preventLayoutShift(callback: () => void) {
       if (!positionRef.current) {
-        return
+        return;
       }
 
-      let initialTop = positionRef.current.getBoundingClientRect().top
+      let initialTop = positionRef.current.getBoundingClientRect().top;
 
-      callback()
+      callback();
 
       rafRef.current = window.requestAnimationFrame(() => {
-        let newTop =
-          positionRef.current?.getBoundingClientRect().top ?? initialTop
-        window.scrollBy(0, newTop - initialTop)
+        let newTop = positionRef.current?.getBoundingClientRect().top ?? initialTop;
+        window.scrollBy(0, newTop - initialTop);
       })
     },
   }
@@ -397,18 +395,17 @@ const usePreferredLanguageStore = create<{
 }))
 
 function useTabGroupProps(availableLanguages: Array<string>) {
-  let { preferredLanguages, addPreferredLanguage } = usePreferredLanguageStore()
-  let [selectedIndex, setSelectedIndex] = useState(0)
-  let activeLanguage = [...availableLanguages].sort(
-    (a, z) => preferredLanguages.indexOf(z) - preferredLanguages.indexOf(a),
-  )[0]
-  let languageIndex = availableLanguages.indexOf(activeLanguage)
-  let newSelectedIndex = languageIndex === -1 ? selectedIndex : languageIndex
+  let { preferredLanguages, addPreferredLanguage } = usePreferredLanguageStore();
+  let [selectedIndex, setSelectedIndex] = useState(0);
+  let activeLanguage = [...availableLanguages].sort((a, z) => preferredLanguages.indexOf(z) - preferredLanguages.indexOf(a))[0];
+  let languageIndex = availableLanguages.indexOf(activeLanguage);
+  let newSelectedIndex = languageIndex === -1 ? selectedIndex : languageIndex;
+
   if (newSelectedIndex !== selectedIndex) {
-    setSelectedIndex(newSelectedIndex)
+    setSelectedIndex(newSelectedIndex);
   }
 
-  let { positionRef, preventLayoutShift } = usePreventLayoutShift()
+  let { positionRef, preventLayoutShift } = usePreventLayoutShift();
 
   return {
     as: 'div' as const,
@@ -418,11 +415,11 @@ function useTabGroupProps(availableLanguages: Array<string>) {
       preventLayoutShift(() =>
         addPreferredLanguage(availableLanguages[newSelectedIndex]),
       )
-    },
+    }
   }
 }
 
-const CodeGroupContext = createContext(false)
+const CodeGroupContext = createContext(false);
 
 export function CodeGroup({
   children,
@@ -430,25 +427,23 @@ export function CodeGroup({
   extraButton,
   ...props
 }: React.ComponentPropsWithoutRef<typeof CodeGroupPanels> & { title: string }) {
-  let languages =
-    Children.map(children, (child) =>
-      getPanelTitle(isValidElement(child) ? child.props : {}),
-    ) ?? []
-  let tabGroupProps = useTabGroupProps(languages)
-  let hasTabs = Children.count(children) > 1
+  let languages = Children.map(children, (child) => getPanelTitle(isValidElement(child) ? child.props : {})) ?? [];
+  let tabGroupProps = useTabGroupProps(languages);
+  let hasTabs = Children.count(children) > 1;
 
-  let containerClassName =
-    'my-6 overflow-hidden rounded-2xl bg-zinc-900 shadow-md dark:ring-1 dark:ring-white/10'
+  let containerClassName = 'my-6 overflow-hidden rounded-2xl bg-zinc-900 shadow-md dark:ring-1 dark:ring-white/10';
+
   let header = (
     <CodeGroupHeader title={title} selectedIndex={tabGroupProps.selectedIndex}>
       {children}
     </CodeGroupHeader>
-  )
+  );
+
   let panels = (
     <CodeGroupPanels {...props} extraButton={extraButton}>
       {children}
     </CodeGroupPanels>
-  )
+  );
 
   return (
     <CodeGroupContext.Provider value={true}>
@@ -475,14 +470,13 @@ export function Code({
   children,
   ...props
 }: React.ComponentPropsWithoutRef<'code'>) {
-  let isGrouped = useContext(CodeGroupContext)
+  let isGrouped = useContext(CodeGroupContext);
 
   if (isGrouped) {
     if (typeof children !== 'string') {
-      throw new Error(
-        '`Code` children must be a string when nested inside a `CodeGroup`.',
-      )
+      throw new Error('`Code` children must be a string when nested inside a `CodeGroup`.');
     }
+
     return <code {...props} dangerouslySetInnerHTML={{ __html: children }} />
   }
 
@@ -493,10 +487,10 @@ export function Pre({
   children,
   ...props
 }: React.ComponentPropsWithoutRef<typeof CodeGroup>) {
-  let isGrouped = useContext(CodeGroupContext)
+  let isGrouped = useContext(CodeGroupContext);
 
   if (isGrouped) {
-    return children
+    return children;
   }
 
   return <CodeGroup {...props}>{children}</CodeGroup>

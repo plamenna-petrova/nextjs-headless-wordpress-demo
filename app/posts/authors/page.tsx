@@ -1,9 +1,9 @@
+import { Metadata } from "next";
 import { getAllAuthors } from "@/lib/wordpressRequests";
 import Section from "@/components/section/section";
 import Container from "@/components/container/container";
 import Link from "next/link";
 import BackButton from "@/components/back-button/back-button";
-import { Metadata } from "next";
 import Main from "@/components/main/main";
 
 export async function generateMetadata(): Promise<Metadata> {

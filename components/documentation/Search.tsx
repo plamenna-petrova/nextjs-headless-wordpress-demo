@@ -11,19 +11,22 @@ import {
   useRef,
   useState,
 } from 'react'
-import Highlighter from 'react-highlight-words'
+
 import { ReadonlyURLSearchParams, usePathname, useRouter, useSearchParams } from 'next/navigation'
+
 import {
   type AutocompleteApi,
   createAutocomplete,
   type AutocompleteState,
   type AutocompleteCollection,
 } from '@algolia/autocomplete-core'
-import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react'
-import clsx from 'clsx'
 
+import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react'
 import { navigationGroups } from '@/components/documentation/DocumentationNavigation'
 import { type Result } from '@/mdx/search.mjs'
+
+import Highlighter from 'react-highlight-words'
+import clsx from 'clsx'
 
 type EmptyObject = Record<string, never>
 

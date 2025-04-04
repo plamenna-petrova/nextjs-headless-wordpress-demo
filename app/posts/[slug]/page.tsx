@@ -1,19 +1,13 @@
-import {
-  getPostBySlug,
-  getFeaturedMediaById,
-  getAuthorById,
-  getCategoryById,
-} from "@/lib/wordpressRequests";
-
-import Section from "@/components/section/section";
-import Container from "@/components/container/container";
-import Article from "@/components/article/article";
+import { getPostBySlug, getFeaturedMediaById, getAuthorById, getCategoryById } from "@/lib/wordpressRequests";
 import { Metadata } from "next";
 import { badgeVariants } from "@/components/ui/badge";
 import { mergeClassNames } from "@/lib/utils";
 import Link from "next/link";
 import Balancer from "react-wrap-balancer";
 import Main from "@/components/main/main";
+import Section from "@/components/section/section";
+import Container from "@/components/container/container";
+import Article from "@/components/article/article";
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const postBySlug = await getPostBySlug(params.slug);

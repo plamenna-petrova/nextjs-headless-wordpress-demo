@@ -1,9 +1,9 @@
 'use client'
 
-import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Button } from '@/components/documentation/Button';
 import { navigationGroups } from '@/components/documentation/DocumentationNavigation';
+import Link from 'next/link'
 
 function PageLink({
   label,

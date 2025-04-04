@@ -1,12 +1,12 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import Link from 'next/link'
 import { useInView } from 'framer-motion'
-
 import { useSectionStore } from './SectionProvider'
 import { Tag } from './Tag'
 import { convertRemToPx } from '@/lib/remToPx'
+
+import Link from 'next/link'
 
 const AnchorIcon = (props: React.ComponentPropsWithoutRef<'svg'>) => {
   return (
@@ -85,12 +85,12 @@ export function Heading<Level extends 2 | 3>({
   anchor = true,
   ...props
 }: React.ComponentPropsWithoutRef<`h${Level}`> & HeadingProps) {
-  let currentLevel = level ?? (2 as Level);
+  let currentLevel: number = level ?? (2 as Level);
   let HeadingComponent = `h${level}` as 'h2' | 'h3';
   let ref = useRef<HTMLHeadingElement>(null);
   let registerHeading = useSectionStore((s) => s.registerHeading);
 
-  let isAnchorInView = useInView(ref, {
+  let isAnchorInView: boolean = useInView(ref, {
     margin: `${convertRemToPx(-3.5)}px 0px 0px 0px`,
     amount: 'all',
   });

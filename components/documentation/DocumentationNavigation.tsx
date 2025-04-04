@@ -1,13 +1,14 @@
 'use client'
 
-import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import clsx from 'clsx'
 import { AnimatePresence, motion, useIsPresent } from 'framer-motion'
 import { useIsInsideMobileNavigation } from '@/components/documentation/DocumentationMobileNavigation'
 import { useSectionStore } from './SectionProvider'
 import { Tag } from './Tag'
 import { convertRemToPx } from '@/lib/remToPx'
+
+import clsx from 'clsx'
+import Link from 'next/link'
 
 interface NavLinkProps {
   href: string;
@@ -113,9 +114,9 @@ interface NavigationGroupProps {
 const NavigationGroupListItem = ({ navigationGroup, className }: NavigationGroupProps) => {
   let pathname: string = usePathname();
   let sections = useSectionStore((s) => s.sections);
-  let isInsideMobileNavigation = useIsInsideMobileNavigation();
+  let isInsideMobileNavigation: boolean = useIsInsideMobileNavigation();
 
-  let isNavigationGroupActive = navigationGroup.links.findIndex((link) => link.href === pathname) !== -1;
+  let isNavigationGroupActive: boolean = navigationGroup.links.findIndex((link) => link.href === pathname) !== -1;
 
   return (
     <li className={clsx('relative mt-6', className)}>

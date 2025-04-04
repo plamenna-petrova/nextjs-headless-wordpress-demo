@@ -1,14 +1,7 @@
 'use client'
 
-import {
-  createContext,
-  Fragment,
-  Suspense,
-  useContext,
-  useEffect,
-  useRef,
-} from 'react'
-import { usePathname, useSearchParams } from 'next/navigation'
+import { createContext, Fragment, Suspense, useContext, useEffect, useRef } from 'react'
+import { ReadonlyURLSearchParams, usePathname, useSearchParams } from 'next/navigation'
 import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react'
 import { motion } from 'framer-motion'
 import { create } from 'zustand'
@@ -45,17 +38,11 @@ function XIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
 
 const IsInsideMobileNavigationContext = createContext(false);
 
-function MobileNavigationDialog({
-  isOpen,
-  close,
-}: {
-  isOpen: boolean
-  close: () => void
-}) {
-  let pathname = usePathname()
-  let searchParams = useSearchParams()
-  let initialPathname = useRef(pathname).current
-  let initialSearchParams = useRef(searchParams).current
+function MobileNavigationDialog({ isOpen, close }: { isOpen: boolean;  close: () => void }) {
+  let pathname: string = usePathname();
+  let searchParams: ReadonlyURLSearchParams = useSearchParams();
+  let initialPathname: string = useRef(pathname).current;
+  let initialSearchParams: ReadonlyURLSearchParams = useRef(searchParams).current;
 
   useEffect(() => {
     if (pathname !== initialPathname || searchParams !== initialSearchParams) {
@@ -63,12 +50,12 @@ function MobileNavigationDialog({
     }
   }, [pathname, searchParams, close, initialPathname, initialSearchParams])
 
-  function onClickDialog(event: React.MouseEvent<HTMLDivElement>) {
+ const onClickDialog = (event: React.MouseEvent<HTMLDivElement>) => {
     if (!(event.target instanceof HTMLElement)) {
       return;
     }
 
-    let link = event.target.closest('a');
+    let link: HTMLAnchorElement | null = event.target.closest('a');
 
     if (
       link &&
@@ -97,7 +84,6 @@ function MobileNavigationDialog({
         >
           <div className="fixed inset-0 top-14 bg-zinc-400/20 backdrop-blur-sm dark:bg-black/40" />
         </TransitionChild>
-
         <DialogPanel>
           <TransitionChild
             as={Fragment}
@@ -110,7 +96,6 @@ function MobileNavigationDialog({
           >
             <DocumentationHeader />
           </TransitionChild>
-
           <TransitionChild
             as={Fragment}
             enter="duration-500 ease-in-out"
@@ -150,9 +135,9 @@ export const useMobileNavigationStore = create<{
 }))
 
 export function MobileNavigation() {
-  let isInsideMobileNavigation = useIsInsideMobileNavigation()
-  let { isOpen, toggle, close } = useMobileNavigationStore()
-  let ToggleIcon = isOpen ? XIcon : MenuIcon
+  let isInsideMobileNavigation = useIsInsideMobileNavigation();
+  let { isOpen, toggle, close } = useMobileNavigationStore();
+  let ToggleIcon = isOpen ? XIcon : MenuIcon;
 
   return (
     <IsInsideMobileNavigationContext.Provider value={true}>

@@ -1,5 +1,3 @@
-import Link from 'next/link'
-import clsx from 'clsx'
 import { forwardRef } from 'react'
 import { motion, MotionValue, useScroll, useTransform } from 'framer-motion'
 import { Button } from '@/components/documentation/Button'
@@ -8,6 +6,8 @@ import { MobileNavigation, useIsInsideMobileNavigation } from '@/components/docu
 import { useMobileNavigationStore } from '@/components/documentation/DocumentationMobileNavigation'
 import { MobileSearch, Search } from '@/components/documentation/Search'
 import { ThemeToggle } from '@/components/documentation/ThemeToggle'
+import Link from 'next/link'
+import clsx from 'clsx'
 
 export const DocumentationHeader = forwardRef<
   React.ElementRef<'div'>,

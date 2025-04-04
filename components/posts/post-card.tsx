@@ -1,8 +1,8 @@
-import Image from "next/image";
-import Link from "next/link";
 import { Post } from "@/types/Post";
 import { mergeClassNames } from "@/lib/utils";
 import { getFeaturedMediaById, getCategoryById } from "@/lib/wordpressRequests";
+import Image from "next/image";
+import Link from "next/link";
 
 const PostCard = async ({ post }: { post: Post }) => {
   const postFeaturedMedia = await getFeaturedMediaById(post.featured_media);

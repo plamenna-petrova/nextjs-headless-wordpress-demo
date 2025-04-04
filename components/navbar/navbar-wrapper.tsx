@@ -4,8 +4,8 @@ import { usePathname } from "next/navigation";
 import Navbar from "./navbar";
 
 export default function NavbarWrapper() {
-  const pathname = usePathname();
-  const isDocumentationPage = pathname.startsWith("/documentation");
+  const pathname: string = usePathname();
+  const isDocumentationPage: boolean = pathname.startsWith("/documentation");
 
   return (
     <>

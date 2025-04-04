@@ -33,9 +33,7 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <head/>
-      <body
-        className={mergeClassNames("min-h-screen font-sans antialiased", fontSans.variable)}
-      >
+      <body className={mergeClassNames("min-h-screen font-sans antialiased", fontSans.variable)}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

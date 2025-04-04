@@ -1,13 +1,14 @@
 'use client'
 
+import { type Section, SectionProvider } from './SectionProvider'
+
 import { usePathname } from 'next/navigation'
 import { motion } from 'framer-motion'
-
 import { DocumentationNavigation } from '@/components/documentation/DocumentationNavigation'
 import { DocumentationHeader } from '@/components/documentation/DocumentationHeader'
 import { DocumentationFooter } from '@/components/documentation/DocumentationFooter'
 import { Logo } from '@/components/documentation/Logo';
-import { type Section, SectionProvider } from './SectionProvider'
+
 import Link from 'next/link'
 
 interface DocumentationLayoutProps {

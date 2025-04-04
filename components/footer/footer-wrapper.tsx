@@ -4,8 +4,8 @@ import { usePathname } from "next/navigation";
 import Footer from "./footer";
 
 export default function FooterWrapper({ metadata }: { metadata: any }) {
-  const pathname = usePathname();
-  const isDocumentationPage = pathname.startsWith("/documentation");
+  const pathname: string = usePathname();
+  const isDocumentationPage: boolean = pathname.startsWith("/documentation");
 
   return (
     <>

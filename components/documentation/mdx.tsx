@@ -1,15 +1,15 @@
-import React from 'react'
-
-import Link from 'next/link'
-import clsx from 'clsx'
-
 import { Heading } from './Heading'
 import { Prose } from './Prose'
-
-export const a = Link
 export { Button } from './Button'
 export { CodeGroup, Code as code, Pre as pre } from '@/components/documentation/Code'
 export { Image } from '@/components/documentation/Image'
+
+import React from 'react'
+import Link from 'next/link'
+import clsx from 'clsx'
+
+export const a = Link
+
 
 export function wrapper({ children }: { children: React.ReactNode }) {
   return (
@@ -19,9 +19,7 @@ export function wrapper({ children }: { children: React.ReactNode }) {
   )
 }
 
-export const h2 = function H2(
-  props: Omit<React.ComponentPropsWithoutRef<typeof Heading>, 'level'>,
-) {
+export const h2 = function H2(props: Omit<React.ComponentPropsWithoutRef<typeof Heading>, 'level'>) {
   return <Heading level={2} {...props} />
 }
 
@@ -60,13 +58,7 @@ export function Row({ children }: { children: React.ReactNode }) {
   )
 }
 
-export function Col({
-  children,
-  sticky = false,
-}: {
-  children: React.ReactNode
-  sticky?: boolean
-}) {
+export function Col({ children, sticky = false }: { children: React.ReactNode, sticky?: boolean }) {
   return (
     <div
       className={clsx(
@@ -92,15 +84,7 @@ export function Properties({ children }: { children: React.ReactNode }) {
   )
 }
 
-export function Property({
-  name,
-  children,
-  type,
-}: {
-  name: string
-  children: React.ReactNode
-  type?: string
-}) {
+export function Property({ name, children, type }: { name: string; children: React.ReactNode; type?: string; }) {
   return (
     <li className="m-0 px-0 py-4 first:pt-0 last:pb-0">
       <dl className="m-0 flex flex-wrap items-center gap-x-3 gap-y-2">
@@ -125,13 +109,7 @@ export function Property({
   )
 }
 
-export function TABLE({
-  children,
-  striped = true,
-}: {
-  children: React.ReactNode;
-  striped?: boolean;
-}) {
+export function TABLE({ children, striped = true }: { children: React.ReactNode; striped?: boolean; }) {
   const hasHead: boolean = React.Children.toArray(children).some(
     (child) => (child as React.ReactElement)?.type === THEAD
   );
@@ -208,7 +186,6 @@ export function TR({
     </tr>
   );
 }
-
 
 export function TH({ children }: { children: React.ReactNode }) {
   return (

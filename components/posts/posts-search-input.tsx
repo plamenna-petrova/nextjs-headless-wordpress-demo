@@ -1,7 +1,6 @@
 "use client";
 
 import { Input } from "@/components/ui/input";
-
 import { ReadonlyURLSearchParams, usePathname, useSearchParams, useRouter } from "next/navigation";
 import { ChangeEvent } from "react";
 import { useDebouncedCallback } from "use-debounce";

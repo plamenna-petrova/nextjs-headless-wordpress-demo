@@ -1,6 +1,6 @@
-import glob from 'fast-glob';
 import { type Section } from '@/components/documentation/SectionProvider';
 import { DocumentationLayout } from '@/components/documentation/DocumentationLayout';
+import glob from 'fast-glob';
 
 export default async function Documentation({ children }: { children: React.ReactNode }) {
   let foundMDXPages: string[] = await glob('**/*.mdx', { cwd: 'app/documentation' });

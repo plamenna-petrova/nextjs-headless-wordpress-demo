@@ -8,13 +8,13 @@ import {
 } from "@/components/ui/pagination";
 
 import { getAllAuthors, getAllCategories, getAllPosts, getAllTags } from "@/lib/wordpressRequests";
+import { PostsSearchInput } from "@/components/posts/posts-search-input";
 
 import Container from "@/components/container/container";
 import PostCard from "@/components/posts/post-card";
 import Section from "@/components/section/section";
 import PostsFilter from "@/components/posts/posts-filter";
 import Main from "@/components/main/main";
-import { PostsSearchInput } from "@/components/posts/posts-search-input";
 
 const Posts = async ({ searchParams }: { searchParams: { [key: string]: string | undefined } }) => {
   const { search, author, tag, category, page } = searchParams;

@@ -1,11 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { useMotionValue, MotionValue } from "framer-motion";
 import { Pen, File, User, Tag, Boxes, Folder, LucideIcon } from "lucide-react";
-
 import { FeatureIcon, FeaturePattern } from "@/components/documentation/Features";
 import { useEffect, useRef } from "react";
+import Link from "next/link";
 
 type LinkPattern = {
   y: number;
