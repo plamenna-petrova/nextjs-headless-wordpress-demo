@@ -238,11 +238,11 @@ function SearchResults({
       <div className="p-6 text-center">
         <NoResultsIcon className="mx-auto h-5 w-5 stroke-zinc-900 dark:stroke-zinc-600" />
         <p className="mt-2 text-xs text-zinc-700 dark:text-zinc-400">
-          Nothing found for{' '}
+          Не са намерени резултати за {' '}
           <strong className="break-words font-semibold text-zinc-900 dark:text-white">
             &lsquo;{query}&rsquo;
           </strong>
-          . Please try again.
+          . Опитайте отново.
         </p>
       </div>
     )

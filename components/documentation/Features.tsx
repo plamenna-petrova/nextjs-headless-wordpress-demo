@@ -16,20 +16,21 @@ import { SquaresPlusIcon } from '@/components/documentation/icons/SquaresPlusIco
 import { CogIcon } from '@/components/documentation/icons/CogIcon'
 
 interface Feature {
-  name: string
-  description: string
-  icon: React.ComponentType<{ className?: string }>
+  name: string;
+  description: string;
+  href?: string;
+  icon: React.ComponentType<{ className?: string }>;
   pattern: Omit<
     React.ComponentPropsWithoutRef<typeof GridPattern>,
     'width' | 'height' | 'x'
-  >
+  >;
 }
 
 const features: Array<Feature> = [
   {
-    name: 'REST API functions',
-    description:
-      'Learn about the REST API functions',
+    name: 'Използвани функции',
+    description: 'Научете повече за използваните функции на приложно-програмния интерфейс на WordPress',
+    href: '/documentation/rest-api-functions',
     icon: ShapesIcon,
     pattern: {
       y: 16,
@@ -40,9 +41,8 @@ const features: Array<Feature> = [
     },
   },
   {
-    name: 'Components',
-    description:
-      'Learn about the components and how to use them in your project.',
+    name: 'Библиотеки с компоненти',
+    description: 'Научете повече за интегрираните библиотеки с компоненти',
     icon: SquaresPlusIcon,
     pattern: {
       y: -6,
@@ -53,22 +53,17 @@ const features: Array<Feature> = [
     },
   },
   {
-    name: 'Routing Strategies',
-    description:
-      'Learn about the used routing strategies',
+    name: 'UX дизайн',
+    description: 'Научете повече за приложените принципи на UX дизайна',
     icon: BoltIcon,
     pattern: {
-      y: 32,
-      squares: [
-        [0, 2],
-        [1, 4],
-      ],
+      y: 22,
+      squares: [[0, 1]],
     },
   },
   {
-    name: 'Component Libraries',
-    description:
-      'Learn about the used component libraries',
+    name: 'SEO стратегии',
+    description: 'Научете повече за добрите SEO практики и стратегии за приложенията, разработени с Next.js',
     icon: CogIcon,
     pattern: {
       y: 22,
@@ -135,15 +130,16 @@ function Feature({ feature }: { feature: Feature }) {
     currentTarget,
     clientX,
     clientY,
-  }: React.MouseEvent<HTMLDivElement>) {
+  }: React.MouseEvent<HTMLAnchorElement>) {
     let { left, top } = currentTarget.getBoundingClientRect()
     mouseX.set(clientX - left)
     mouseY.set(clientY - top)
   }
 
   return (
-    <div
+    <Link
       key={feature.name}
+      href={feature.href ?? '/documentation'} 
       onMouseMove={onMouseMove}
       className="group relative flex rounded-2xl bg-zinc-50 transition-shadow hover:shadow-md hover:shadow-zinc-900/5 dark:bg-white/2.5 dark:hover:shadow-black/5"
     >
@@ -152,16 +148,16 @@ function Feature({ feature }: { feature: Feature }) {
       <div className="relative rounded-2xl px-4 pb-4 pt-16">
         <FeatureIcon icon={feature.icon} />
         <h3 className="mt-4 text-sm font-semibold leading-7 text-zinc-900 dark:text-white">
-          <Link href="/documentation">
+          <div className="relative z-10 block">
             <span className="absolute inset-0 rounded-2xl" />
             {feature.name}
-          </Link>
+          </div>
         </h3>
         <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
           {feature.description}
         </p>
       </div>
-    </div>
+    </Link>
   )
 }
 
@@ -169,7 +165,7 @@ export function Features() {
   return (
     <div className="my-16 xl:max-w-none">
       <Heading level={2} id="features">
-        Features
+        Характеристики
       </Heading>
       <div className="not-prose mt-4 grid grid-cols-1 gap-8 border-t border-zinc-900/5 pt-10 dark:border-white/5 sm:grid-cols-2 xl:grid-cols-4">
         {features.map((feature) => (
