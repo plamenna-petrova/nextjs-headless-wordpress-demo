@@ -62,10 +62,10 @@ const PostsFilter = ({ authors, tags, categories, selectedAuthor, selectedTag, s
         onValueChange={(value: string) => handleFilterChange("tag", value)}
       >
         <SelectTrigger>
-          <SelectValue placeholder="All Tags" />
+          <SelectValue placeholder="Всички етикети" />
         </SelectTrigger>
         <SelectContent className="bg-background">
-          <SelectItem value="all">All Tags</SelectItem>
+          <SelectItem value="all">Всички етикети</SelectItem>
           {tags.map((tag) => (
             <SelectItem key={tag.id} value={tag.id.toString()}>
               {tag.name}
@@ -78,10 +78,10 @@ const PostsFilter = ({ authors, tags, categories, selectedAuthor, selectedTag, s
         onValueChange={(value: string) => handleFilterChange("category", value)}
       >
         <SelectTrigger>
-          <SelectValue placeholder="All Categories" />
+          <SelectValue placeholder="Всички категории" />
         </SelectTrigger>
         <SelectContent className="bg-background">
-          <SelectItem value="all">All Categories</SelectItem>
+          <SelectItem value="all">Всички категории</SelectItem>
           {categories.map((category) => (
             <SelectItem key={category.id} value={category.id.toString()}>
               {category.name}
@@ -94,10 +94,10 @@ const PostsFilter = ({ authors, tags, categories, selectedAuthor, selectedTag, s
         onValueChange={(value: string) => handleFilterChange("author", value)}
       >
         <SelectTrigger>
-          <SelectValue placeholder="All Authors" />
+          <SelectValue placeholder="Всички автори" />
         </SelectTrigger>
         <SelectContent className="bg-background">
-          <SelectItem value="all">All Authors</SelectItem>
+          <SelectItem value="all">Всички автори</SelectItem>
           {authors.map((author) => (
             <SelectItem key={author.id} value={author.id.toString()}>
               {author.name}
@@ -106,7 +106,7 @@ const PostsFilter = ({ authors, tags, categories, selectedAuthor, selectedTag, s
         </SelectContent>
       </Select>
       <Button variant="outline" onClick={handleResetFilters}>
-        Reset Filters
+        Премахнете филтрите
       </Button>
     </div>
   );

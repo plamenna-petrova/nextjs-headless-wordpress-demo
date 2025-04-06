@@ -23,7 +23,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   const featuredMedia = await getFeaturedMediaById(postBySlug.featured_media);
   const author = await getAuthorById(postBySlug.author);
 
-  const date: string = new Date(postBySlug.date).toLocaleDateString("en-US", {
+  const date: string = new Date(postBySlug.date).toLocaleDateString("bg-BG", {
     month: "long",
     day: "numeric",
     year: "numeric",
@@ -37,14 +37,12 @@ export default async function Page({ params }: { params: { slug: string } }) {
         <Container>
           <h1>
             <Balancer>
-              <span
-                dangerouslySetInnerHTML={{ __html: postBySlug.title.rendered }}
-              ></span>
+              <span dangerouslySetInnerHTML={{ __html: postBySlug.title.rendered }}></span>
             </Balancer>
           </h1>
           <div className="flex justify-between items-center gap-4 text-sm mb-4">
             <h5>
-              Published {date} by{" "}
+              Публикувано на {date} от{" "}
               {author.name && (
                 <span>
                   <a href={`/posts/?author=${author.id}`}>{author.name}</a>{" "}

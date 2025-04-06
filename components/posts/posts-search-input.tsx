@@ -26,7 +26,7 @@ export function PostsSearchInput({ defaultValue }: { defaultValue?: string }) {
     <Input
       type="text"
       name="search"
-      placeholder="Search posts..."
+      placeholder="Търсете публикации..."
       defaultValue={defaultValue} 
       onChange={(event: ChangeEvent<HTMLInputElement>) => handlePostsSearch(event.target.value)}
     />

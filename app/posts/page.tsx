@@ -61,11 +61,11 @@ const Posts = async ({ searchParams }: { searchParams: { [key: string]: string |
 
   const getPostsCountText = (): string => {
     if (posts.length === 0) {
-      return "No posts found";
+      return "Не са намерени публикации";
     } else if (posts.length === 1) {
-      return "1 post found";
+      return `1 намерена публикация${search ? ', отговаряща на търсенето' : ''}`;
     } else {
-      return `${posts.length} posts found`;
+      return `${posts.length} намерени публикации${search ? ', отговарящи на търсенето' : ''}`;
     }
   }
 
@@ -73,9 +73,9 @@ const Posts = async ({ searchParams }: { searchParams: { [key: string]: string |
     <Main>
       <Section>
         <Container>
-          <h1>Posts</h1>
+          <h1>Публикации</h1>
           <p className="text-muted-foreground">
-            {getPostsCountText()}{search && <>{" "}matching your search</>}
+            {getPostsCountText()}
           </p>
           <div className="flex flex-col my-4">
             <PostsSearchInput defaultValue={search} />
@@ -96,7 +96,7 @@ const Posts = async ({ searchParams }: { searchParams: { [key: string]: string |
             </div>
           ) : (
             <div className="h-24 w-full border rounded-lg bg-accent/25 flex items-center justify-center">
-              <p>No Posts Found</p>
+              <p>Не са намерени публикации</p>
             </div>
           )}
           <div className="mt-8 not-prose">

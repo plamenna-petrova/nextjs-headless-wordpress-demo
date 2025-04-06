@@ -7,7 +7,7 @@ import Link from "next/link";
 const PostCard = async ({ post }: { post: Post }) => {
   const postFeaturedMedia = await getFeaturedMediaById(post.featured_media);
 
-  const date = new Date(post.date).toLocaleDateString("en-US", {
+  const date = new Date(post.date).toLocaleDateString("bg-BG", {
     month: "long",
     day: "numeric",
     year: "numeric",
