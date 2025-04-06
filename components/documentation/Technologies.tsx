@@ -9,15 +9,15 @@ interface Technology {
 
 const technologies: Technology[] = [
   {
-    href: '/documentation/key-concepts#word-press',
+    href: '/documentation/core-principles#word-press',
     name: 'WordPress'
   },
   {
-    href: '/documentation/key-concepts#softuernata-ramka-next-js',
+    href: '/documentation/core-principles#softuernata-ramka-next-js',
     name: 'Софтуерната рамка Next.js',
   },
   {
-    href: '/documentation/key-concepts#progresivni-ueb-prilozheniya',
+    href: '/documentation/core-principles#progresivni-ueb-prilozheniya',
     name: 'Прогресивни уеб приложения'
   },
 ];
