@@ -51,7 +51,7 @@ const Navbar = ({ id, className, children }: NavbarProps) => {
             ))}
           </div>
           <Button asChild className="hidden sm:flex bg-blue-500 hover:bg-blue-500 text-white">
-            <Link href="/documentation">Get Started</Link>
+            <Link href="/documentation/about-the-application">За приложението</Link>
           </Button>
           <MobileNavigation />
         </div>

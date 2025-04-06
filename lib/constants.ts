@@ -1,13 +1,12 @@
 export const mainMenu: Record<string, string> = {
-  home: "/",
-  about: "https://github.com/plamenna-petrova/nextjs-headless-wordpress-demo",
-  blog: "/posts?page=1",
+  'начало': "/",
+  'блог': "/posts?page=1",
 };
 
 export const contentMenu: Record<string, string> = {
-  categories: "/posts/categories",
-  tags: "/posts/tags",
-  authors: "/posts/authors",
+  'категории': "/posts/categories",
+  'етикети': "/posts/tags",
+  'aвтори': "/posts/authors",
 };
 
 export const GET_ALL_POSTS_ERROR_DETAILS: string = "Unable to retrieve posts.";

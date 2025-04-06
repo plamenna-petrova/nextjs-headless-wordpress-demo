@@ -21,43 +21,43 @@ type LinkItem = {
 
 const links: LinkItem[] = [
   {
-    name: "Posts",
-    description: "All posts from your WordPress",
+    name: "Публикации",
+    description: "Документирани курсови работи на студенти",
     icon: Pen,
     href: "/posts?page=1",
     pattern: { y: 16, squares: [[0, 1], [1, 3]] },
   },
   {
-    name: "Pages",
-    description: "Custom pages from your WordPress",
+    name: "Страници",
+    description: "Информативни страници от уебсайта на WordPress",
     icon: File,
     href: "/pages",
     pattern: { y: -6, squares: [[-1, 2], [1, 3]] },
   },
   {
-    name: "Authors",
-    description: "List of the authors from your WordPress",
+    name: "Автори",
+    description: "Списък на авторите на курсовите работи",
     icon: User,
     href: "/posts/authors",
     pattern: { y: 32, squares: [[0, 2], [1, 4]] },
   },
   {
-    name: "Tags",
-    description: "Content by tags from your WordPress",
+    name: "Етикети",
+    description: "Етикети, свързани с тематиката на курсовите работи",
     icon: Tag,
     href: "/posts/tags",
     pattern: { y: 22, squares: [[0, 1]] },
   },
   {
-    name: "Categories",
-    description: "Categories from your WordPress",
+    name: "Категории",
+    description: "Категории за по-обща класификация на курсовите работи",
     icon: Boxes,
     href: "/posts/categories",
     pattern: { y: 12, squares: [[1, 2]] },
   },
   {
-    name: "Documentation",
-    description: "How to use WordPress as a Headless CMS",
+    name: "Документация",
+    description: "Какви са възможностите за работа с WordPress",
     icon: Folder,
     href: "/documentation",
     pattern: { y: 18, squares: [[-1, 1], [1, 2]] },
@@ -117,7 +117,7 @@ function WordPressStarterCard({ link }: WordPressStarterCardProps) {
 
 export default function WordPressStarterGrid() {
   return (
-    <div className="grid gap-4 mt-6 not-prose md:grid-cols-3">
+    <div className="grid gap-4 mt-8 not-prose md:grid-cols-3">
       {links.map((link) => (
         <WordPressStarterCard key={link.name} link={link} />
       ))}

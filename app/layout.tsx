@@ -42,7 +42,7 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
         >
           <NavbarWrapper />
           {children}
-          <FooterWrapper metadata={metadata} />
+          <FooterWrapper />
         </ThemeProvider>
       </body>
     </html>

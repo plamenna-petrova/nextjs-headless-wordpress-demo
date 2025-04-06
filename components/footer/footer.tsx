@@ -8,11 +8,7 @@ import Image from "next/image";
 import Logo from "@/public/next.svg";
 import Balancer from "react-wrap-balancer";
 
-type FooterProps = {
-  metadata: Metadata;
-}
-
-const Footer = ({ metadata }: FooterProps) => {
+const Footer = () => {
   const currentYear: number = new Date().getFullYear();
 
   return (
@@ -21,7 +17,7 @@ const Footer = ({ metadata }: FooterProps) => {
         <Container className="grid md:grid-cols-[1.5fr_0.5fr_0.5fr] gap-12">
           <div className="flex flex-col gap-6 not-prose">
             <Link href="/">
-              <h3 className="sr-only">custom text</h3>
+              <h3 className="sr-only">Next.js Logo</h3>
               <Image
                 src={Logo}
                 alt="Logo"
@@ -31,11 +27,11 @@ const Footer = ({ metadata }: FooterProps) => {
               ></Image>
             </Link>
             <p>
-              <Balancer>{metadata.description}</Balancer>
+              <Balancer>Клиентското приложение е разработено със Next.js</Balancer>
             </p>
           </div>
           <div className="flex flex-col gap-2 text-sm">
-            <h5 className="font-medium text-base">Website</h5>
+            <h5 className="font-medium text-base">Приложение</h5>
             {Object.entries(mainMenu).map(([key, href]) => (
               <Link
                 className="hover:underline underline-offset-4"
@@ -47,7 +43,7 @@ const Footer = ({ metadata }: FooterProps) => {
             ))}
           </div>
           <div className="flex flex-col gap-2 text-sm">
-            <h5 className="font-medium text-base">Blog</h5>
+            <h5 className="font-medium text-base">Полезни линкове</h5>
             {Object.entries(contentMenu).map(([key, href]) => (
               <Link
                 className="hover:underline underline-offset-4"
@@ -62,8 +58,7 @@ const Footer = ({ metadata }: FooterProps) => {
         <Container className="border-t not-prose flex flex-col md:flex-row md:gap-2 gap-6 justify-between md:items-center">
           <ThemeToggle />
           <p className="text-muted-foreground">
-            © <a href="https://github.com/plamenna-petrova?tab=repositories">Plamenna Petrova</a>. All rights reserved.
-            {" "}{currentYear}-present.
+            &copy; Авторско право {currentYear}. Всички права запазени.
           </p>
         </Container>
       </Section>
