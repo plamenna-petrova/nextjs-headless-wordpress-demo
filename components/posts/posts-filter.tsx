@@ -106,7 +106,7 @@ const PostsFilter = ({ authors, tags, categories, selectedAuthor, selectedTag, s
         </SelectContent>
       </Select>
       <Button variant="outline" onClick={handleResetFilters}>
-        Премахнете филтрите
+        Изчисти филтрите
       </Button>
     </div>
   );

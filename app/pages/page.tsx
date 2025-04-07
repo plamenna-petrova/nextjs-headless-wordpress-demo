@@ -13,7 +13,7 @@ export default async function Page() {
       <Section>
         <Container>
           <BackButton />
-          <h2>All Pages</h2>
+          <h2>Всички страници</h2>
           <div className="grid">
             {pages.map((page: any) => (
               <Link key={page.id} href={`pages/${page.slug}`}>

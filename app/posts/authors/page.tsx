@@ -21,7 +21,7 @@ const Authors = async () => {
       <Section>
         <Container>
           <BackButton />
-          <h2>All Authors</h2>
+          <h2>Всички автори</h2>
           <div className="grid">
             {authors.map((author: any) => (
               <Link key={author.id} href={`/posts/?author=${author.id}`}>

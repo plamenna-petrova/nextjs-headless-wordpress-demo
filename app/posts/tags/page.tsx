@@ -21,7 +21,7 @@ const Tags = async () => {
       <Section>
         <Container>
           <BackButton />
-          <h2>All Tags</h2>
+          <h2>Всички етикети</h2>
           <div className="grid">
             {tags.map((tag: any) => (
               <Link key={tag.id} href={`/posts/?tag=${tag.id}`}>

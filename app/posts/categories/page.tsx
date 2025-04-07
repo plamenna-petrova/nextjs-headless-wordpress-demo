@@ -21,7 +21,7 @@ const Categories = async () => {
       <Section>
         <Container>
           <BackButton />
-          <h2>All Categories</h2>
+          <h2>Всички категории</h2>
           <div className="grid">
             {categories.map((category: any) => (
               <Link key={category.id} href={`/posts/?category=${category.id}`}>

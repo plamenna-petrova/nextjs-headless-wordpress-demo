@@ -8,7 +8,7 @@ const BackButton = () => {
 
   return (
     <Button variant="outline" size="sm" onClick={() => router.back()}>
-      Go Back
+      Назад
     </Button>
   );
 }

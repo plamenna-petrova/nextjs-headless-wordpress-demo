@@ -16,10 +16,7 @@ interface Feature {
   description: string;
   href?: string;
   icon: React.ComponentType<{ className?: string }>;
-  pattern: Omit<
-    React.ComponentPropsWithoutRef<typeof GridPattern>,
-    'width' | 'height' | 'x'
-  >;
+  pattern: Omit<React.ComponentPropsWithoutRef<typeof GridPattern>, 'width' | 'height' | 'x'>;
 }
 
 const features: Array<Feature> = [
@@ -59,14 +56,14 @@ const features: Array<Feature> = [
   },
   {
     name: 'SEO стратегии',
-    description: 'Научете повече за добрите SEO практики и стратегии за приложенията, разработени с Next.js',
+    description: 'Научете повече за добрите SEO практики и стратегии за Next.js приложения',
     icon: CogIcon,
     pattern: {
       y: 22,
       squares: [[0, 1]],
     },
   },
-]
+];
 
 export function FeatureIcon({ icon: Icon }: { icon: Feature['icon'] }) {
   return (
@@ -84,7 +81,7 @@ export function FeaturePattern({
   mouseX: MotionValue<number>
   mouseY: MotionValue<number>
 }) {
-  let maskImage = useMotionTemplate`radial-gradient(180px at ${mouseX}px ${mouseY}px, white, transparent)`;
+  let maskImage: MotionValue<string> = useMotionTemplate`radial-gradient(180px at ${mouseX}px ${mouseY}px, white, transparent)`;
   let style = { maskImage, WebkitMaskImage: maskImage };
 
   return (
@@ -119,8 +116,8 @@ export function FeaturePattern({
 }
 
 function Feature({ feature }: { feature: Feature }) {
-  let mouseX = useMotionValue(0);
-  let mouseY = useMotionValue(0);
+  let mouseX: MotionValue<number> = useMotionValue(0);
+  let mouseY: MotionValue<number> = useMotionValue(0);
 
   function onMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent<HTMLAnchorElement>) {
     let { left, top } = currentTarget.getBoundingClientRect();

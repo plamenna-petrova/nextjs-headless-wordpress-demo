@@ -2,8 +2,6 @@ import Balancer from 'react-wrap-balancer';
 import Container from "@/components/container/container";
 import Section from "@/components/section/section";
 import WordPressStarterGrid from '@/components/wordpress-starter/WordPressStarter';
-import Link from 'next/link';
-import Image from 'next/image';
 
 const WordPressStarter = () => {
   return (
