@@ -59,7 +59,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
           <div className="h-96 my-12 md:h-[560px] overflow-hidden flex items-center justify-center border rounded-lg bg-accent/25">
             {/* eslint-disable-next-line */}
             <img
-              className="w-full"
+              className="h-full w-full"
               src={featuredMedia.source_url}
               alt={postBySlug.title.rendered}
             />
