@@ -90,7 +90,7 @@ const Posts = async ({ searchParams }: { searchParams: { [key: string]: string |
           </div>
           {paginatedPosts.length > 0 ? (
             <div className="grid md:grid-cols-3 gap-4 z-0">
-              {paginatedPosts.map((post: any) => (
+              {paginatedPosts.map((post) => (
                 <PostCard key={post.id} post={post} />
               ))}
             </div>

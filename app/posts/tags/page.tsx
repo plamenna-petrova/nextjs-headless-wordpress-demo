@@ -23,7 +23,7 @@ const Tags = async () => {
           <BackButton />
           <h2>Всички етикети</h2>
           <div className="grid">
-            {tags.map((tag: any) => (
+            {tags.map((tag) => (
               <Link key={tag.id} href={`/posts/?tag=${tag.id}`}>
                 {tag.name}
               </Link>

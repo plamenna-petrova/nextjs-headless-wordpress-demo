@@ -23,7 +23,7 @@ const Authors = async () => {
           <BackButton />
           <h2>Всички автори</h2>
           <div className="grid">
-            {authors.map((author: any) => (
+            {authors.map((author) => (
               <Link key={author.id} href={`/posts/?author=${author.id}`}>
                 {author.name}
               </Link>

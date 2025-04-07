@@ -15,7 +15,7 @@ export default async function Page() {
           <BackButton />
           <h2>Всички страници</h2>
           <div className="grid">
-            {pages.map((page: any) => (
+            {pages.map((page) => (
               <Link key={page.id} href={`pages/${page.slug}`}>
                 {page.title.rendered}
               </Link>
