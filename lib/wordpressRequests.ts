@@ -46,7 +46,7 @@ interface FetchOptions {
 
 const defaultFetchOptions: FetchOptions = {
   next: {
-    revalidate: 120,
+    revalidate: 60,
     tags: ["wordpress"]
   }
 };

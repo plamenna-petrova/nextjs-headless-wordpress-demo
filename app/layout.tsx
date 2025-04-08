@@ -12,8 +12,8 @@ const fontSans = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "WordPress As A Headless CMS Demo",
-  description: "Using WordPress As A Headless CMS",
+  title: "Демонстративно приложение на WordPress като система за управление на съдържанието, базирана на ,,Headless’’ архитектурата",
+  description: "Как WordPress може да функционира като система за управление на съдържанието, базирана на ,,Headless’’ архитектурата",
   generator: "Next.js",
   manifest: "/manifest.json",
   keywords: ["nextjs", "next14", "pwa", "next-pwa"],
