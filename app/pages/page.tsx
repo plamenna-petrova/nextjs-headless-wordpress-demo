@@ -1,9 +1,17 @@
 import { getAllPages } from "@/lib/wordpressRequests";
+import { Metadata } from "next";
 import Section from "@/components/section/section";
 import Container from "@/components/container/container";
 import Link from "next/link";
 import Main from "@/components/main/main";
 import BackButton from "@/components/back-button/back-button";
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "Всички страници",
+    description: "Вижте всички страници"
+  };
+}
 
 export default async function Page() {
   const pages = await getAllPages();

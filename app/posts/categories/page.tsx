@@ -8,8 +8,8 @@ import Main from "@/components/main/main";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "All Categories",
-    description: "Browse all categories on the site.",
+    title: "Всички категории",
+    description: "Вижте всички категории на публикации"
   };
 }
 

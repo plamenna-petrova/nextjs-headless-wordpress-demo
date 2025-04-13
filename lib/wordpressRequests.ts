@@ -32,7 +32,7 @@ import {
 } from "./constants";
 import queryString from "query-string";
 
-const WORDPRESS_INSTANCE_BASE_URL: string = "http://localhost/wordpress/";
+const WORDPRESS_INSTANCE_BASE_URL: string = "http://wordpress.local";
 
 const DEFAULT_APP_USER_AGENT: string = "Next.js PWA WordPress Client";
 
@@ -99,7 +99,10 @@ export const getAllPosts = async (
   }
 ): Promise<Post[]> => {
   try {
-    const postsQuery: Record<string, any> = {};
+    const postsQuery: Record<string, any> = {
+      embed: true,
+      per_page: 100
+    };
 
     if (filterParams?.search) {
       postsQuery.search = filterParams.search;

@@ -29,7 +29,13 @@ const Posts = async ({ searchParams }: { searchParams: { [key: string]: string |
   const postsPerPage: number = 9;
   const totalPages: number = Math.ceil(posts.length / postsPerPage);
 
+  console.log('posts', posts.map(post => post.title.rendered));
+  console.log(posts.length);
+
   const paginatedPosts = posts.slice((currentPage - 1) * postsPerPage, currentPage * postsPerPage);
+
+  console.log('paginated posts');
+  console.log(paginatedPosts.map(post => post.title.rendered));
 
   const createPaginationUrl = (page: number): string => {
     const urlSearchParams: URLSearchParams = new URLSearchParams();
