@@ -49,7 +49,7 @@ export const DocumentationHeader = forwardRef<
       <Search />
       <div className="flex items-center gap-5 lg:hidden">
         <MobileNavigation />
-        <Link href="/documentation" aria-label="Home">
+        <Link href="/" aria-label="Home">
           <Logo />
         </Link>
       </div>

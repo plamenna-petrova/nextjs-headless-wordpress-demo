@@ -50,7 +50,7 @@ const links: LinkItem[] = [
   },
   {
     name: "Категории",
-    description: "Категории за по-обща класификация на курсовите работи",
+    description: "Категории за класифициране на обучаемите",
     icon: Boxes,
     href: "/posts/categories",
     pattern: { y: 12, squares: [[1, 2]] },

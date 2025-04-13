@@ -23,19 +23,24 @@ const Posts = async ({ searchParams }: { searchParams: { [key: string]: string |
 
   const authors = await getAllAuthors();
   const tags = await getAllTags();
-  const categories = await getAllCategories();
+  
+  const categories = (await getAllCategories()).sort((a, b) => {
+    if (a.name === 'Uncategorized') {
+      return 1;
+    }
+
+    if (b.name === 'Uncategorized') {
+      return -1;
+    }
+
+    return a.name.localeCompare(b.name, 'bg');
+  });
 
   const currentPage: number = page ? parseInt(page, 10) : 1;
   const postsPerPage: number = 9;
   const totalPages: number = Math.ceil(posts.length / postsPerPage);
 
-  console.log('posts', posts.map(post => post.title.rendered));
-  console.log(posts.length);
-
   const paginatedPosts = posts.slice((currentPage - 1) * postsPerPage, currentPage * postsPerPage);
-
-  console.log('paginated posts');
-  console.log(paginatedPosts.map(post => post.title.rendered));
 
   const createPaginationUrl = (page: number): string => {
     const urlSearchParams: URLSearchParams = new URLSearchParams();

@@ -14,7 +14,17 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const Categories = async () => {
-  const categories = await getAllCategories();
+  const categories = (await getAllCategories()).sort((a, b) => {
+    if (a.name === 'Uncategorized') {
+      return 1;
+    }
+
+    if (b.name === 'Uncategorized') {
+      return -1;
+    }
+
+    return a.name.localeCompare(b.name, 'bg');
+  });
 
   return (
     <Main>

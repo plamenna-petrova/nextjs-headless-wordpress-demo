@@ -76,7 +76,10 @@ export const metadata = {
         }
       ): Promise<Post[]> => {
         try {
-          const postsQuery: Record<string, any> = {};
+          const postsQuery: Record<string, any> = {
+            embed: true,
+            per_page: 100
+          };
 
           if (filterParams?.search) {
             postsQuery.search = filterParams.search;
@@ -198,7 +201,11 @@ export const metadata = {
     ```ts
       export const getAllAuthors = async (): Promise<Author[]> => {
         try {
-          const allAuthorsUrl: string = getUrl("/wp-json/wp/v2/users");
+          const authorsQuery: Record<string, any> = {
+            per_page: 100
+          };
+
+          const allAuthorsUrl: string = getUrl("/wp-json/wp/v2/users", authorsQuery);
 
           const allAuthors = await wordPressFetch<Author[]>(allAuthorsUrl, {
             next: {

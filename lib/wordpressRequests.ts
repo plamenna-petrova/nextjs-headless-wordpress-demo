@@ -391,7 +391,11 @@ export const getPageBySlug = async (slug: string): Promise<Page> => {
 
 export const getAllAuthors = async (): Promise<Author[]> => {
   try {
-    const allAuthorsUrl: string = getUrl("/wp-json/wp/v2/users");
+    const authorsQuery: Record<string, any> = {
+      per_page: 100
+    };
+
+    const allAuthorsUrl: string = getUrl("/wp-json/wp/v2/users", authorsQuery);
 
     const allAuthors = await wordPressFetch<Author[]>(allAuthorsUrl, {
       next: {
