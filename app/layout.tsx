@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
 import { mergeClassNames } from "@/lib/utils";
 import ThemeProvider from "@/components/theme/theme-provider";
 import NavbarWrapper from "@/components/navbar/navbar-wrapper";
 import FooterWrapper from "@/components/footer/footer-wrapper";
+import "./globals.css";
 
 const fontSans = Inter({
   subsets: ["latin"],
