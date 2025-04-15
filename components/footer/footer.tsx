@@ -1,5 +1,4 @@
 import { contentMenu, mainMenu } from "@/lib/constants";
-import { Metadata } from "next";
 import { ThemeToggle } from "../theme/theme-toggle";
 import Section from "../section/section";
 import Container from "../container/container";
