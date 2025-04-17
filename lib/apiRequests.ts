@@ -1,7 +1,5 @@
 import { Post } from "@/types/Post";
 
-const isServer = typeof window === "undefined";
-
 export const fetchPosts = async (params: { [key: string]: string | undefined }): Promise<Post[]> => {
   const cleanedParams = Object.fromEntries(
     Object.entries(params).filter(([_, value]) => value !== undefined)
