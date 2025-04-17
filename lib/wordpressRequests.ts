@@ -31,7 +31,7 @@ import {
   WORDPRESS_FETCH_ERROR_DETAILS
 } from "./constants";
 import queryString from "query-string";
-import nodeFetch, { RequestInit as NodeFetchRequestInit, Response as NodeFetchResponse,} from "node-fetch";
+import nodeFetch, { Response as NodeFetchResponse,} from "node-fetch";
 import https from "https";
 
 const WORDPRESS_INSTANCE_BASE_URL: string = `${process.env.WORDPRESS_INSTANCE_BASE_URL}`;
@@ -84,6 +84,9 @@ const wordPressFetch = async <T>(wordPressAPIRequestURL: string, fetchOptions: F
 
 export const wordPressNodeFetch = async <T>(wordPressAPIRequestURL: string): Promise<T> => {
   try {
+    console.log('HERE');
+    console.log(WORDPRESS_INSTANCE_BASE_URL);
+
     const agent = isServer
       ? new https.Agent({ rejectUnauthorized: false })
       : undefined;
