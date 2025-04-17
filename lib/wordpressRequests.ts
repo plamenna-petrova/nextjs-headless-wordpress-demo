@@ -31,10 +31,14 @@ import {
   WORDPRESS_FETCH_ERROR_DETAILS
 } from "./constants";
 import queryString from "query-string";
+import nodeFetch, { RequestInit as NodeFetchRequestInit, Response as NodeFetchResponse,} from "node-fetch";
+import https from "https";
 
-const WORDPRESS_INSTANCE_BASE_URL: string = "http://wordpress.local";
+const WORDPRESS_INSTANCE_BASE_URL: string = `${process.env.WORDPRESS_INSTANCE_BASE_URL}`;
 
 const DEFAULT_APP_USER_AGENT: string = "Next.js PWA WordPress Client";
+
+const isServer = typeof window === "undefined";
 
 interface FetchOptions {
   next?: {
@@ -52,30 +56,63 @@ const defaultFetchOptions: FetchOptions = {
 };
 
 const wordPressFetch = async <T>(wordPressAPIRequestURL: string, fetchOptions: FetchOptions = {}): Promise<T> => {
-  try {    
+  try {
     const response: Response = await fetch(wordPressAPIRequestURL, {
       ...defaultFetchOptions,
       ...fetchOptions,
       headers: {
         "User-Agent": DEFAULT_APP_USER_AGENT,
-        ...(fetchOptions.headers || {})
-      }
+        ...(fetchOptions.headers || {}),
+      },
     });
-  
+
     if (!response.ok) {
-      throw new Error(`WordPress API request failed: ${response.statusText}` + 
-        `status: ${response.status}, url: ${wordPressAPIRequestURL}`
+      throw new Error(
+        `WordPress API request failed: ${response.statusText}` +
+          `status: ${response.status}, url: ${wordPressAPIRequestURL}`
       );
     }
 
-    const responseData = await response.json() as T;
-  
+    const responseData = (await response.json()) as T;
+
     return responseData;
   } catch (error: any) {
     console.log(WORDPRESS_FETCH_ERROR_DETAILS, error);
     throw error;
   }
-}
+};
+
+export const wordPressNodeFetch = async <T>(wordPressAPIRequestURL: string): Promise<T> => {
+  try {
+    const agent = isServer
+      ? new https.Agent({ rejectUnauthorized: false })
+      : undefined;
+
+    const response: NodeFetchResponse = await nodeFetch(
+      wordPressAPIRequestURL,
+      {
+        agent,
+        headers: {
+          "User-Agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36",
+            'Referer': "https://headless-wordpress-demo.42web.io",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        `WordPress API request failed: ${response.statusText} ` +
+          `status: ${response.status}, url: ${wordPressAPIRequestURL}`
+      );
+    }
+
+    return (await response.json()) as T;
+  } catch (error: any) {
+    console.error("WORDPRESS_FETCH_ERROR", error);
+    throw error;
+  }
+};
 
 const getUrl = (path: string, queryParametersRecord?: Record<string, any>): string => {
   const stringifiedQueryParameters: string | null = queryParametersRecord
@@ -122,12 +159,7 @@ export const getAllPosts = async (
 
     const postsUrl: string = getUrl("/wp-json/wp/v2/posts", postsQuery);
 
-    const posts = wordPressFetch<Post[]>(postsUrl, {
-      next: {
-        ...defaultFetchOptions.next,
-        tags: mergeQueryTags(defaultFetchOptions.next?.tags, ["posts"])
-      }
-    });
+    const posts = wordPressNodeFetch<Post[]>(postsUrl);
 
     return posts;
   } catch (error: any) {

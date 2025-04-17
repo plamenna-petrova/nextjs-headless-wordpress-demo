@@ -7,7 +7,8 @@ import {
   PaginationPrevious
 } from "@/components/ui/pagination";
 
-import { getAllAuthors, getAllCategories, getAllPosts, getAllTags } from "@/lib/wordpressRequests";
+import { getAllAuthors, getAllCategories, getAllTags } from "@/lib/wordpressRequests";
+import { fetchPosts } from "@/lib/apiRequests";
 import { PostsSearchInput } from "@/components/posts/posts-search-input";
 
 import Container from "@/components/container/container";
@@ -19,7 +20,7 @@ import Main from "@/components/main/main";
 const Posts = async ({ searchParams }: { searchParams: { [key: string]: string | undefined } }) => {
   const { search, author, tag, category, page } = searchParams;
 
-  const posts = await getAllPosts({ search, author, tag, category });
+  const posts = await fetchPosts({ search, author, tag, category });
 
   const authors = await getAllAuthors();
   const tags = await getAllTags();
