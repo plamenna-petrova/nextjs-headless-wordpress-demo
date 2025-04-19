@@ -31,6 +31,12 @@ const nextConfig = {
         hostname: 'localhost',
         port: "",
         pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: 'docker-image-production-5350.up.railway.app',
+        port: "",
+        pathname: "/**",
       }
     ],
   },
