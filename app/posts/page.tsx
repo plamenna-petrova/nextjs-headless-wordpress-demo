@@ -24,16 +24,16 @@ const Posts = async ({ searchParams }: { searchParams: { [key: string]: string |
   const authors = await getAllAuthors();
   const tags = await getAllTags();
   
-  const categories = (await getAllCategories()).sort((firstCategory, secondCategory) => {
-    if (firstCategory.name === 'Uncategorized') {
+  const categories = (await getAllCategories()).sort((a, b) => {
+    if (a.name === 'Uncategorized') {
       return 1;
     }
 
-    if (secondCategory.name === 'Uncategorized') {
+    if (b.name === 'Uncategorized') {
       return -1;
     }
 
-    return firstCategory.name.localeCompare(secondCategory.name, 'bg');
+    return a.name.localeCompare(b.name, 'bg');
   });
 
   const currentPage: number = page ? parseInt(page, 10) : 1;
