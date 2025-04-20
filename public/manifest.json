@@ -1,6 +1,6 @@
 {
-  "name": "WordPress проект ФМИ",
-  "short_name": "Демо приложение",
+  "name": "WordPress приложение ФМИ",
+  "short_name": "WordPress приложение ФМИ",
   "theme_color": "#00ff00",
   "background_color": "#ffffff",
   "display": "standalone",
