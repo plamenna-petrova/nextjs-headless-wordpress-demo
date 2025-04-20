@@ -1,6 +1,6 @@
 {
-  "name": "WordPress As A Headless CMS Demo",
-  "short_name": "Headless WordPress",
+  "name": "Проект",
+  "short_name": "Демо приложение",
   "theme_color": "#00ff00",
   "background_color": "#ffffff",
   "display": "standalone",
