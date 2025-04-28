@@ -284,22 +284,22 @@ export const metadata = {
   <Col sticky>
     <CodeGroup title="Заявка">
     ```ts
-     export const getAllTags = async (): Promise<Tag[]> => {
-      try {
-        const allTagsUrl: string = getUrl("/wp-json/wp/v2/tags");
+      export const getAllTags = async (): Promise<Tag[]> => {
+        try {
+          const allTagsUrl: string = getUrl("/wp-json/wp/v2/tags");
 
-        const allTags = await wordPressFetch<Tag[]>(allTagsUrl, {
-          next: {
-            ...defaultFetchOptions.next?.tags,
-            tags: mergeQueryTags(defaultFetchOptions.next?.tags, ['tags'])
-          }
-        });
+          const allTags = await wordPressFetch<Tag[]>(allTagsUrl, {
+            next: {
+              ...defaultFetchOptions.next?.tags,
+              tags: mergeQueryTags(defaultFetchOptions.next?.tags, ['tags'])
+            }
+          });
 
-        return allTags;
-      } catch (error: any) {
-        throw new Error(`${GET_ALL_TAGS_ERROR_DETAILS} ${error.message}`);
-      }
-    };
+          return allTags;
+        } catch (error: any) {
+          throw new Error(`${GET_ALL_TAGS_ERROR_DETAILS} ${error.message}`);
+        }
+      };
     ```
     </CodeGroup>
 
@@ -970,7 +970,6 @@ export const metadata = {
         } catch (error: any) {
           throw new Error(`${GET_FEATURED_MEDIA_BY_ID_ERROR_DETAILS} ${error.message}`);
         }
-      };
       };
     ```
     </CodeGroup>
