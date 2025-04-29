@@ -30,7 +30,7 @@ const Footer = () => {
             </p>
           </div>
           <div className="flex flex-col gap-2 text-sm">
-            <h5 className="font-medium text-base">Приложение</h5>
+            <h5 className="font-medium text-base">Основно меню</h5>
             {Object.entries(mainMenu).map(([key, href]) => (
               <Link
                 className="hover:underline underline-offset-4"
