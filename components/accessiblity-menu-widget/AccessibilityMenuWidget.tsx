@@ -12,18 +12,18 @@ const AccessibilityMenuWidget = () => {
   const [isAccessibilityMenuOpen, setIsAccessibilityMenuOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
+    const handleAccesibilityMenuToggleKeyDown = (keyboardEvent: KeyboardEvent) => {
       const isMac = /Mac/i.test(navigator.userAgent) || navigator.platform.toUpperCase().includes("MAC");
-      const ctrlKey: boolean = isMac ? e.metaKey : e.ctrlKey;
+      const ctrlKey: boolean = isMac ? keyboardEvent.metaKey : keyboardEvent.ctrlKey;
 
-      if (ctrlKey && e.key.toLowerCase() === "a") {
-        e.preventDefault();
+      if (ctrlKey && keyboardEvent.key.toLowerCase() === "a") {
+        keyboardEvent.preventDefault();
         setIsAccessibilityMenuOpen((prev) => !prev);
       }
     };
   
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener("keydown", handleAccesibilityMenuToggleKeyDown);
+    return () => window.removeEventListener("keydown", handleAccesibilityMenuToggleKeyDown);
   }, []);  
 
   return (
