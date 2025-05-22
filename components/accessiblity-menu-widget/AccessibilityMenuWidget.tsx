@@ -13,7 +13,7 @@ const AccessibilityMenuWidget = () => {
 
   useEffect(() => {
     const handleAccesibilityMenuToggleKeyDown = (keyboardEvent: KeyboardEvent) => {
-      const isMac = /Mac/i.test(navigator.userAgent) || navigator.platform.toUpperCase().includes("MAC");
+      const isMac: boolean = /Mac/i.test(navigator.userAgent) || navigator.platform.toUpperCase().includes("MAC");
       const ctrlKey: boolean = isMac ? keyboardEvent.metaKey : keyboardEvent.ctrlKey;
 
       if (ctrlKey && keyboardEvent.key.toLowerCase() === "a") {
