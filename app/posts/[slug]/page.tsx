@@ -36,9 +36,6 @@ export default async function Page({ params }: { params: { slug: string } }) {
   const tags = await getTagsByPost(postBySlug.id);
   const tagNames: string[] = tags.map((tag) => tag.name);
 
-  console.log(tagNames);
-  console.log(postBySlug.excerpt.rendered);
-
   const postUrl = `${process.env.WORDPRESS_INSTANCE_BASE_URL}/posts/${postBySlug.slug}`;
 
   return (

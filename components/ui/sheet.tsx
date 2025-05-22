@@ -89,7 +89,7 @@ const SheetHeader = ({
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     className={mergeClassNames(
-      "flex flex-col space-y-2 text-center sm:text-left",
+      "flex flex-col text-center sm:text-left",
       className
     )}
     {...props}

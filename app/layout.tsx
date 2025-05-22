@@ -5,6 +5,7 @@ import ThemeProvider from "@/components/theme/theme-provider";
 import NavbarWrapper from "@/components/navbar/navbar-wrapper";
 import FooterWrapper from "@/components/footer/footer-wrapper";
 import "./globals.css";
+import AccessibilityMenuWidget from "@/components/accessiblity-menu-widget/AccessibilityMenuWidget";
 
 const fontSans = Inter({
   subsets: ["latin"],
@@ -42,6 +43,7 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
         >
           <NavbarWrapper />
           {children}
+          <AccessibilityMenuWidget />
           <FooterWrapper />
         </ThemeProvider>
       </body>
