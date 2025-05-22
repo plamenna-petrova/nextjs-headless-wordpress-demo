@@ -1,15 +1,34 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { PersonStanding, X, ChevronDown } from "lucide-react";
+import { PersonStanding, X, ChevronDown, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+
+interface Language {
+  code: string;
+  name: string;
+  country: string;
+}
+
+const languages: Language[] = [
+  { code: "EN", name: "English", country: "USA" },
+  { code: "ES", name: "Spanish", country: "Spain" },
+  { code: "FR", name: "French", country: "France" },
+  { code: "DE", name: "German", country: "Germany" },
+  { code: "JP", name: "Japanese", country: "Japan" }
+];
 
 const AccessibilityMenuWidget = () => {
   const [isAccessibilityMenuOpen, setIsAccessibilityMenuOpen] = useState<boolean>(false);
+  const [languageSearchTerm, setLanguageSearchTerm] = useState<string>("");
+
+  const languageSearchTermInputClassNames: string = "block w-full rounded-md border border-gray-300 bg-white py-2 px-3 pr-9 text-base " +
+    "placeholder:text-sm placeholder:text-gray-600 leading-snug focus:border-blue-500 focus:outline-none " +
+    "focus:ring-1 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50 transition duration-150 ease-in-out";
 
   useEffect(() => {
     const handleAccesibilityMenuToggleKeyDown = (keyboardEvent: KeyboardEvent) => {
@@ -21,10 +40,16 @@ const AccessibilityMenuWidget = () => {
         setIsAccessibilityMenuOpen((prev) => !prev);
       }
     };
-  
+
     window.addEventListener("keydown", handleAccesibilityMenuToggleKeyDown);
     return () => window.removeEventListener("keydown", handleAccesibilityMenuToggleKeyDown);
-  }, []);  
+  }, []);
+
+  const filteredLanguages: Language[] = languages.filter((language) =>
+    language.name.toLowerCase().includes(languageSearchTerm.toLowerCase()) ||
+    language.code.toLowerCase().includes(languageSearchTerm.toLowerCase()) ||
+    language.country.toLowerCase().includes(languageSearchTerm.toLowerCase())
+  );
 
   return (
     <Sheet open={isAccessibilityMenuOpen} onOpenChange={setIsAccessibilityMenuOpen}>
@@ -45,24 +70,69 @@ const AccessibilityMenuWidget = () => {
       <SheetContent side="right" className="w-80 sm:w-96 p-0 [&>button]:hidden border-l-0">
         <div className="flex items-center justify-between mb-4 bg-blue-500 p-4">
           <div className="flex flex-row items-center gap-1">
-            <Button 
-              size="icon" 
-              className="rounded-full bg-white hover:bg-white text-blue-500" 
-              onClick={() => setIsAccessibilityMenuOpen(false)}
+            <motion.div
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
             >
-              <X className="h-6 w-6 font-bold" />
-            </Button>
+              <Button
+                size="icon"
+                className="rounded-full bg-white hover:bg-white text-blue-500"
+                onClick={() => setIsAccessibilityMenuOpen(false)}
+              >
+                <X className="h-6 w-6 font-bold" />
+              </Button>
+            </motion.div>
             <div className="flex flex-col">
               <h2 className="text-md font-semibold ml-1 text-white">Accessibility Menu</h2>
               <h2 className="text-md font-semibold ml-1 text-white">(Ctrl + A)</h2>
             </div>
           </div>
-          <Button className="rounded-full bg-white hover:bg-white py-2">
-            <span className="pr-1 text-blue-500">EN</span>
-            <ChevronDown className="h-6 w-5 text-blue-500 mt-[1px]" />
-          </Button>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className="rounded-full bg-white hover:bg-white py-2">
+                <span className="pr-1 text-blue-500">EN</span>
+                <ChevronDown className="h-6 w-5 text-blue-500 mt-[1px]" />
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-xl w-full" onOpenAutoFocus={(event) => event.preventDefault()}>
+              <DialogHeader>
+                <DialogTitle className="text-2xl">Select Language of Interface</DialogTitle>
+              </DialogHeader>
+              <div className="relative mt-4">
+                <input
+                  type="text"
+                  name="searchLanguage"
+                  autoFocus={false}
+                  placeholder="Search Language..."
+                  className={languageSearchTermInputClassNames}
+                  value={languageSearchTerm}
+                  onChange={(event: ChangeEvent<HTMLInputElement>) => setLanguageSearchTerm(event.target.value)}
+                />
+                <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4" />
+              </div>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-2 max-h-60 overflow-y-auto">
+                {filteredLanguages.map((language: Language) => (
+                  <Button
+                    key={language.code}
+                    variant="outline"
+                    className="justify-start gap-3 h-auto py-3 px-3 hover:bg-blue-500 hover:text-white"
+                    onClick={() => {
+                      setLanguageSearchTerm("");
+                      setIsAccessibilityMenuOpen(false);
+                    }}
+                  >
+                    <span className="inline-grid place-items-center h-8 w-8 rounded-full bg-blue-100 text-blue-600 text-sm font-semibold leading-none">
+                      {language.code}
+                    </span>
+                    <span className="text-sm">
+                      {language.name} ({language.country})
+                    </span>
+                  </Button>
+                ))}
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
-        <Separator />
         <ScrollArea className="mt-4 h-[calc(100vh-10rem)] pr-2">
           <div className="space-y-4">
             <Button variant="secondary" className="w-full">
