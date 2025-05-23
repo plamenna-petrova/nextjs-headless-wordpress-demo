@@ -6,6 +6,7 @@ import NavbarWrapper from "@/components/navbar/navbar-wrapper";
 import FooterWrapper from "@/components/footer/footer-wrapper";
 import "./globals.css";
 import AccessibilityMenuWidget from "@/components/accessiblity-menu-widget/AccessibilityMenuWidget";
+import { LanguageProvider } from "@/context/LanguageContext";
 
 const fontSans = Inter({
   subsets: ["latin"],
@@ -33,7 +34,7 @@ export const metadata: Metadata = {
 const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   return (
     <html lang="en" suppressHydrationWarning={true}>
-      <head/>
+      <head />
       <body className={mergeClassNames("min-h-screen font-sans antialiased", fontSans.variable)}>
         <ThemeProvider
           attribute="class"
@@ -41,10 +42,12 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
           enableSystem
           disableTransitionOnChange
         >
-          <NavbarWrapper />
-          {children}
-          <AccessibilityMenuWidget />
-          <FooterWrapper />
+          <LanguageProvider>
+            <NavbarWrapper />
+            {children}
+            <AccessibilityMenuWidget />
+            <FooterWrapper />
+          </LanguageProvider>
         </ThemeProvider>
       </body>
     </html>

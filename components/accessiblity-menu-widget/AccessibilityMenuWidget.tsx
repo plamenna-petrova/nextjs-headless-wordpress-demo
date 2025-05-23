@@ -6,7 +6,9 @@ import { PersonStanding, X, ChevronDown, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogOverlay } from "@/components/ui/dialog";
+import { useLanguage } from "@/context/LanguageContext";
+import { Locale, localeCountries, localeNames, locales } from "@/lib/i18n";
 
 interface Language {
   code: string;
@@ -14,24 +16,24 @@ interface Language {
   country: string;
 }
 
-const languages: Language[] = [
-  { code: "EN", name: "English", country: "USA" },
-  { code: "ES", name: "Spanish", country: "Spain" },
-  { code: "FR", name: "French", country: "France" },
-  { code: "DE", name: "German", country: "Germany" },
-  { code: "JP", name: "Japanese", country: "Japan" }
-];
+const languages: Language[] = locales.map((localeCode) => ({
+  code: localeCode.toUpperCase(),
+  name: localeNames[localeCode],
+  country: localeCountries[localeCode]
+}));
 
 const AccessibilityMenuWidget = () => {
   const [isAccessibilityMenuOpen, setIsAccessibilityMenuOpen] = useState<boolean>(false);
+  const [isLanguageSelectionDialogOpen, setIsLanguageSelectionDialogOpen] = useState<boolean>(false);
   const [languageSearchTerm, setLanguageSearchTerm] = useState<string>("");
+  const { locale, setLocale } = useLanguage();
 
   const languageSearchTermInputClassNames: string = "block w-full rounded-md border border-gray-300 bg-white py-2 px-3 pr-9 text-base " +
     "placeholder:text-sm placeholder:text-gray-600 leading-snug focus:border-blue-500 focus:outline-none " +
     "focus:ring-1 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50 transition duration-150 ease-in-out";
 
   useEffect(() => {
-    const handleAccesibilityMenuToggleKeyDown = (keyboardEvent: KeyboardEvent) => {
+    const handleAccesibilityMenuToggleKeyDown = (keyboardEvent: KeyboardEvent): void => {
       const isMac: boolean = /Mac/i.test(navigator.userAgent) || navigator.platform.toUpperCase().includes("MAC");
       const ctrlKey: boolean = isMac ? keyboardEvent.metaKey : keyboardEvent.ctrlKey;
 
@@ -87,13 +89,14 @@ const AccessibilityMenuWidget = () => {
               <h2 className="text-md font-semibold ml-1 text-white">(Ctrl + A)</h2>
             </div>
           </div>
-          <Dialog>
+          <Dialog open={isLanguageSelectionDialogOpen} onOpenChange={setIsLanguageSelectionDialogOpen}>
             <DialogTrigger asChild>
               <Button className="rounded-full bg-white hover:bg-white py-2">
-                <span className="pr-1 text-blue-500">EN</span>
+                <span className="pr-1 text-blue-500">{locale.toUpperCase()}</span>
                 <ChevronDown className="h-6 w-5 text-blue-500 mt-[1px]" />
               </Button>
             </DialogTrigger>
+            <DialogOverlay className="bg-black/0" />
             <DialogContent className="sm:max-w-xl w-full" onOpenAutoFocus={(event) => event.preventDefault()}>
               <DialogHeader>
                 <DialogTitle className="text-2xl">Select Language of Interface</DialogTitle>
@@ -117,8 +120,9 @@ const AccessibilityMenuWidget = () => {
                     variant="outline"
                     className="justify-start gap-3 h-auto py-3 px-3 hover:bg-blue-500 hover:text-white"
                     onClick={() => {
+                      setLocale(language.code.toLowerCase() as Locale);
                       setLanguageSearchTerm("");
-                      setIsAccessibilityMenuOpen(false);
+                      setIsLanguageSelectionDialogOpen(false);
                     }}
                   >
                     <span className="inline-grid place-items-center h-8 w-8 rounded-full bg-blue-100 text-blue-600 text-sm font-semibold leading-none">
