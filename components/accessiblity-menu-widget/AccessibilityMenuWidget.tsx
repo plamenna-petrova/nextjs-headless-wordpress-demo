@@ -1,14 +1,17 @@
 "use client";
 
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState, useTransition } from "react";
 import { motion } from "framer-motion";
 import { PersonStanding, X, ChevronDown, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogOverlay } from "@/components/ui/dialog";
-import { useLanguage } from "@/context/LanguageContext";
-import { Locale, localeCountries, localeNames, locales } from "@/lib/i18n";
+import { localeCountries, localeNames, locales } from "@/lib/i18n";
+import { Locale, useLocale, useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
+import { usePathname, useRouter } from "@/i18n/navigation";
+import Cookies from 'js-cookie';
 
 interface Language {
   code: string;
@@ -26,14 +29,19 @@ const AccessibilityMenuWidget = () => {
   const [isAccessibilityMenuOpen, setIsAccessibilityMenuOpen] = useState<boolean>(false);
   const [isLanguageSelectionDialogOpen, setIsLanguageSelectionDialogOpen] = useState<boolean>(false);
   const [languageSearchTerm, setLanguageSearchTerm] = useState<string>("");
-  const { locale, setLocale } = useLanguage();
+  const t = useTranslations("AccessibilityMenuWidget");
+  const locale = useLocale();
+  const router = useRouter();
+  const pathname = usePathname();
+  const params = useParams();
+  const [isPending, startTransition] = useTransition();
 
   const languageSearchTermInputClassNames: string = "block w-full rounded-md border border-gray-300 bg-white py-2 px-3 pr-9 text-base " +
     "placeholder:text-sm placeholder:text-gray-600 leading-snug focus:border-blue-500 focus:outline-none " +
     "focus:ring-1 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50 transition duration-150 ease-in-out";
 
   useEffect(() => {
-    const handleAccesibilityMenuToggleKeyDown = (keyboardEvent: KeyboardEvent): void => {
+    const handleAccesibilityMenuToggleOnKeyDown = (keyboardEvent: KeyboardEvent): void => {
       const isMac: boolean = /Mac/i.test(navigator.userAgent) || navigator.platform.toUpperCase().includes("MAC");
       const ctrlKey: boolean = isMac ? keyboardEvent.metaKey : keyboardEvent.ctrlKey;
 
@@ -43,15 +51,28 @@ const AccessibilityMenuWidget = () => {
       }
     };
 
-    window.addEventListener("keydown", handleAccesibilityMenuToggleKeyDown);
-    return () => window.removeEventListener("keydown", handleAccesibilityMenuToggleKeyDown);
+    window.addEventListener("keydown", handleAccesibilityMenuToggleOnKeyDown);
+    return () => window.removeEventListener("keydown", handleAccesibilityMenuToggleOnKeyDown);
   }, []);
 
-  const filteredLanguages: Language[] = languages.filter((language) =>
-    language.name.toLowerCase().includes(languageSearchTerm.toLowerCase()) ||
-    language.code.toLowerCase().includes(languageSearchTerm.toLowerCase()) ||
-    language.country.toLowerCase().includes(languageSearchTerm.toLowerCase())
-  );
+  const filteredLanguages: Language[] = languages.filter(({ name, code, country }) => {
+    const languageSearchTermAsLowerCase: string = languageSearchTerm.toLowerCase();
+
+    return (
+      name.toLowerCase().includes(languageSearchTermAsLowerCase) ||
+      code.toLowerCase().includes(languageSearchTermAsLowerCase) ||
+      country.toLowerCase().includes(languageSearchTermAsLowerCase)
+    )
+  });
+
+  const handleLocaleChange = (newLocale: Locale): void => { 
+    Cookies.set('NEXT_LOCALE', newLocale, { expires: 365 });
+    startTransition(() => {
+      router.replace({ pathname }, { locale: newLocale });
+    });
+    setLanguageSearchTerm("");
+    setIsLanguageSelectionDialogOpen(false);
+  }
 
   return (
     <Sheet open={isAccessibilityMenuOpen} onOpenChange={setIsAccessibilityMenuOpen}>
@@ -85,8 +106,8 @@ const AccessibilityMenuWidget = () => {
               </Button>
             </motion.div>
             <div className="flex flex-col">
-              <h2 className="text-md font-semibold ml-1 text-white">Accessibility Menu</h2>
-              <h2 className="text-md font-semibold ml-1 text-white">(Ctrl + A)</h2>
+              <h2 className="text-md font-semibold ml-1 text-white">{t('title')}</h2>
+              <h2 className="text-md font-semibold ml-1 text-white">{t('menuToggleShortcut')}</h2>
             </div>
           </div>
           <Dialog open={isLanguageSelectionDialogOpen} onOpenChange={setIsLanguageSelectionDialogOpen}>
@@ -99,7 +120,7 @@ const AccessibilityMenuWidget = () => {
             <DialogOverlay className="bg-black/0" />
             <DialogContent className="sm:max-w-xl w-full" onOpenAutoFocus={(event) => event.preventDefault()}>
               <DialogHeader>
-                <DialogTitle className="text-2xl">Select Language of Interface</DialogTitle>
+                <DialogTitle className="text-2xl">{t('interfaceLanguage')}</DialogTitle>
               </DialogHeader>
               <div className="relative mt-4">
                 <input
@@ -119,11 +140,8 @@ const AccessibilityMenuWidget = () => {
                     key={language.code}
                     variant="outline"
                     className="justify-start gap-3 h-auto py-3 px-3 hover:bg-blue-500 hover:text-white"
-                    onClick={() => {
-                      setLocale(language.code.toLowerCase() as Locale);
-                      setLanguageSearchTerm("");
-                      setIsLanguageSelectionDialogOpen(false);
-                    }}
+                    onClick={() => handleLocaleChange(language.code.toLowerCase() as Locale)}
+                    disabled={isPending}
                   >
                     <span className="inline-grid place-items-center h-8 w-8 rounded-full bg-blue-100 text-blue-600 text-sm font-semibold leading-none">
                       {language.code}

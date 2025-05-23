@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { mergeClassNames } from "@/lib/utils";
-import { LanguageProvider } from "@/context/LanguageContext";
 import { hasLocale, Locale, NextIntlClientProvider } from "next-intl";
 import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
@@ -61,12 +60,10 @@ export default async function LocaleLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <LanguageProvider>
-              <NavbarWrapper />
-              {children}
-              <AccessibilityMenuWidget />
-              <FooterWrapper />
-            </LanguageProvider>
+            <NavbarWrapper />
+            {children}
+            <AccessibilityMenuWidget />
+            <FooterWrapper />
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

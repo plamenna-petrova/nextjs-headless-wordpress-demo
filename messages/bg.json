@@ -1,4 +1,9 @@
 {
+  "AccessibilityMenuWidget": {
+    "title": "Меню за достъпност",
+    "menuToggleShortcut": "(Ctrl + A)",
+    "interfaceLanguage": "Изберете език на интерфейса"
+  },
   "Posts": {
     "title": "Публикации"
   }

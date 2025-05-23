@@ -1,4 +1,9 @@
 {
+  "AccessibilityMenuWidget": {
+    "title": "Accessibility Menu",
+    "menuToggleShortcut": "(Ctrl + A)",
+    "interfaceLanguage": "Select Language of Interface"
+  },
   "Posts": {
     "title": "Posts"
   }
