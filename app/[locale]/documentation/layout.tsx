@@ -4,6 +4,7 @@ import glob from 'fast-glob';
 
 export default async function Documentation({ children }: { children: React.ReactNode }) {
   let foundMDXPages: string[] = await glob('**/*.mdx', { cwd: 'app/documentation' });
+  console.log('foundMDXPages', foundMDXPages);
 
   let documentationSectionsEntries = (await Promise.all(
     foundMDXPages.map(async (filename: string) => [
