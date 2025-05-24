@@ -12,12 +12,15 @@ import Section from "@/components/section/section";
 import Container from "@/components/container/container";
 import Article from "@/components/article/article";
 import SEOPageMetadata from "@/components/seo/SEOPageMetadata";
+import he from "he";
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const locale = await getLocale() as Locale;
   const postBySlug = await getPostBySlug(params.slug);
-  const postBySlugPageTitle: string = await translateHTML(postBySlug.title.rendered, locale);
-  const postBySlugPageExcerpt: string = await translateHTML(postBySlug.excerpt.rendered, locale);
+  const rawPostBySlugPageTitle: string = await translateHTML(postBySlug.title.rendered, locale);
+  const rawPostBySlugPageExcerpt: string = await translateHTML(postBySlug.excerpt.rendered, locale);
+  const postBySlugPageTitle: string = he.decode(rawPostBySlugPageTitle);
+  const postBySlugPageExcerpt: string = he.decode(rawPostBySlugPageExcerpt);
 
   return {
     title: postBySlugPageTitle,
