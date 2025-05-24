@@ -1,16 +1,9 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { Locale } from "@/lib/i18n";
 
 interface Author {
   id: number;
@@ -34,13 +27,26 @@ type PostsFilterProps = {
   selectedAuthor?: string;
   selectedTag?: string;
   selectedCategory?: string;
+  filterLabels: Record<string, string>;
 }
 
-const PostsFilter = ({ authors, tags, categories, selectedAuthor, selectedTag, selectedCategory }: PostsFilterProps) => {
+const PostsFilter = ({
+  authors,
+  tags,
+  categories,
+  selectedAuthor,
+  selectedTag,
+  selectedCategory,
+  filterLabels
+}: PostsFilterProps) => {
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const locale = pathname.split("/")[1] || "bg" as Locale;
 
   const handleFilterChange = (type: string, value: string): void => {
-    const urlSearchParams: URLSearchParams = new URLSearchParams(window.location.search);
+    const urlSearchParams: URLSearchParams = new URLSearchParams(searchParams.toString() || "");
 
     if (value === "all") {
       urlSearchParams.delete(type);
@@ -48,11 +54,11 @@ const PostsFilter = ({ authors, tags, categories, selectedAuthor, selectedTag, s
       urlSearchParams.set(type, value);
     }
 
-    router.push(`/posts?${urlSearchParams.toString()}`);
+    router.push(`/${locale}/posts?${urlSearchParams.toString()}`);
   };
 
   const handleResetFilters = (): void => {
-    router.push("/posts?page=1");
+    router.push(`/${locale}/posts?page=1`);
   };
 
   return (
@@ -62,10 +68,10 @@ const PostsFilter = ({ authors, tags, categories, selectedAuthor, selectedTag, s
         onValueChange={(value: string) => handleFilterChange("tag", value)}
       >
         <SelectTrigger>
-          <SelectValue placeholder="Всички етикети" />
+          <SelectValue placeholder={filterLabels.allTags} />
         </SelectTrigger>
         <SelectContent className="bg-background">
-          <SelectItem value="all">Всички етикети</SelectItem>
+          <SelectItem value="all">{filterLabels.allTags}</SelectItem>
           {tags.map((tag) => (
             <SelectItem key={tag.id} value={tag.id.toString()}>
               {tag.name}
@@ -78,10 +84,10 @@ const PostsFilter = ({ authors, tags, categories, selectedAuthor, selectedTag, s
         onValueChange={(value: string) => handleFilterChange("category", value)}
       >
         <SelectTrigger>
-          <SelectValue placeholder="Всички категории" />
+          <SelectValue placeholder={filterLabels.allCategories} />
         </SelectTrigger>
         <SelectContent className="bg-background">
-          <SelectItem value="all">Всички категории</SelectItem>
+          <SelectItem value="all">{filterLabels.allCategories}</SelectItem>
           {categories.map((category) => (
             <SelectItem key={category.id} value={category.id.toString()}>
               {category.name}
@@ -94,10 +100,10 @@ const PostsFilter = ({ authors, tags, categories, selectedAuthor, selectedTag, s
         onValueChange={(value: string) => handleFilterChange("author", value)}
       >
         <SelectTrigger>
-          <SelectValue placeholder="Всички автори" />
+          <SelectValue placeholder={filterLabels.allAuthors} />
         </SelectTrigger>
         <SelectContent className="bg-background">
-          <SelectItem value="all">Всички автори</SelectItem>
+          <SelectItem value="all">{filterLabels.allAuthors}</SelectItem>
           {authors.map((author) => (
             <SelectItem key={author.id} value={author.id.toString()}>
               {author.name}
@@ -106,7 +112,7 @@ const PostsFilter = ({ authors, tags, categories, selectedAuthor, selectedTag, s
         </SelectContent>
       </Select>
       <Button variant="outline" onClick={handleResetFilters}>
-        Изчисти филтрите
+        {filterLabels.clearFilters}
       </Button>
     </div>
   );

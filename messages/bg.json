@@ -16,7 +16,8 @@
     "authors": "автори",
     "demoApplication": "Демонстративно приложение",
     "clientApplicationDevelopmentTechnology": "Клиентското приложение е разработено със Next.js",
-    "copyright": "© Авторско право {year}. Всички права запазени."
+    "copyright": "© Авторско право {year}. Всички права запазени.",
+    "backButtonText": "Назад"
   },
   "WordPressStarter": {
     "demoApplicationTitle": "Демонстративно приложение, разработено със Next.js и WordPress",

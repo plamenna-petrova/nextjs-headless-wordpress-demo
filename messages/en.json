@@ -16,7 +16,8 @@
     "authors": "authors",
     "demoApplication": "Demo Application",
     "clientApplicationDevelopmentTechnology": "The client application is developed with Next.js",
-    "copyright": "© Copyright {year}. All rights reserved."
+    "copyright": "© Copyright {year}. All rights reserved.",
+    "backButtonText": "Go Back"
   },
   "WordPressStarter": {
     "demoApplicationTitle": "Demo Application Developed with Next.js and WordPress",

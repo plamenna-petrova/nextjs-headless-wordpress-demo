@@ -1,5 +1,8 @@
 import { Metadata } from "next";
 import { getAllCategories } from "@/lib/wordpressRequests";
+import { getLocale } from "next-intl/server";
+import { Locale } from "@/lib/i18n";
+import { translateHTML } from "@/lib/translateHTML";
 import Section from "@/components/section/section";
 import Container from "@/components/container/container";
 import Link from "next/link";
@@ -7,23 +10,37 @@ import BackButton from "@/components/back-button/back-button";
 import Main from "@/components/main/main";
 
 export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale() as Locale;
+  const categoriesPageTitle: string = await translateHTML("All categories", locale);
+  const categoriesPageDescription: string = await translateHTML("View all categories of posts", locale);
+
   return {
-    title: "Всички категории",
-    description: "Вижте всички категории на публикации"
+    title: categoriesPageTitle,
+    description: categoriesPageDescription
   };
 }
 
 const Categories = async () => {
-  const categories = (await getAllCategories()).sort((a, b) => {
-    if (a.name === 'Uncategorized') {
-      return 1;
-    }
+  const locale = await getLocale() as Locale;
+  const originalCategories = await getAllCategories();
+  const uncategorizedCategoryName: string = await translateHTML('Uncategorized', locale as Locale);
+  const translatedCategoriesHeading: string = await translateHTML("All categories", locale);
 
-    if (b.name === 'Uncategorized') {
-      return -1;
-    }
+  const translatedCategories = (await Promise.all(
+    originalCategories.map(async (category) => ({
+      ...category,
+      name: await translateHTML(category.name, locale)
+    }))
+  )).sort((a, b) => {
+      if (a.name === uncategorizedCategoryName) {
+        return 1;
+      }
 
-    return a.name.localeCompare(b.name, 'bg');
+      if (b.name === uncategorizedCategoryName) {
+        return -1;
+      }
+
+      return a.name.localeCompare(b.name, locale);
   });
 
   return (
@@ -31,11 +48,11 @@ const Categories = async () => {
       <Section>
         <Container>
           <BackButton />
-          <h2>Всички категории</h2>
+          <h2>{translatedCategoriesHeading}</h2>
           <div className="grid">
-            {categories.map((category) => (
-              <Link key={category.id} href={`/posts/?category=${category.id}`}>
-                {category.name}
+            {translatedCategories.map((translatedCategory) => (
+              <Link key={translatedCategory.id} href={`/${locale}/posts/?category=${translatedCategory.id}`}>
+                {translatedCategory.name}
               </Link>
             ))}
           </div>

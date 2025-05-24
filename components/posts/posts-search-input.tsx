@@ -5,7 +5,7 @@ import { ReadonlyURLSearchParams, usePathname, useSearchParams, useRouter } from
 import { ChangeEvent } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
-export function PostsSearchInput({ defaultValue }: { defaultValue?: string }) {
+export function PostsSearchInput({ defaultValue, translatedPlaceholder }: { defaultValue?: string, translatedPlaceholder?: string }) {
   const searchParams: ReadonlyURLSearchParams = useSearchParams();
   const pathname: string = usePathname();
   const { replace } = useRouter();
@@ -26,7 +26,7 @@ export function PostsSearchInput({ defaultValue }: { defaultValue?: string }) {
     <Input
       type="text"
       name="search"
-      placeholder="Търсете публикации..."
+      placeholder={translatedPlaceholder}
       defaultValue={defaultValue} 
       onChange={(event: ChangeEvent<HTMLInputElement>) => handlePostsSearch(event.target.value)}
     />

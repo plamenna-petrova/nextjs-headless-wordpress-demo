@@ -3,26 +3,24 @@ import { mergeClassNames } from "@/lib/utils";
 import { getFeaturedMediaById, getCategoryById } from "@/lib/wordpressRequests";
 import { translateHTML } from "@/lib/translateHTML";
 import { Locale } from "@/lib/i18n";
+import { getLocale } from "next-intl/server";
 import Image from "next/image";
 import Link from "next/link";
 
-interface PostCardProps {
-  post: Post;
-  locale: string;
-}
-
-const PostCard = async ({ post, locale }: PostCardProps) => {
+const PostCard = async ({ post }: { post: Post }) => {
+  const locale = await getLocale() as Locale;
   const postFeaturedMedia = await getFeaturedMediaById(post.featured_media);
   const postCategory = await getCategoryById(post.categories[0]);
 
   const translatedPostTitle: string = await translateHTML(post.title.rendered, locale as Locale);
+  const translatedPostCategoryName: string = await translateHTML(postCategory.name, locale as Locale);
   
   const translatedPostExcerpt: string = await translateHTML(
     `${post.excerpt.rendered.split(" ").slice(0, 12).join(" ").trim()}...`,
     locale as Locale
   );
 
-  const date = new Date(post.date).toLocaleDateString("bg-BG", {
+  const translatedPostLocalizedDateString: string = new Date(post.date).toLocaleDateString(locale, {
     month: "long",
     day: "numeric",
     year: "numeric",
@@ -58,8 +56,8 @@ const PostCard = async ({ post, locale }: PostCardProps) => {
       <div className="flex flex-col gap-4">
         <hr />
         <div className="flex justify-between items-center text-xs">
-          <p>{postCategory.name}</p>
-          <p>{date}</p>
+          <p>{translatedPostCategoryName}</p>
+          <p>{translatedPostLocalizedDateString}</p>
         </div>
       </div>
     </Link>

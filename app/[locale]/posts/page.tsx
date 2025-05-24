@@ -2,6 +2,7 @@ import { Pagination, PaginationContent, PaginationItem, PaginationLink, Paginati
 import { getAllAuthors, getAllCategories, getAllPosts, getAllTags } from "@/lib/wordpressRequests";
 import { PostsSearchInput } from "@/components/posts/posts-search-input";
 import { translateHTML } from "@/lib/translateHTML";
+import { getLocale } from "next-intl/server";
 import { Locale } from "@/lib/i18n";
 import Container from "@/components/container/container";
 import PostCard from "@/components/posts/post-card";
@@ -9,29 +10,45 @@ import Section from "@/components/section/section";
 import PostsFilter from "@/components/posts/posts-filter";
 import Main from "@/components/main/main";
 
-interface PostsPageProps {
-  searchParams: { [key: string]: string | undefined };
-  params: { locale: string };
-}
-
-const Posts = async ({ searchParams, params }: PostsPageProps) => {
+const Posts = async ({ searchParams }: { searchParams: { [key: string]: string | undefined } }) => {
   const { search, author, tag, category, page } = searchParams;
-  const { locale } = params;
+  const locale = await getLocale() as Locale;
 
   const posts = await getAllPosts({ search, author, tag, category });
   const authors = await getAllAuthors();
   const tags = await getAllTags();
+  const originalCategories = await getAllCategories();
+  const uncategorizedCategoryName: string = await translateHTML('Uncategorized', locale as Locale);
   
-  const categories = (await getAllCategories()).sort((a, b) => {
-    if (a.name === 'Uncategorized') {
+  const translatedAuthors = await Promise.all(
+    authors.map(async (author) => ({
+      ...author,
+      name: await translateHTML(author.name, locale as Locale)
+    }))
+  );
+
+  const translatedTags = await Promise.all(
+    tags.map(async (tag) => ({
+      ...tag,
+      name: await translateHTML(tag.name, locale as Locale)
+    }))
+  );
+
+  const translatedCategories = (await Promise.all(
+    originalCategories.map(async (category) => ({
+      ...category,
+      name: await translateHTML(category.name, locale)
+    }))
+  )).sort((a, b) => {
+    if (a.name === uncategorizedCategoryName) {
       return 1;
     }
 
-    if (b.name === 'Uncategorized') {
+    if (b.name === uncategorizedCategoryName) {
       return -1;
     }
 
-    return a.name.localeCompare(b.name, 'bg');
+    return a.name.localeCompare(b.name, locale);
   });
 
   const currentPage: number = page ? parseInt(page, 10) : 1;
@@ -78,10 +95,40 @@ const Posts = async ({ searchParams, params }: PostsPageProps) => {
     }
   }
 
-  const [translatedPostsHeading, translatedNoPostsText, translatedPostsCountText] = await Promise.all([
+  const [
+    translatedPostsHeading,
+    translatedNoPostsText,
+    translatedPostsCountText,
+    translatedPostSearchInputPlaceholder
+  ] = await Promise.all([
     translateHTML("Posts", locale as Locale),
     translateHTML("No posts found", locale as Locale),
-    getPostsCountText()
+    getPostsCountText(),
+    translateHTML("Search posts...", locale as Locale)
+  ]);
+
+  const translatedFiltersLabels: Record<string, string> = await Promise.all([
+    translateHTML("All tags", locale as Locale),
+    translateHTML("All categories", locale as Locale),
+    translateHTML("All authors", locale as Locale),
+    translateHTML("Clear filters", locale as Locale)
+  ]).then(([tags, categories, authors, clearFilters]) => ({
+    allTags: tags,
+    allCategories: categories,
+    allAuthors: authors,
+    clearFilters
+  }));
+
+  const [
+    translatedPreviousPageLabel,
+    translatedPreviousPageAriaLabel,
+    translatedNextPageLabel,
+    translatedNextPageAriaLabel
+  ] = await Promise.all([
+    translateHTML("Previous", locale as Locale),
+    translateHTML("Go to previous page", locale as Locale),
+    translateHTML("Next", locale as Locale),
+    translateHTML("Go to next page", locale as Locale)
   ]);
 
   return (
@@ -93,25 +140,26 @@ const Posts = async ({ searchParams, params }: PostsPageProps) => {
             {translatedPostsCountText}
           </p>
           <div className="flex flex-col my-4">
-            <PostsSearchInput defaultValue={search} />
+            <PostsSearchInput defaultValue={search} translatedPlaceholder={translatedPostSearchInputPlaceholder} />
             <PostsFilter
-              authors={authors}
-              tags={tags}
-              categories={categories}
+              authors={translatedAuthors}
+              tags={translatedTags}
+              categories={translatedCategories}
               selectedAuthor={author}
               selectedTag={tag}
               selectedCategory={category}
+              filterLabels={translatedFiltersLabels}
             />
           </div>
           {paginatedPosts.length > 0 ? (
             <div className="grid md:grid-cols-3 gap-4 z-0">
               {paginatedPosts.map((post) => (
-                <PostCard key={post.id} post={post} locale={locale} />
+                <PostCard key={post.id} post={post} />
               ))}
             </div>
           ) : (
             <div className="h-24 w-full border rounded-lg bg-accent/25 flex items-center justify-center">
-                <p>{translatedNoPostsText}</p>
+              <p>{translatedNoPostsText}</p>
             </div>
           )}
           <div className="mt-8 not-prose">
@@ -121,6 +169,8 @@ const Posts = async ({ searchParams, params }: PostsPageProps) => {
                   <PaginationPrevious
                     className={currentPage === 1 ? "pointer-events-none" : ""}
                     href={createPaginationUrl(currentPage - 1)}
+                    label={translatedPreviousPageLabel}
+                    ariaLabel={translatedPreviousPageAriaLabel}
                   />
                 </PaginationItem>
                 <PaginationItem className="text-zinc-700 dark:text-zinc-300">
@@ -130,10 +180,10 @@ const Posts = async ({ searchParams, params }: PostsPageProps) => {
                 </PaginationItem>
                 <PaginationItem>
                   <PaginationNext
-                    className={
-                      currentPage === totalPages ? "pointer-events-none" : ""
-                    }
+                    className={currentPage === totalPages ? "pointer-events-none" : ""}
                     href={createPaginationUrl(currentPage + 1)}
+                    label={translatedNextPageLabel}
+                    ariaLabel={translatedNextPageAriaLabel}
                   />
                 </PaginationItem>
               </PaginationContent>
