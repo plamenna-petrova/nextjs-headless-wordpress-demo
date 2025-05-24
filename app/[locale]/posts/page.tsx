@@ -139,18 +139,17 @@ const Posts = async ({ searchParams }: { searchParams: { [key: string]: string |
           <p className="text-muted-foreground">
             {translatedPostsCountText}
           </p>
-          <div className="flex flex-col my-4">
-            <PostsSearchInput defaultValue={search} translatedPlaceholder={translatedPostSearchInputPlaceholder} />
-            <PostsFilter
-              authors={translatedAuthors}
-              tags={translatedTags}
-              categories={translatedCategories}
-              selectedAuthor={author}
-              selectedTag={tag}
-              selectedCategory={category}
-              filterLabels={translatedFiltersLabels}
-            />
-          </div>
+          <PostsFilter
+            defaultSearchValue={search}
+            translatedSearchPlaceholder={translatedPostSearchInputPlaceholder}
+            authors={translatedAuthors}
+            tags={translatedTags}
+            categories={translatedCategories}
+            selectedAuthor={author}
+            selectedTag={tag}
+            selectedCategory={category}
+            filterLabels={translatedFiltersLabels}
+          />
           {paginatedPosts.length > 0 ? (
             <div className="grid md:grid-cols-3 gap-4 z-0">
               {paginatedPosts.map((post) => (

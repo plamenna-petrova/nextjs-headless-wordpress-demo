@@ -7,7 +7,7 @@ import { useDebouncedCallback } from "use-debounce";
 
 export function PostsSearchInput({ defaultValue, translatedPlaceholder }: { defaultValue?: string, translatedPlaceholder?: string }) {
   const searchParams: ReadonlyURLSearchParams = useSearchParams();
-  const pathname: string = usePathname();
+  const pathname = usePathname();
   const { replace } = useRouter();
 
   const handlePostsSearch = useDebouncedCallback((searchTerm: string): void => {
