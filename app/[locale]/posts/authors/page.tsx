@@ -28,7 +28,7 @@ const Authors = async () => {
   const translatedAuthors = await Promise.all(
     authors.map(async (author) => ({
       ...author,
-      name: await translateHTML(author.name, locale as Locale)
+      name: await translateHTML(author.name, locale)
     }))
   );
 

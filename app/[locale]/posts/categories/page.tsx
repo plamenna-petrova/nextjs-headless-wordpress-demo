@@ -23,7 +23,7 @@ export async function generateMetadata(): Promise<Metadata> {
 const Categories = async () => {
   const locale = await getLocale() as Locale;
   const originalCategories = await getAllCategories();
-  const uncategorizedCategoryName: string = await translateHTML('Uncategorized', locale as Locale);
+  const uncategorizedCategoryName: string = await translateHTML('Uncategorized', locale);
   const translatedCategoriesHeading: string = await translateHTML("All categories", locale);
 
   const translatedCategories = (await Promise.all(

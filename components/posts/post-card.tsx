@@ -12,12 +12,12 @@ const PostCard = async ({ post }: { post: Post }) => {
   const postFeaturedMedia = await getFeaturedMediaById(post.featured_media);
   const postCategory = await getCategoryById(post.categories[0]);
 
-  const translatedPostTitle: string = await translateHTML(post.title.rendered, locale as Locale);
-  const translatedPostCategoryName: string = await translateHTML(postCategory.name, locale as Locale);
+  const translatedPostTitle: string = await translateHTML(post.title.rendered, locale);
+  const translatedPostCategoryName: string = await translateHTML(postCategory.name, locale);
   
   const translatedPostExcerpt: string = await translateHTML(
     `${post.excerpt.rendered.split(" ").slice(0, 12).join(" ").trim()}...`,
-    locale as Locale
+    locale
   );
 
   const translatedPostLocalizedDateString: string = new Date(post.date).toLocaleDateString(locale, {

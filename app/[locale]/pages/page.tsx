@@ -30,7 +30,7 @@ export default async function Page() {
       ...page,
       title: {
         ...page.title,
-        rendered: await translateHTML(page.title.rendered, locale as Locale)
+        rendered: await translateHTML(page.title.rendered, locale)
       }
     }))
   );

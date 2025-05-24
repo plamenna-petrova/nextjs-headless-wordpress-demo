@@ -28,7 +28,7 @@ const Tags = async () => {
   const translatedTags = await Promise.all(
     tags.map(async (tag) => ({
       ...tag,
-      name: await translateHTML(tag.name, locale as Locale)
+      name: await translateHTML(tag.name, locale)
     }))
   );
 

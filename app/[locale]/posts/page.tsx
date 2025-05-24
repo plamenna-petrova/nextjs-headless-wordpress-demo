@@ -1,6 +1,5 @@
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { getAllAuthors, getAllCategories, getAllPosts, getAllTags } from "@/lib/wordpressRequests";
-import { PostsSearchInput } from "@/components/posts/posts-search-input";
 import { translateHTML } from "@/lib/translateHTML";
 import { getLocale } from "next-intl/server";
 import { Locale } from "@/lib/i18n";
@@ -18,19 +17,19 @@ const Posts = async ({ searchParams }: { searchParams: { [key: string]: string |
   const authors = await getAllAuthors();
   const tags = await getAllTags();
   const originalCategories = await getAllCategories();
-  const uncategorizedCategoryName: string = await translateHTML('Uncategorized', locale as Locale);
+  const uncategorizedCategoryName: string = await translateHTML('Uncategorized', locale);
   
   const translatedAuthors = await Promise.all(
     authors.map(async (author) => ({
       ...author,
-      name: await translateHTML(author.name, locale as Locale)
+      name: await translateHTML(author.name, locale)
     }))
   );
 
   const translatedTags = await Promise.all(
     tags.map(async (tag) => ({
       ...tag,
-      name: await translateHTML(tag.name, locale as Locale)
+      name: await translateHTML(tag.name, locale)
     }))
   );
 
@@ -87,11 +86,11 @@ const Posts = async ({ searchParams }: { searchParams: { [key: string]: string |
 
   const getPostsCountText = async (): Promise<string> => {
     if (posts.length === 0) {
-      return await translateHTML("No posts found", locale as Locale);
+      return await translateHTML("No posts found", locale);
     } else if (posts.length === 1) {
-      return await translateHTML(`1 post found${search ? ', matching the search' : ''}`, locale as Locale);
+      return await translateHTML(`1 post found${search ? ', matching the search' : ''}`, locale);
     } else {
-      return await translateHTML(`${posts.length} found posts${search ? ', matching the search' : ''}`, locale as Locale);
+      return await translateHTML(`${posts.length} found posts${search ? ', matching the search' : ''}`, locale);
     }
   }
 
@@ -101,17 +100,17 @@ const Posts = async ({ searchParams }: { searchParams: { [key: string]: string |
     translatedPostsCountText,
     translatedPostSearchInputPlaceholder
   ] = await Promise.all([
-    translateHTML("Posts", locale as Locale),
-    translateHTML("No posts found", locale as Locale),
+    translateHTML("Posts", locale),
+    translateHTML("No posts found", locale),
     getPostsCountText(),
-    translateHTML("Search posts...", locale as Locale)
+    translateHTML("Search posts...", locale)
   ]);
 
   const translatedFiltersLabels: Record<string, string> = await Promise.all([
-    translateHTML("All tags", locale as Locale),
-    translateHTML("All categories", locale as Locale),
-    translateHTML("All authors", locale as Locale),
-    translateHTML("Clear filters", locale as Locale)
+    translateHTML("All tags", locale),
+    translateHTML("All categories", locale),
+    translateHTML("All authors", locale),
+    translateHTML("Clear filters", locale)
   ]).then(([tags, categories, authors, clearFilters]) => ({
     allTags: tags,
     allCategories: categories,
@@ -125,10 +124,10 @@ const Posts = async ({ searchParams }: { searchParams: { [key: string]: string |
     translatedNextPageLabel,
     translatedNextPageAriaLabel
   ] = await Promise.all([
-    translateHTML("Previous", locale as Locale),
-    translateHTML("Go to previous page", locale as Locale),
-    translateHTML("Next", locale as Locale),
-    translateHTML("Go to next page", locale as Locale)
+    translateHTML("Previous", locale),
+    translateHTML("Go to previous page", locale),
+    translateHTML("Next", locale),
+    translateHTML("Go to next page", locale)
   ]);
 
   return (
