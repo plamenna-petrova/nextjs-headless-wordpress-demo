@@ -1,5 +1,6 @@
-import { contentMenu, mainMenu } from "@/lib/constants";
+import { useLocale } from "next-intl";
 import { ThemeToggle } from "../theme/theme-toggle";
+import { buildContentMenu, buildMainMenu } from "@/lib/constants";
 import Section from "../section/section";
 import Container from "../container/container";
 import Link from "next/link";
@@ -8,6 +9,10 @@ import Logo from "@/public/next.svg";
 import Balancer from "react-wrap-balancer";
 
 const Footer = () => {
+  const locale = useLocale();
+  const mainMenu = buildMainMenu(locale);
+  const contentMenu = buildContentMenu(locale);
+
   const currentYear: number = new Date().getFullYear();
 
   return (

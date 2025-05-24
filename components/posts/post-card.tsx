@@ -1,11 +1,26 @@
 import { Post } from "@/types/Post";
 import { mergeClassNames } from "@/lib/utils";
 import { getFeaturedMediaById, getCategoryById } from "@/lib/wordpressRequests";
+import { translateHTML } from "@/lib/translateHTML";
+import { Locale } from "@/lib/i18n";
 import Image from "next/image";
 import Link from "next/link";
 
-const PostCard = async ({ post }: { post: Post }) => {
+interface PostCardProps {
+  post: Post;
+  locale: string;
+}
+
+const PostCard = async ({ post, locale }: PostCardProps) => {
   const postFeaturedMedia = await getFeaturedMediaById(post.featured_media);
+  const postCategory = await getCategoryById(post.categories[0]);
+
+  const translatedPostTitle: string = await translateHTML(post.title.rendered, locale as Locale);
+  
+  const translatedPostExcerpt: string = await translateHTML(
+    `${post.excerpt.rendered.split(" ").slice(0, 12).join(" ").trim()}...`,
+    locale as Locale
+  );
 
   const date = new Date(post.date).toLocaleDateString("bg-BG", {
     month: "long",
@@ -13,11 +28,9 @@ const PostCard = async ({ post }: { post: Post }) => {
     year: "numeric",
   });
 
-  const postCategory = await getCategoryById(post.categories[0]);
-
   return (
     <Link
-      href={`/posts/${post.slug}`}
+      href={`/${locale}/posts/${post.slug}`}
       className={mergeClassNames(
         "border p-4 bg-accent/30 rounded-lg group flex justify-between flex-col not-prose gap-8",
         "hover:bg-accent/75 transition-all"
@@ -28,18 +41,18 @@ const PostCard = async ({ post }: { post: Post }) => {
           <Image
             className="h-full w-full object-cover"
             src={postFeaturedMedia.source_url}
-            alt={post.title.rendered}
+            alt={translatedPostTitle}
             width={400}
             height={200}
           />
         </div>
         <div
-          dangerouslySetInnerHTML={{ __html: post.title.rendered }}
+          dangerouslySetInnerHTML={{ __html: translatedPostTitle }}
           className="text-xl text-primary font-medium group-hover:underline decoration-muted-foreground underline-offset-4 decoration-dotted transition-all"
         ></div>
         <div
           className="text-sm"
-          dangerouslySetInnerHTML={{ __html: `${post.excerpt.rendered.split(" ").slice(0, 12).join(" ").trim()}...` }}
+          dangerouslySetInnerHTML={{ __html: translatedPostExcerpt }}
         ></div>
       </div>
       <div className="flex flex-col gap-4">

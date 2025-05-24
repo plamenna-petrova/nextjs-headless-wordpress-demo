@@ -1,13 +1,16 @@
-export const mainMenu: Record<string, string> = {
-  'начало': "/",
-  'блог': "/posts?page=1",
-};
+import { translateHTML } from "./translateHTML";
+import { Locale } from "@/lib/i18n";
 
-export const contentMenu: Record<string, string> = {
-  'категории': "/posts/categories",
-  'етикети': "/posts/tags",
-  'aвтори': "/posts/authors",
-};
+export const buildMainMenu = (locale: string): Record<string, string> => ({
+  'начало': "/",
+  'блог': `/${locale}/posts?page=1`,
+});
+
+export const buildContentMenu = (locale: string): Record<string, string> => ({
+  категории: `/${locale}/posts/categories`,
+  етикети: `/${locale}/posts/tags`,
+  aвтори: `/${locale}/posts/authors`,
+});
 
 export const GET_ALL_POSTS_ERROR_DETAILS: string = "Unable to retrieve posts.";
 

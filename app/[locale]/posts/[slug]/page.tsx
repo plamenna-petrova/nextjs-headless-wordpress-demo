@@ -14,10 +14,12 @@ import { Locale } from "@/lib/i18n";
 
 export async function generateMetadata({ params }: { params: { slug: string, locale: string } }): Promise<Metadata> {
   const postBySlug = await getPostBySlug(params.slug);
+  const postBySlugTitle: string = await translateHTML(postBySlug.title.rendered, params.locale as Locale);
+  const postBySlugExcerpt: string = await translateHTML(postBySlug.excerpt.rendered, params.locale as Locale);
 
   return {
-    title: postBySlug.title.rendered,
-    description: postBySlug.excerpt.rendered,
+    title: postBySlugTitle,
+    description: postBySlugExcerpt,
   };
 }
 

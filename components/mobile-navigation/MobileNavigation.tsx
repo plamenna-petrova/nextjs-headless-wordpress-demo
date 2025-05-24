@@ -9,8 +9,8 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
-
-import { mainMenu, contentMenu } from "@/lib/constants";
+import { useLocale } from "next-intl";
+import { buildContentMenu, buildMainMenu } from "@/lib/constants";
 
 interface MobileLinkProps extends LinkProps {
   onOpenChange?: (open: boolean) => void;
@@ -38,7 +38,10 @@ const MobileLink = ({ href, onOpenChange, className, children, ...props }: Mobil
 
 const MobileNavigation = () => {
   const [isMobileNavigationOpen, setIsMobileNavigationOpen] = useState<boolean>(false);
-
+  const locale = useLocale();
+  const mainMenu = buildMainMenu(locale);
+  const contentMenu = buildContentMenu(locale);
+  
   return (
     <Sheet open={isMobileNavigationOpen} onOpenChange={setIsMobileNavigationOpen}>
       <SheetTrigger asChild>

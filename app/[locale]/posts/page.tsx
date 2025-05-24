@@ -1,26 +1,24 @@
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious
-} from "@/components/ui/pagination";
-
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { getAllAuthors, getAllCategories, getAllPosts, getAllTags } from "@/lib/wordpressRequests";
 import { PostsSearchInput } from "@/components/posts/posts-search-input";
-
+import { translateHTML } from "@/lib/translateHTML";
+import { Locale } from "@/lib/i18n";
 import Container from "@/components/container/container";
 import PostCard from "@/components/posts/post-card";
 import Section from "@/components/section/section";
 import PostsFilter from "@/components/posts/posts-filter";
 import Main from "@/components/main/main";
 
-const Posts = async ({ searchParams }: { searchParams: { [key: string]: string | undefined } }) => {
+interface PostsPageProps {
+  searchParams: { [key: string]: string | undefined };
+  params: { locale: string };
+}
+
+const Posts = async ({ searchParams, params }: PostsPageProps) => {
   const { search, author, tag, category, page } = searchParams;
+  const { locale } = params;
 
   const posts = await getAllPosts({ search, author, tag, category });
-
   const authors = await getAllAuthors();
   const tags = await getAllTags();
   
@@ -67,26 +65,32 @@ const Posts = async ({ searchParams }: { searchParams: { [key: string]: string |
       urlSearchParams.set("tag", tag);
     }
 
-    return `/posts${searchParams.toString() ? `?${urlSearchParams.toString()}` : ''}`;
+    return `/${locale}/posts${searchParams.toString() ? `?${urlSearchParams.toString()}` : ''}`;
   }
 
-  const getPostsCountText = (): string => {
+  const getPostsCountText = async (): Promise<string> => {
     if (posts.length === 0) {
-      return "Не са намерени публикации";
+      return await translateHTML("No posts found", locale as Locale);
     } else if (posts.length === 1) {
-      return `1 намерена публикация${search ? ', отговаряща на търсенето' : ''}`;
+      return await translateHTML(`1 post found${search ? ', matching the search' : ''}`, locale as Locale);
     } else {
-      return `${posts.length} намерени публикации${search ? ', отговарящи на търсенето' : ''}`;
+      return await translateHTML(`${posts.length} found posts${search ? ', matching the search' : ''}`, locale as Locale);
     }
   }
+
+  const [translatedPostsHeading, translatedNoPostsText, translatedPostsCountText] = await Promise.all([
+    translateHTML("Posts", locale as Locale),
+    translateHTML("No posts found", locale as Locale),
+    getPostsCountText()
+  ]);
 
   return (
     <Main>
       <Section>
         <Container>
-          <h1>Публикации</h1>
+          <h1>{translatedPostsHeading}</h1>
           <p className="text-muted-foreground">
-            {getPostsCountText()}
+            {translatedPostsCountText}
           </p>
           <div className="flex flex-col my-4">
             <PostsSearchInput defaultValue={search} />
@@ -102,12 +106,12 @@ const Posts = async ({ searchParams }: { searchParams: { [key: string]: string |
           {paginatedPosts.length > 0 ? (
             <div className="grid md:grid-cols-3 gap-4 z-0">
               {paginatedPosts.map((post) => (
-                <PostCard key={post.id} post={post} />
+                <PostCard key={post.id} post={post} locale={locale} />
               ))}
             </div>
           ) : (
             <div className="h-24 w-full border rounded-lg bg-accent/25 flex items-center justify-center">
-              <p>Не са намерени публикации</p>
+                <p>{translatedNoPostsText}</p>
             </div>
           )}
           <div className="mt-8 not-prose">
@@ -121,7 +125,7 @@ const Posts = async ({ searchParams }: { searchParams: { [key: string]: string |
                 </PaginationItem>
                 <PaginationItem className="text-zinc-700 dark:text-zinc-300">
                   <PaginationLink href={createPaginationUrl(currentPage)}>
-                    {page}
+                    {currentPage}
                   </PaginationLink>
                 </PaginationItem>
                 <PaginationItem>
