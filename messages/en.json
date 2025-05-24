@@ -2,9 +2,50 @@
   "AccessibilityMenuWidget": {
     "title": "Accessibility Menu",
     "menuToggleShortcut": "(Ctrl + A)",
-    "interfaceLanguage": "Select Language of Interface"
+    "interfaceLanguage": "Select Language of Interface",
+    "selectInterfaceLanguageDialog": "Dialog For Language Selection"
   },
-  "Posts": {
-    "title": "Posts"
+  "Navigation": {
+    "mainMenu": "Main menu",
+    "home": "Home",
+    "blog": "Blog",
+    "aboutTheApplication": "About The Application",
+    "usefulLinks": "Useful Links",
+    "categories": "categories",
+    "tags": "tags",
+    "authors": "authors",
+    "demoApplication": "Demo Application",
+    "clientApplicationDevelopmentTechnology": "The client application is developed with Next.js",
+    "copyright": "© Copyright {year}. All rights reserved."
+  },
+  "WordPressStarter": {
+    "demoApplicationTitle": "Demo Application Developed with Next.js and WordPress",
+    "demoApplicationDescription": "The application contains documented courseworks by students from the Bachelor's programs in Software Engineering and Information Brokerage and Digital Media, for the academic disciplines of Content Management Systems and Software and Media Ergonomics at the Faculty of Mathematics and Informatics, \"St. Cyril and St. Methodius\" University of Veliko Tarnovo.",
+    "starterGrid": {
+      "posts": {
+        "title": "Posts",
+        "description": "Documented courseworks by students"
+      },
+      "pages": {
+        "title": "Pages",
+        "description": "Informative pages from the WordPress website"
+      },
+      "authors": {
+        "title": "Authors",
+        "description": "List of courseworks authors"
+      },
+      "tags": {
+        "title": "Tags",
+        "description": "Tags related to the coursework topics"
+      },
+      "categories": {
+        "title": "Categories",
+        "description": "Categories for classifying learners"
+      },
+      "documentation": {
+        "title": "Documentation",
+        "description": "Capabilities for working with WordPress"
+      }
+    }
   }
 }

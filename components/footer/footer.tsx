@@ -1,4 +1,4 @@
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { ThemeToggle } from "../theme/theme-toggle";
 import { buildContentMenu, buildMainMenu } from "@/lib/constants";
 import Section from "../section/section";
@@ -9,10 +9,11 @@ import Logo from "@/public/next.svg";
 import Balancer from "react-wrap-balancer";
 
 const Footer = () => {
+  const t = useTranslations("Navigation");
   const locale = useLocale();
-  const mainMenu = buildMainMenu(locale);
-  const contentMenu = buildContentMenu(locale);
 
+  const mainMenu = buildMainMenu(t, locale);
+  const contentMenu = buildContentMenu(t, locale);
   const currentYear: number = new Date().getFullYear();
 
   return (
@@ -31,11 +32,11 @@ const Footer = () => {
               ></Image>
             </Link>
             <p>
-              <Balancer>Клиентското приложение е разработено със Next.js</Balancer>
+              <Balancer>{t('clientApplicationDevelopmentTechnology')}</Balancer>
             </p>
           </div>
           <div className="flex flex-col gap-2 text-sm">
-            <h5 className="font-medium text-base">Основно меню</h5>
+            <h5 className="font-medium text-base">{t('mainMenu')}</h5>
             {Object.entries(mainMenu).map(([key, href]) => (
               <Link
                 className="hover:underline underline-offset-4"
@@ -47,7 +48,7 @@ const Footer = () => {
             ))}
           </div>
           <div className="flex flex-col gap-2 text-sm">
-            <h5 className="font-medium text-base">Полезни линкове</h5>
+            <h5 className="font-medium text-base">{t('usefulLinks')}</h5>
             {Object.entries(contentMenu).map(([key, href]) => (
               <Link
                 className="hover:underline underline-offset-4"
@@ -62,7 +63,7 @@ const Footer = () => {
         <Container className="border-t not-prose flex flex-col md:flex-row md:gap-2 gap-6 justify-between md:items-center">
           <ThemeToggle />
           <p className="text-muted-foreground">
-            &copy; Авторско право {currentYear}. Всички права запазени.
+            {t("copyright", { year: currentYear })}
           </p>
         </Container>
       </Section>

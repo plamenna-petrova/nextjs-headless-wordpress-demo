@@ -9,7 +9,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogOverlay } from "@/components/ui/dialog";
 import { localeCountries, localeNames, locales } from "@/lib/i18n";
 import { Locale, useLocale, useTranslations } from "next-intl";
-import { useParams } from "next/navigation";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import Cookies from 'js-cookie';
 
@@ -35,7 +34,7 @@ const AccessibilityMenuWidget = () => {
   const pathname = usePathname();
   const [isPending, startTransition] = useTransition();
 
-  const languageSearchTermInputClassNames: string = "block w-full rounded-md border border-gray-300 bg-white py-2 px-3 pr-9 text-base " +
+  const languageSearchTermInputClassNames: string = "block w-full rounded-md border border-gray-300 bg-white py-2 px-3 pr-9 text-base dark:text-black " +
     "placeholder:text-sm placeholder:text-gray-600 leading-snug focus:border-blue-500 focus:outline-none " +
     "focus:ring-1 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50 transition duration-150 ease-in-out";
 
@@ -117,7 +116,11 @@ const AccessibilityMenuWidget = () => {
               </Button>
             </DialogTrigger>
             <DialogOverlay className="bg-black/0" />
-            <DialogContent className="sm:max-w-xl w-full" onOpenAutoFocus={(event) => event.preventDefault()}>
+            <DialogContent
+              className="sm:max-w-xl w-full"
+              onOpenAutoFocus={(event) => event.preventDefault()}
+              aria-describedby={t('selectInterfaceLanguageDialog')}
+            >
               <DialogHeader>
                 <DialogTitle className="text-2xl">{t('interfaceLanguage')}</DialogTitle>
               </DialogHeader>

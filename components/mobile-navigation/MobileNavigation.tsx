@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { buildContentMenu, buildMainMenu } from "@/lib/constants";
 
 interface MobileLinkProps extends LinkProps {
@@ -38,9 +38,11 @@ const MobileLink = ({ href, onOpenChange, className, children, ...props }: Mobil
 
 const MobileNavigation = () => {
   const [isMobileNavigationOpen, setIsMobileNavigationOpen] = useState<boolean>(false);
+  const t = useTranslations("Navigation");
   const locale = useLocale();
-  const mainMenu = buildMainMenu(locale);
-  const contentMenu = buildContentMenu(locale);
+  
+  const mainMenu = buildMainMenu(t, locale);
+  const contentMenu = buildContentMenu(t, locale);
   
   return (
     <Sheet open={isMobileNavigationOpen} onOpenChange={setIsMobileNavigationOpen}>
@@ -60,18 +62,18 @@ const MobileNavigation = () => {
           onOpenChange={setIsMobileNavigationOpen}
         >
           <ArrowRightSquare className="mr-2 h-4 w-4" />
-          <span className="text-muted-foreground">Демонстративно приложение</span>
+          <span className="text-muted-foreground">{t('demoApplication')}</span>
         </MobileLink>
         <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
           <div className="flex flex-col space-y-3">
-            <h3 className="text-small mt-6">Основно меню</h3>
+            <h3 className="text-small mt-6">{t('mainMenu')}</h3>
             <Separator />
             {Object.entries(mainMenu).map(([key, href]) => (
               <MobileLink key={key} href={href} onOpenChange={setIsMobileNavigationOpen}>
                 {key.charAt(0).toUpperCase() + key.slice(1)}
               </MobileLink>
             ))}
-            <h3 className="text-small pt-6">Полезни линкове</h3>
+            <h3 className="text-small pt-6">{t('usefulLinks')}</h3>
             <Separator />
             {Object.entries(contentMenu).map(([key, href]) => (
               <MobileLink key={key} href={href} onOpenChange={setIsMobileNavigationOpen}>

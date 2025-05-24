@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { mergeClassNames } from "@/lib/utils";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { buildMainMenu } from "@/lib/constants";
 import Link from "next/link";
 import Image from "next/image";
@@ -14,8 +14,10 @@ type NavbarProps = {
 }
 
 const Navbar = ({ id, className, children }: NavbarProps) => {
+  const t = useTranslations("Navigation");
   const locale = useLocale();
-  const mainMenu = buildMainMenu(locale);
+  
+  const mainMenu = buildMainMenu(t, locale);
 
   return (
     <nav id={id} className={mergeClassNames("sticky z-50 top-0 bg-background", "border-b", "fade-in", className)}>
@@ -36,7 +38,7 @@ const Navbar = ({ id, className, children }: NavbarProps) => {
             ))}
           </div>
           <Button asChild className="hidden sm:flex bg-blue-500 hover:bg-blue-500 text-white">
-            <Link href={`/${locale}/documentation/about-the-application`}>За приложението</Link>
+            <Link href={`/${locale}/documentation/about-the-application`}>{t('aboutTheApplication')}</Link>
           </Button>
           <MobileNavigation />
         </div>

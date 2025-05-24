@@ -2,9 +2,50 @@
   "AccessibilityMenuWidget": {
     "title": "Меню за достъпност",
     "menuToggleShortcut": "(Ctrl + A)",
-    "interfaceLanguage": "Изберете език на интерфейса"
+    "interfaceLanguage": "Изберете език на интерфейса",
+    "selectInterfaceLanguageDialog": "Диалог за избор на език на интерфейса"
   },
-  "Posts": {
-    "title": "Публикации"
+  "Navigation": {
+    "mainMenu": "Основно меню",
+    "home": "начало",
+    "blog": "блог",
+    "aboutTheApplication": "За приложението",
+    "usefulLinks": "Полезни връзки",
+    "categories": "категории",
+    "tags": "eтикети",
+    "authors": "автори",
+    "demoApplication": "Демонстративно приложение",
+    "clientApplicationDevelopmentTechnology": "Клиентското приложение е разработено със Next.js",
+    "copyright": "© Авторско право {year}. Всички права запазени."
+  },
+  "WordPressStarter": {
+    "demoApplicationTitle": "Демонстративно приложение, разработено със Next.js и WordPress",
+    "demoApplicationDescription": "Приложението съдържа документирани курсови работи на студенти от бакалавърските програми Софтуерно инженерство и Информационно брокерство и дигитални медии по учебните дисциплини Системи за управление на съдържанието и Софтуерна и медийна ергономия към Факултет „Математика и информатика“, ВТУ „Св. св. Кирил и Методий“.",
+    "starterGrid": {
+      "posts": {
+        "title": "Публикации",
+        "description": "Документирани курсови работи на студенти"
+      },
+      "pages": {
+        "title": "Страници",
+        "description": "Информативни страници от уебсайта на WordPress"
+      },
+      "authors": {
+        "title": "Автори",
+        "description": "Списък на авторите на курсовите работи"
+      },
+      "tags": {
+        "title": "Етикети",
+        "description": "Етикети, свързани с тематиката на курсовите работи"
+      },
+      "categories": {
+        "title": "Категории",
+        "description": "Категории за класифициране на обучаемите"
+      },
+      "documentation": {
+        "title": "Документация",
+        "description": "Какви са възможностите за работа с WordPress"
+      }
+    }
   }
 }

@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { useMotionValue, MotionValue } from "framer-motion";
 import { Pen, File, User, Tag, Boxes, Folder, LucideIcon } from "lucide-react";
 import { FeatureIcon, FeaturePattern } from "@/components/documentation/Features";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
 
 type LinkPattern = {
@@ -20,45 +20,49 @@ type LinkItem = {
   pattern: LinkPattern;
 };
 
-const baseLinks: (Omit<LinkItem, "href"> & { baseHref: string })[] = [
+const baseLinks: (Omit<LinkItem, "href" | "name" | "description"> & {
+  baseHref: string,
+  nameKey: string,
+  descriptionKey: string
+})[] = [
   {
-    name: "Публикации",
-    description: "Документирани курсови работи на студенти",
+    nameKey: "posts.title",
+    descriptionKey: "posts.description",
     icon: Pen,
     baseHref: "/posts?page=1",
     pattern: { y: 16, squares: [[0, 1], [1, 3]] },
   },
   {
-    name: "Страници",
-    description: "Информативни страници от уебсайта на WordPress",
+    nameKey: "pages.title",
+    descriptionKey: "pages.description",
     icon: File,
     baseHref: "/pages",
     pattern: { y: -6, squares: [[-1, 2], [1, 3]] },
   },
   {
-    name: "Автори",
-    description: "Списък на авторите на курсовите работи",
+    nameKey: "authors.title",
+    descriptionKey: "authors.description",
     icon: User,
     baseHref: "/posts/authors",
     pattern: { y: 32, squares: [[0, 2], [1, 4]] },
   },
   {
-    name: "Етикети",
-    description: "Етикети, свързани с тематиката на курсовите работи",
+    nameKey: "tags.title",
+    descriptionKey: "tags.description",
     icon: Tag,
     baseHref: "/posts/tags",
     pattern: { y: 22, squares: [[0, 1]] },
   },
   {
-    name: "Категории",
-    description: "Категории за класифициране на обучаемите",
+    nameKey: "categories.title",
+    descriptionKey: "categories.description",
     icon: Boxes,
     baseHref: "/posts/categories",
     pattern: { y: 12, squares: [[1, 2]] },
   },
   {
-    name: "Документация",
-    description: "Какви са възможностите за работа с WordPress",
+    nameKey: "documentation.title",
+    descriptionKey: "documentation.description",
     icon: Folder,
     baseHref: "/documentation",
     pattern: { y: 18, squares: [[-1, 1], [1, 2]] },
@@ -117,9 +121,12 @@ function WordPressStarterCard({ link }: WordPressStarterCardProps) {
 }
 
 export default function WordPressStarterGrid() {
+  const t = useTranslations("WordPressStarter.starterGrid");
   const locale = useLocale();
 
-  const localizedLinks: LinkItem[] = baseLinks.map(({ baseHref, ...rest }) => ({
+  const localizedLinks: LinkItem[] = baseLinks.map(({ baseHref, nameKey, descriptionKey, ...rest }) => ({
+    name: t(nameKey),
+    description: t(descriptionKey),
     href: `/${locale}${baseHref.startsWith("/") ? baseHref : `/${baseHref}`}`,
     ...rest
   }));
