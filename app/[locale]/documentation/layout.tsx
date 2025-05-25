@@ -9,8 +9,6 @@ export default async function Documentation({ children }: { children: React.Reac
   
   const foundMDXPages: string[] = await glob('**/*.mdx', { cwd: `app/[locale]/documentation` });
 
-  localStorage.setItem('foundMDXPages', JSON.stringify(foundMDXPages));
-
   const documentationSectionsEntries = (await Promise.all(
     foundMDXPages.map(async (filename: string) => {
       const normalizedMDXPagePath: string = filename.replace(/(^|\/)page\.mdx$/, '');
@@ -24,11 +22,7 @@ export default async function Documentation({ children }: { children: React.Reac
     })
   ));
 
-  localStorage.setItem('documentationSectionsEntries', JSON.stringify(documentationSectionsEntries));
-
   const documentationSections: { [key: string]: Section[] } = Object.fromEntries(documentationSectionsEntries);
-
-  localStorage.setItem('documentationSections', JSON.stringify(documentationSections));
 
   return (
     <div className="w-full mx-auto">
