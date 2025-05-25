@@ -91,5 +91,10 @@
         "description": "Learn more about good SEO practices and strategies for Next.js applications"
       }
     }
+  },
+  "ThemeToggle": {
+    "changeTheTheme": "Change the theme",
+    "lightTheme": "Light",
+    "darkTheme": "Dark"
   }
 }

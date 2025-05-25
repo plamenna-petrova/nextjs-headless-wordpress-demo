@@ -91,5 +91,10 @@
         "description": "Научете повече за добрите SEO практики и стратегии за Next.js приложения"
       }
     }
+  },
+  "ThemeToggle": {
+    "changeTheTheme": "Сменете темата",
+    "lightTheme": "Светла",
+    "darkTheme": "Тъмна"
   }
 }
