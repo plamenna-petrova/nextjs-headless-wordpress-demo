@@ -55,6 +55,7 @@ interface VisibleSectionHighlightProps {
 
 const VisibleSectionHighlight = ({ navigationGroup, pathname }: VisibleSectionHighlightProps) => {
   let sections = useSectionStore((s) => s.sections);
+  localStorage.setItem('visible sections highlight', JSON.stringify(sections));
   let visibleSections = useSectionStore((s) => s.visibleSections);
 
   let isPresent: boolean = useIsPresent();
@@ -223,6 +224,8 @@ export const DocumentationNavigation = (props: React.ComponentPropsWithoutRef<'n
       href: `/${locale}${link.href}` 
     }))
   }));
+
+  localStorage.setItem('localizedNavigationGroups', JSON.stringify(localizedNavigationGroups));
   
   return (
     <nav {...props}>
