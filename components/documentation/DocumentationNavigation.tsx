@@ -7,6 +7,7 @@ import { useSectionStore } from './SectionProvider'
 import { Tag } from './Tag'
 import { convertRemToPx } from '@/lib/remToPx'
 import { useLocale } from 'next-intl'
+import { useEffect, useState } from 'react'
 
 import clsx from 'clsx'
 import Link from 'next/link'
@@ -113,11 +114,19 @@ interface NavigationGroupProps {
 }
 
 const NavigationGroupListItem = ({ navigationGroup, className }: NavigationGroupProps) => {
+  console.log('navigationGroup', navigationGroup);
+
+  const [isHydrated, setIsHydrated] = useState(false);
+
   let pathname: string = usePathname();
   let sections = useSectionStore((s) => s.sections);
   console.log('sections', sections);
   let isInsideMobileNavigation: boolean = useIsInsideMobileNavigation();
   let isNavigationGroupActive: boolean = navigationGroup.links.findIndex((link) => link.href === pathname) !== -1;
+
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
 
   return (
     <li className={clsx('relative mt-6', className)}>
@@ -149,7 +158,7 @@ const NavigationGroupListItem = ({ navigationGroup, className }: NavigationGroup
                 {link.title}
               </NavLink>
               <AnimatePresence mode="popLayout" initial={false}>
-                {link.href === pathname && sections.length > 0 && (
+                {isHydrated && link.href === pathname && sections.length > 0 && (
                   <motion.ul
                     role="list"
                     initial={{ opacity: 0 }}
