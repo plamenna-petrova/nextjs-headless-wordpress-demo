@@ -6,16 +6,12 @@ import { mdxPages } from './manifest';
 
 export default async function Documentation({ children }: { children: React.ReactNode }) {
   const locale = await getLocale() as Locale;
-
-  // let foundMDXPages: string[] = await glob('**/*.mdx', { cwd: `app/[locale]/documentation` });
-
-  // if (foundMDXPages.length === 0) { 
-  //   foundMDXPages = await glob('**/*.mdx', { cwd: `app/${locale}/documentation` });
-  // }
+  const mdxPagesForCurrentLocale = mdxPages[locale as keyof typeof mdxPages];
 
   const documentationSectionsEntries = (await Promise.all(
-    Object.entries(mdxPages).map(async ([filename, importer]) => {
+    Object.entries(mdxPagesForCurrentLocale).map(async ([filename, importer]) => {
       const normalizedMDXPagePath: string = filename.replace(/(^|\/)page\.mdx$/, '');
+
       const fullMDXPagePath: string = normalizedMDXPagePath
         ? `/${locale}/documentation/${normalizedMDXPagePath}`
         : `/${locale}/documentation`;

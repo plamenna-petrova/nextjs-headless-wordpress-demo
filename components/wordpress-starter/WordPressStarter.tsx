@@ -64,7 +64,7 @@ const baseLinks: (Omit<LinkItem, "href" | "name" | "description"> & {
     nameKey: "documentation.title",
     descriptionKey: "documentation.description",
     icon: Folder,
-    baseHref: "/documentation",
+    baseHref: "/documentation/introduction/content",
     pattern: { y: 18, squares: [[-1, 1], [1, 2]] },
   },
 ];
@@ -124,12 +124,19 @@ export default function WordPressStarterGrid() {
   const t = useTranslations("WordPressStarter.starterGrid");
   const locale = useLocale();
 
-  const localizedLinks: LinkItem[] = baseLinks.map(({ baseHref, nameKey, descriptionKey, ...rest }) => ({
-    name: t(nameKey),
-    description: t(descriptionKey),
-    href: `/${locale}${baseHref.startsWith("/") ? baseHref : `/${baseHref}`}`,
-    ...rest
-  }));
+  const localizedLinks: LinkItem[] = baseLinks.map(({ baseHref, nameKey, descriptionKey, ...rest }) => {
+    const withLocaleSuffix: string =
+      baseHref.includes("/documentation")
+        ? baseHref.replace(/([^/]+)$/, `$1-${locale}`)
+        : baseHref;
+
+    return {
+      name: t(nameKey),
+      description: t(descriptionKey),
+      href: `/${locale}${withLocaleSuffix.startsWith("/") ? withLocaleSuffix : `/${withLocaleSuffix}`}`,
+      ...rest,
+    };
+  });
 
   return (
     <div className="grid gap-4 mt-8 not-prose md:grid-cols-3">

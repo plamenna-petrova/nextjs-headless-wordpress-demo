@@ -17,11 +17,8 @@ interface DocumentationLayoutProps {
 }
 
 export function DocumentationLayout({ children, allSections }: DocumentationLayoutProps) {
-  localStorage.setItem('all sections in documentation layout', JSON.stringify(allSections));
   let pathname: string = usePathname().replace(/\/$/, '') || '/';
   const currentSections = allSections[pathname] ?? [];
-
-  localStorage.setItem('Current sections:', JSON.stringify(currentSections));
 
   return (
     <SectionProvider sections={currentSections}>

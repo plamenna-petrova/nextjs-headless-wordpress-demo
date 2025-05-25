@@ -1,0 +1,30 @@
+import { HeroPattern } from '@/components/documentation/HeroPattern';
+import { Technologies } from '@/components/documentation/Technologies';
+import { Features } from '@/components/documentation/Features';
+
+export const metadata = {
+  title: 'Demonstrative application of WordPress as a content management system, based on the "Headless" architecture - Documentation',
+  description: 'Learn all about building websites with Next.js and WordPress'
+};
+
+export const sections = [
+  { title: 'Technologies', id: 'guides' },
+  { title: 'Features', id: 'features' }
+];
+
+<HeroPattern />
+
+# A demo application of WordPress as a content management system based on the "Headless" architecture
+
+<div className="not-prose mb-16 mt-6 flex gap-3">
+  <Button href="/documentation/about-the-application" arrow="right">About the application</Button>
+</div>
+
+## What are the types of content management systems? {{ anchor: false }}
+
+<div className="not-prose">
+  <Button href="/documentation/core-principles" variant="text" arrow="right">Learn more</Button>
+</div>
+
+<Technologies />
+<Features />

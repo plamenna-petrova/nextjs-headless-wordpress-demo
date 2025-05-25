@@ -65,9 +65,23 @@ const AccessibilityMenuWidget = () => {
 
   const handleLocaleChange = (newLocale: Locale): void => { 
     Cookies.set('NEXT_LOCALE', newLocale, { expires: 365 });
+
+    const pathSegments = pathname.split('/');
+
+    if (pathSegments[1] === 'documentation') {
+      const lastSegment: string = pathSegments[pathSegments.length - 1];
+      const updatedLastSegment: string = lastSegment.replace(/-(en|bg)$/, `-${newLocale}`);
+      pathSegments[pathSegments.length - 1] = updatedLastSegment;
+    }
+
+    const newPath = pathSegments.join('/');
+
+    console.log("new path", newPath);
+
     startTransition(() => {
-      router.replace({ pathname }, { locale: newLocale });
+      router.replace({ pathname: newPath as any }, { locale: newLocale });
     });
+    
     setLanguageSearchTerm("");
     setIsLanguageSelectionDialogOpen(false);
   }

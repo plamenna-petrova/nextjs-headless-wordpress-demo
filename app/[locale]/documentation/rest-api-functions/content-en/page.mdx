@@ -1,0 +1,877 @@
+import { HeroPattern } from '@/components/documentation/HeroPattern'
+
+export const metadata = {
+  title: 'Functions used',
+  description: 'Detailed information about the WordPress API functions used in the application'
+}
+
+<HeroPattern />
+
+# WordPress API functions used in the application
+
+These are a set of functions designed to retrieve data from a website built with WordPress.
+
+## getAllPosts {{ tag: 'GET', label: '/wp-json/wp/v2/posts?author={author}&tags={tag}&categories={category}' }}
+
+<Row>
+  <Col>
+    The `getAllPosts` function retrieves posts from a WordPress website. It allows filtering posts by author, tag, and category.
+
+    ### **How it works**
+    - The function constructs the request URL using the provided filtering parameters.
+    - It receives the data via the WordPress API.
+    - The response is transformed into an array of `Post` objects.
+
+    ### **Optional parameters**
+    <Properties>
+      <Property name="author" type="string">The ID or nickname of the author of the post</Property>
+      <Property name="tag" type="string">Tag related to posts</Property>
+      <Property name="category" type="string">Category related to posts</Property>
+    </Properties>
+
+    ### **Return value**
+    <Properties>
+      <Property name="posts" type="Post[]">An array of posts that meet the filter criteria</Property>
+    </Properties>
+
+    ### **Usage Example**
+    ```ts
+    const allPosts = await getAllPosts({ author: "1", tag: "tech", category: "news" });
+    console.log(allPosts);
+    ```
+
+    ### **Error Handling**
+    - If the fetch request is unsuccessful, the function throws an error.
+    - The error message includes a descriptive string, along with details about the problem that occurred.
+
+    <div className="not-prose">
+      <Button
+        href="https://developer.wordpress.org/rest-api/reference/posts/"
+        variant="text"
+        arrow="right"
+        target="_blank"
+      >
+        Read more about the publication endpoint
+      </Button>
+    </div>
+  </Col>
+  <Col sticky>
+    <CodeGroup title="Request">
+      ```ts
+      export const getAllPosts = async (
+        filterParams?: {
+          search?: string;
+          author?: string;
+          tag?: string;
+          category?: string;
+        }
+      ): Promise<Post[]> => {
+        try {
+          const postsQuery: Record<string, any> = { embed: true, per_page: 100 };
+          if (filterParams?.search) { postsQuery.search = filterParams.search; }
+          if (filterParams?.author) { postsQuery.author = filterParams.author; }
+          if (filterParams?.tag) { postsQuery.tags = filterParams.tag; }
+          if (filterParams?.category) { postsQuery.categories = filterParams.category; }
+          const postsUrl: string = getUrl("/wp-json/wp/v2/posts", postsQuery);
+          const posts = await wordPressFetch<Post[]>(
+            postsUrl,
+            { next: { ...defaultFetchOptions.next, tags: mergeQueryTags(defaultFetchOptions.next?.tags, ["posts"]) } }
+          );
+          return posts;
+        } catch (error: any) {
+          throw new Error(`${GET_ALL_POSTS_ERROR_DETAILS} ${error.message}`);
+        }
+      };
+      ```
+    </CodeGroup>
+    ```ts
+    {{ title: 'Return value type' }}
+    export type Post = {
+      id: number;
+      date: string;
+      date_gmt: string;
+      guid: { rendered: string; };
+      modified: string;
+      modified_gmt: string;
+      slug: string;
+      status: "publish" | "future" | "draft" | "pending" | "private";
+      type: string;
+      link: string;
+      title: { rendered: string; };
+      content: { rendered: string; protected: boolean; };
+      excerpt: { rendered: string; protected: boolean; };
+      author: number;
+      featured_media: number;
+      comment_status: "open" | "closed";
+      ping_status: "open" | "closed";
+      sticky: boolean;
+      template: string;
+      format:
+        | "standard"
+        | "aside"
+        | "chat"
+        | "gallery"
+        | "link"
+        | "image"
+        | "quote"
+        | "status"
+        | "video"
+        | "audio";
+      meta: any;
+      categories: number[];
+      tags: number[];
+    };
+    ```
+  </Col>
+</Row>
+
+---
+
+## getAllAuthors {{ tag: 'GET', label: '/wp-json/wp/v2/users' }}
+
+<Row>
+  <Col>
+    The `getAllAuthors` function retrieves users (post authors) from a WordPress website.
+
+    ### **How it works**
+    - The function constructs the request URL.
+    - It receives the data via the WordPress API.
+    - The response is transformed into an array of `Author` objects.
+
+    ### **Return value**
+    <Properties>
+      <Property name="authors" type="Author[]">Array of users (post authors)</Property>
+    </Properties>
+
+    ### **Usage Example**
+    ```ts
+    const allAuthors = await getAllAuthors();
+    console.log(allAuthors);
+    ```
+
+    ### **Error Handling**
+    - If the fetch request is unsuccessful, the function throws an error.
+    - The error message includes a descriptive string, along with details about the problem that occurred.
+
+    <div className="not-prose">
+      <Button
+        href="https://developer.wordpress.org/rest-api/reference/users/"
+        variant="text"
+        arrow="right"
+        target="_blank"
+      >
+        Read more about the user endpoint
+      </Button>
+    </div>
+  </Col>
+  <Col sticky>
+    <CodeGroup title="Request">
+      ```ts
+      export const getAllAuthors = async (): Promise<Author[]> => {
+        try {
+          const authorsQuery: Record<string, any> = { per_page: 100 };
+          const allAuthorsUrl: string = getUrl("/wp-json/wp/v2/users", authorsQuery);
+          const allAuthors = await wordPressFetch<Author[]>(
+            allAuthorsUrl,
+            { next: { ...defaultFetchOptions.next, tags: mergeQueryTags(defaultFetchOptions.next?.tags, ['authors']) } }
+          );
+          return allAuthors;
+        } catch (error: any) {
+          throw new Error(`${GET_ALL_AUTHORS_ERROR_DETAILS} ${error.message}`);
+        }
+      };
+      ```
+    </CodeGroup>
+    ```ts
+    {{ title: 'Return Value Type' }}
+    export type Author = {
+      id: number;
+      name: string;
+      url: string;
+      description: string;
+      link: string;
+      slug: string;
+      avatar_urls: { [key: string]: string; };
+      meta: any;
+    };
+    ```
+  </Col>
+</Row>
+
+---
+
+## getAllTags {{ tag: 'GET', label: '/wp-json/wp/v2/tags' }}
+
+<Row>
+  <Col>
+    The `getAllTags` function retrieves tags from a WordPress website.
+
+    ### **How it works**
+    - The function constructs the request URL.
+    - It receives the data via the WordPress API.
+    - The response is transformed into an array of `Tag` objects.
+
+    ### **Return value**
+    <Properties>
+      <Property name="tags" type="Tag[]">Array of labels</Property>
+    </Properties>
+
+    ### **Usage Example**
+    ```ts
+    const allTags = await getAllTags();
+    console.log(allTags);
+    ```
+
+    ### **Error Handling**
+    - If the fetch request is unsuccessful, the function throws an error.
+    - The error message includes a descriptive string, along with details about the problem that occurred.
+
+    <div className="not-prose">
+      <Button
+        href="https://developer.wordpress.org/rest-api/reference/tags/"
+        variant="text"
+        arrow="right"
+        target="_blank"
+      >
+        Read more about the endpoint of labels
+      </Button>
+    </div>
+  </Col>
+  <Col sticky>
+    <CodeGroup title="Request">
+      ```ts
+      export const getAllTags = async (): Promise<Tag[]> => {
+        try {
+          const allTagsUrl: string = getUrl("/wp-json/wp/v2/tags");
+          const allTags = await wordPressFetch<Tag[]>(
+            allTagsUrl,
+            { next: { ...defaultFetchOptions.next, tags: mergeQueryTags(defaultFetchOptions.next?.tags, ['tags']) } }
+          );
+          return allTags;
+        } catch (error: any) {
+          throw new Error(`${GET_ALL_TAGS_ERROR_DETAILS} ${error.message}`);
+        }
+      };
+      ```
+    </CodeGroup>
+    ```ts
+    {{ title: 'Return Value Type' }}
+    export type Tag = {
+      id: number;
+      count: number;
+      description: string;
+      link: string;
+      name: string;
+      slug: string;
+      taxonomy: "post_tag";
+      meta: any;
+    };
+    ```
+  </Col>
+</Row>
+
+---
+
+## getAllCategories {{ tag: 'GET', label: '/wp-json/wp/v2/categories' }}
+
+<Row>
+  <Col>
+    The `getAllCategories` function retrieves categories from a WordPress website.
+
+    ### **How it works**
+    - The function constructs the request URL.
+    - It receives the data via the WordPress API.
+    - The response is transformed into an array of `Category` objects.
+
+    ### **Return value**
+    <Properties>
+      <Property name="categories" type="Category[]">Array of categories</Property>
+    </Properties>
+
+    ### **Usage Example**
+    ```ts
+    const allCategories = await getAllCategories();
+    console.log(allCategories);
+    ```
+
+    ### **Error Handling**
+    - If the fetch request is unsuccessful, the function throws an error.
+    - The error message includes a descriptive string, along with details about the problem that occurred.
+
+    <div className="not-prose">
+      <Button
+        href="https://developer.wordpress.org/rest-api/reference/categories/"
+        variant="text"
+        arrow="right"
+        target="_blank"
+      >
+        Read more about the endpoint of categories
+      </Button>
+    </div>
+  </Col>
+  <Col sticky>
+    <CodeGroup title="Request">
+      ```ts
+      export const getAllCategories = async (): Promise<Category[]> => {
+        try {
+          const allCategoriesUrl: string = getUrl("/wp-json/wp/v2/categories");
+          const allCategories = await wordPressFetch<Category[]>(
+            allCategoriesUrl,
+            { next: { ...defaultFetchOptions.next, tags: mergeQueryTags(defaultFetchOptions.next?.tags, ['categories']) } }
+          );
+          return allCategories;
+        } catch (error: any) {
+          throw new Error(`${GET_ALL_CATEGORIES_ERROR_DETAILS} ${error.message}`);
+        }
+      };
+      ```
+    </CodeGroup>
+    ```ts
+    {{ title: 'Return value type' }}
+    export type Category = {
+      id: number;
+      count: number;
+      description: string;
+      link: string;
+      name: string;
+      slug: string;
+      taxonomy: "category";
+      parent: number;
+      meta: any[];
+    };
+    ```
+  </Col>
+</Row>
+
+---
+
+## getAllPages {{ tag: 'GET', label: '/wp-json/wp/v2/pages' }}
+
+<Row>
+  <Col>
+    The `getAllPages` function retrieves pages from a WordPress website.
+
+    ### **How it works**
+    - The function constructs the request URL.
+    - It receives the data via the WordPress API.
+    - The response is transformed into an array of `Page` objects.
+
+    ### **Return value**
+    <Properties>
+      <Property name="pages" type="Page[]">Page array</Property>
+    </Properties>
+
+    ### **Usage Example**
+    ```ts
+    const allPages = await getAllPages();
+    console.log(allPages);
+    ```
+
+    ### **Error Handling**
+    - If the fetch request is unsuccessful, the function throws an error.
+    - The error message includes a descriptive string, along with details about the problem that occurred.
+
+    <div className="not-prose">
+      <Button
+        href="https://developer.wordpress.org/rest-api/reference/pages/"
+        variant="text"
+        arrow="right"
+        target="_blank"
+      >
+        Read more about the end point of pages
+      </Button>
+    </div>
+  </Col>
+  <Col sticky>
+    <CodeGroup title="Request">
+      ```ts
+      export const getAllPages = async (): Promise<Page[]> => {
+        try {
+          const allPagesUrl: string = getUrl("/wp-json/wp/v2/pages");
+          const allPages = await wordPressFetch<Page[]>(
+            allPagesUrl,
+            { next: { ...defaultFetchOptions.next, tags: mergeQueryTags(defaultFetchOptions.next?.tags, ['pages']) } }
+          );
+          return allPages;
+        } catch (error: any) {
+          throw new Error(`${GET_ALL_PAGES_ERROR_DETAILS} ${error.message}`);
+        }
+      };
+      ```
+    </CodeGroup>
+    ```ts
+    {{ title: 'Return value type' }}
+    export type Page = {
+      id: number;
+      date: string;
+      date_gmt: string;
+      guid: { rendered: string; };
+      modified: string;
+      modified_gmt: string;
+      slug: string;
+      status: "publish" | "future" | "draft" | "pending" | "private";
+      type: string;
+      link: string;
+      title: { rendered: string; };
+      content: { rendered: string; protected: boolean; };
+      excerpt: { rendered: string; protected: boolean; };
+      author: number;
+      featured_media: number;
+      parent: number;
+      menu_order: number;
+      comment_status: "open" | "closed";
+      ping_status: "open" | "closed";
+      template: string;
+      meta: any;
+    };
+    ```
+  </Col>
+</Row>
+
+---
+
+## getPostBySlug {{ tag: 'GET', label: '/wp-json/wp/v2/posts?slug={slug}' }}
+
+<Row>
+  <Col>
+    The `getPostBySlug` function retrieves a post by alias from a WordPress website.
+
+    ### **How it works**
+    - The function constructs the request URL using the provided alias.
+    - It receives the data via the WordPress API.
+    - The response is transformed into an object of type `Post`.
+
+    ### **Required parameters**
+    <Properties>
+      <Property name="slug" type="string">The post's nickname</Property>
+    </Properties>
+
+    ### **Return value**
+    <Properties>
+      <Property name="post" type="Post">Post object matching nickname</Property>
+    </Properties>
+
+    ### **Example Usage**
+    ```ts
+    const postBySlug = await getPostBySlug("example-post");
+    console.log(postBySlug);
+    ```
+
+    ### **Error Handling**
+    - If the fetch request is unsuccessful, the function throws an error.
+    - The error message includes a descriptive string, along with details about the problem that occurred.
+
+    <div className="not-prose">
+      <Button
+        href="https://developer.wordpress.org/rest-api/reference/posts/"
+        variant="text"
+        arrow="right"
+        target="_blank"
+      >
+        Read more about the publication endpoint
+      </Button>
+    </div>
+  </Col>
+  <Col sticky>
+    <CodeGroup title="Request">
+      ```ts
+      export const getPostBySlug = async (slug: string): Promise<Post> => {
+        try {
+          const postBySlugUrl: string = getUrl("/wp-json/wp/v2/posts", { slug });
+          const postBySlugResult = await wordPressFetch<Post[]>(
+            postBySlugUrl,
+            { next: { ...defaultFetchOptions.next, tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`post-by-slug-${slug}`]) } }
+          );
+          if (!postBySlugResult || postBySlugResult.length === 0) {
+            throw new Error(`Post with slug "${slug}" not found`);
+          }
+          return postBySlugResult[0];
+        } catch (error: any) {
+          throw new Error(`${GET_POST_BY_SLUG_ERROR_DETAILS} ${error.message}`);
+        }
+      };
+      ```
+    </CodeGroup>
+    ```ts
+    {{ title: 'Return value type' }}
+    export type Post = {
+      id: number;
+      date: string;
+      date_gmt: string;
+      guid: { rendered: string; };
+      modified: string;
+      modified_gmt: string;
+      slug: string;
+      status: "publish" | "future" | "draft" | "pending" | "private";
+      type: string;
+      link: string;
+      title: { rendered: string; };
+      content: { rendered: string; protected: boolean; };
+      excerpt: { rendered: string; protected: boolean; };
+      author: number;
+      featured_media: number;
+      comment_status: "open" | "closed";
+      ping_status: "open" | "closed";
+      sticky: boolean;
+      template: string;
+      format:
+        | "standard"
+        | "aside"
+        | "chat"
+        | "gallery"
+        | "link"
+        | "image"
+        | "quote"
+        | "status"
+        | "video"
+        | "audio";
+      meta: any;
+      categories: number[];
+      tags: number[];
+    };
+    ```
+  </Col>
+</Row>
+
+---
+
+## getAuthorById {{ tag: 'GET', label: '/wp-json/wp/v2/users?id={id}' }}
+
+<Row>
+  <Col>
+    The `getAuthorById` function retrieves a user (post author) by ID from a WordPress website.
+
+    ### **How it works**
+    - The function constructs the request URL using the provided ID.
+    - It receives the data via the WordPress API.
+    - The response is transformed into an `Author` object.
+
+    ### **Required parameters**
+    <Properties>
+      <Property name="id" type="number">The user ID (author of posts)</Property>
+    </Properties>
+
+    ### **Return value**
+    <Properties>
+      <Property name="author" type="Author">User (post author) object corresponding to the identifier</Property>
+    </Properties>
+
+    ### **Usage Example**
+    ```ts
+    const author = await getAuthorById(1);
+    console.log(author);
+    ```
+
+    ### **Error Handling**
+    - If the fetch request is unsuccessful, the function throws an error.
+    - The error message includes a descriptive string, along with details about the problem that occurred.
+
+    <div className="not-prose">
+      <Button
+        href="https://developer.wordpress.org/rest-api/reference/users/"
+        variant="text"
+        arrow="right"
+        target="_blank"
+      >
+        Read more about the user endpoint
+      </Button>
+    </div>
+  </Col>
+  <Col sticky>
+    <CodeGroup title="Request">
+      ```ts
+      export const getAuthorById = async (id: number): Promise<Author> => {
+        try {
+          const authorByIdUrl: string = getUrl(`/wp-json/wp/v2/users/${id}`);
+          const authorById = await wordPressFetch<Author>(
+            authorByIdUrl,
+            { next: { ...defaultFetchOptions.next, tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`author-by-id-${id}`]) } }
+          );
+          return authorById;
+        } catch (error: any) {
+          throw new Error(`${GET_AUTHOR_BY_ERROR_DETAILS} ${error.message}`);
+        }
+      };
+      ```
+    </CodeGroup>
+    ```ts
+    {{ title: 'Return Value Type' }}
+    export type Author = {
+      id: number;
+      name: string;
+      url: string;
+      description: string;
+      link: string;
+      slug: string;
+      avatar_urls: { [key: string]: string; };
+      meta: any;
+    };
+    ```
+  </Col>
+</Row>
+
+---
+
+## getCategoryById {{ tag: 'GET', label: '/wp-json/wp/v2/categories?id={id}' }}
+
+<Row>
+  <Col>
+    The `getCategoryById` function retrieves a category by identifier from a WordPress website.
+
+    ### **How it works**
+    - The function constructs the request URL using the provided identifier.
+    - It receives the data via the WordPress API.
+    - The response is transformed into an object of type `Category`.
+
+    ### **Required parameters**
+    <Properties>
+      <Property name="id" type="number">The category identifier</Property>
+    </Properties>
+
+    ### **Return value**
+    <Properties>
+      <Property name="category" type="Category">Category object matching the identifier</Property>
+    </Properties>
+
+    ### **Usage Example**
+    ```ts
+    const category = await getCategoryById(1);
+    console.log(category);
+    ```
+
+    ### **Error Handling**
+    - If the fetch request is unsuccessful, the function throws an error.
+    - The error message includes a descriptive string, along with details about the problem that occurred.
+
+    <div className="not-prose">
+      <Button
+        href="https://developer.wordpress.org/rest-api/reference/categories/"
+        variant="text"
+        arrow="right"
+        target="_blank"
+      >
+        Read more about the endpoint of categories
+      </Button>
+    </div>
+  </Col>
+  <Col sticky>
+    <CodeGroup title="Request">
+      ```ts
+      export const getCategoryById = async (id: number): Promise<Category> => {
+        try {
+          const categoryByIdUrl: string = getUrl(`/wp-json/wp/v2/categories/${id}`);
+          const categoryById = await wordPressFetch<Category>(
+            categoryByIdUrl,
+            { next: { ...defaultFetchOptions.next, tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`category-by-${id}`]) } }
+          );
+          return categoryById;
+        } catch (error: any) {
+          throw new Error(`${GET_CATEGORY_BY_ID_ERROR_DETAILS} ${error.message}`);
+        }
+      };
+      ```
+    </CodeGroup>
+    ```ts
+    {{ title: 'Return value type' }}
+    export type Category = {
+      id: number;
+      count: number;
+      description: string;
+      link: string;
+      name: string;
+      slug: string;
+      taxonomy: "category";
+      parent: number;
+      meta: any[];
+    };
+    ```
+  </Col>
+</Row>
+
+---
+
+## getPageBySlug {{ tag: 'GET', label: '/wp-json/wp/v2/pages?slug={slug}' }}
+
+<Row>
+  <Col>
+    The `getPageBySlug` function retrieves a page by alias from a WordPress website.
+
+    ### **How it works**
+    - The function constructs the request URL using the provided alias.
+    - It receives the data via the WordPress API.
+    - The response is transformed into an object of type `Page`.
+
+    ### **Required parameters**
+    <Properties>
+      <Property name="slug" type="string">The page nickname</Property>
+    </Properties>
+
+    ### **Return value**
+    <Properties>
+      <Property name="page" type="Page">Page object corresponding to nickname</Property>
+    </Properties>
+
+    ### **Example Usage**
+    ```ts
+    const page = await getPageBySlug("example-page");
+    console.log(page);
+    ```
+
+    ### **Error Handling**
+    - If the fetch request is unsuccessful, the function throws an error.
+    - The error message includes a descriptive string, along with details about the problem that occurred.
+
+    <div className="not-prose">
+      <Button
+        href="https://developer.wordpress.org/rest-api/reference/pages/"
+        variant="text"
+        arrow="right"
+        target="_blank"
+      >
+        Read more about the end point of pages
+      </Button>
+    </div>
+  </Col>
+  <Col sticky>
+    <CodeGroup title="Request">
+      ```ts
+      export const getPageBySlug = async (slug: string): Promise<Page> => {
+        try {
+          const pageBySlugUrl: string = getUrl("/wp-json/wp/v2/pages", { slug });
+          const pageBySlugResult = await wordPressFetch<Page[]>(
+            pageBySlugUrl,
+            { next: { ...defaultFetchOptions.next, tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`page-by-slug-${slug}`]) } }
+          );
+          if (!pageBySlugResult || pageBySlugResult.length === 0) {
+            throw new Error(`Page with slug "${slug}" not found`);
+          }
+          return pageBySlugResult[0];
+        } catch (error: any) {
+          throw new Error(`${GET_PAGE_BY_SLUG_ERROR_DETAILS} ${error.message}`);
+        }
+      };
+      ```
+    </CodeGroup>
+    ```ts
+    {{ title: 'Return value type' }}
+    export type Page = {
+      id: number;
+      date: string;
+      date_gmt: string;
+      guid: { rendered: string; };
+      modified: string;
+      modified_gmt: string;
+      slug: string;
+      status: "publish" | "future" | "draft" | "pending" | "private";
+      type: string;
+      link: string;
+      title: { rendered: string; };
+      content: { rendered: string; protected: boolean; };
+      excerpt: { rendered: string; protected: boolean; };
+      author: number;
+      featured_media: number;
+      parent: number;
+      menu_order: number;
+      comment_status: "open" | "closed";
+      ping_status: "open" | "closed";
+      template: string;
+      meta: any;
+    };
+    ```
+  </Col>
+</Row>
+
+---
+
+## getFeaturedMediaById {{ tag: 'GET', label: '/wp-json/wp/v2/media?id={id}' }}
+
+<Row>
+  <Col>
+    The `getFeaturedMediaById` function retrieves selected media content by identifier from a WordPress website.
+
+    ### **How it works**
+    - The function constructs the request URL using the provided identifier.
+    - It receives the data via the WordPress API.
+    - The response is transformed into an object of type `FeaturedMedia`.
+
+    ### **Required parameters**
+    <Properties>
+      <Property name="id" type="number">The identifier of the selected media content</Property>
+    </Properties>
+
+    ### **Return value**
+    <Properties>
+      <Property name="featuredMedia" type="FeaturedMedia">Selected media content object matching the identifier</Property>
+    </Properties>
+
+    ### **Usage Example**
+    ```ts
+    const featuredMedia = await getFeaturedMediaById(1);
+    console.log(featuredMedia);
+    ```
+
+    ### **Error Handling**
+    - If the fetch request is unsuccessful, the function throws an error.
+    - The error message includes a descriptive string, along with details about the problem that occurred.
+
+    <div className="not-prose">
+      <Button
+        href="https://developer.wordpress.org/rest-api/reference/media/"
+        variant="text"
+        arrow="right"
+        target="_blank"
+      >
+        Read more about the media content endpoint
+      </Button>
+    </div>
+  </Col>
+  <Col sticky>
+    <CodeGroup title="Request">
+      ```ts
+      export const getFeaturedMediaById = async (id: number): Promise<FeaturedMedia> => {
+        try {
+          const featuredMediaByIdUrl = getUrl(`/wp-json/wp/v2/media/${id}`);
+          const featuredMediaById = await wordPressFetch<FeaturedMedia>(
+            featuredMediaByIdUrl,
+            { next: { ...defaultFetchOptions.next, tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`featured-media-by-id-${id}`]) } }
+          );
+          return featuredMediaById;
+        } catch (error: any) {
+          throw new Error(`${GET_FEATURED_MEDIA_BY_ID_ERROR_DETAILS} ${error.message}`);
+        }
+      };
+      ```
+    </CodeGroup>
+    ```ts
+    {{ title: 'Return value type' }}
+    export type FeaturedMedia = {
+      id: number;
+      date: string;
+      slug: string;
+      type: string;
+      link: string;
+      title: { rendered: string; };
+      author: number;
+      caption: { rendered: string; };
+      alt_text: string;
+      media_type: string;
+      mime_type: string;
+      media_details: {
+        width: number;
+        height: number;
+        file: string;
+        sizes: {
+          [key: string]: {
+            file: string;
+            width: number;
+            height: number;
+            mime_type: string;
+            source_url: string;
+          };
+        };
+      };
+      source_url: string;
+    };
+    ```
+  </Col>
+</Row>

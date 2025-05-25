@@ -1,0 +1,61 @@
+import { HeroPattern } from '@/components/documentation/HeroPattern'
+
+export const metadata = {
+  title: 'About the application',
+  description: 'Description of the purpose, methodology, and architecture of the application.'
+}
+
+<HeroPattern />
+
+# Analysis of the current progressive web application developed with Next.js and WordPress
+
+Description of the application's purpose, methodology and architecture {{ className: "lead" }}
+
+## Research tasks
+
+- Investigate how the separation of the frontend (Next.js) and backend (WordPress) affects scalability, maintainability and performance.
+- Investigate how specific features such as offline access, fast loading and mobile design improve the user experience.
+- Determine how well the WordPress API supports real-time content updates and what is the level of security of the communication between the frontend (Next.js) and backend (WordPress).
+- Encouraging learning through content creation: students from the Bachelor's programs Software Engineering (2nd year) and Information Brokerage and Digital Media (3rd year) full-time study document their coursework in the disciplines Content Management Systems and Software and Media Ergonomics, respectively, which they upload as publications to a WordPress web instance and visualize in the progressive web application.
+
+## Functional diagram
+
+The functional diagram presents the architecture of the developed application
+
+<Image 
+  src="/diagram-export-11-25-2024-8_12_17-PM.png" 
+  alt="Functional Scheme Image" 
+  className="rounded-lg"
+  loading="lazy" 
+/>
+
+## Expected Results
+
+The expected results relate to the overall operation of the application and include:
+
+<TABLE>
+  <THEAD>
+    <TR>
+      <TH> Criterion</TH>
+      <TH> Expected result</TH>
+    </TR>
+  </THEAD>
+  <TBODY>
+    <TR>
+      <TD> Functionality</TD>
+      <TD> A working progressive web application built with Next.js, providing seamless integration with the WordPress backend via an API.</TD>
+    </TR>
+    <TR>
+      <TD> Effective communication with the WordPress API</TD>
+      <TD> The API efficiently handles requests for posts, authors, categories, tags, and other content types without performance bottlenecks or data synchronization issues.</TD>
+    </TR>
+    <TR>
+      <TD> Demonstration of the "Headless" architecture</TD>
+      <TD> A successful demonstration of the "Headless" architecture, where WordPress serves as a content repository on the backend, and Next.js manages the user experience on the frontend.</TD>
+    </TR>
+    <TR>
+      <TD> Accessible versions of WordPress and the progressive web app</TD>
+      <TD> Both the WordPress backend and the progressive web application are implemented and available, with appropriate hosting, domain configuration, and security.</TD>
+    </TR>
+  </TBODY>
+</TABLE>

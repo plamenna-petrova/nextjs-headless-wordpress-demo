@@ -114,20 +114,10 @@ interface NavigationGroupProps {
 }
 
 const NavigationGroupListItem = ({ navigationGroup, className }: NavigationGroupProps) => {
-  localStorage.setItem('navigationGroup', JSON.stringify(navigationGroup));
-
-  const [isHydrated, setIsHydrated] = useState(false);
-
   let pathname: string = usePathname();
   let sections = useSectionStore((s) => s.sections);
-
-  console.log('sections', sections);
   let isInsideMobileNavigation: boolean = useIsInsideMobileNavigation();
   let isNavigationGroupActive: boolean = navigationGroup.links.findIndex((link) => link.href === pathname) !== -1;
-
-  useEffect(() => {
-    setIsHydrated(true);
-  }, []);
 
   return (
     <li className={clsx('relative mt-6', className)}>
@@ -159,7 +149,7 @@ const NavigationGroupListItem = ({ navigationGroup, className }: NavigationGroup
                 {link.title}
               </NavLink>
               <AnimatePresence mode="popLayout" initial={false}>
-                {isHydrated && link.href === pathname && sections.length > 0 && (
+                {link.href === pathname && sections.length > 0 && (
                   <motion.ul
                     role="list"
                     initial={{ opacity: 0 }}
@@ -198,7 +188,7 @@ export const navigationGroups: Array<NavigationGroup> = [
   {
     title: 'Ръководство',
     links: [
-      { title: 'Начало', href: '/documentation' },
+      { title: 'Начало', href: '/documentation/introduction' },
       { title: 'Основни положения', href: '/documentation/core-principles' },
       { title: 'За приложението', href: '/documentation/about-the-application'}
     ],
@@ -218,12 +208,10 @@ export const DocumentationNavigation = (props: React.ComponentPropsWithoutRef<'n
     ...navigationGroup,
     links: navigationGroup.links.map((link) => ({
       ...link,
-      href: `/${locale}${link.href}` 
+      href: `/${locale}${link.href}/content-${locale}` 
     }))
   }));
 
-  localStorage.setItem('localizedNavigationGroups', JSON.stringify(localizedNavigationGroups));
-  
   return (
     <nav {...props}>
       <ul role="list">

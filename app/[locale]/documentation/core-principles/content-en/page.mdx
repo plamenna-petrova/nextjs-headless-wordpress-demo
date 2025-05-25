@@ -1,0 +1,145 @@
+import { HeroPattern } from '@/components/documentation/HeroPattern'
+import { Button } from '@/components/documentation/Button'
+import Link from 'next/link'
+
+export const metadata = {
+  title: 'General',
+  description: 'A progressive web application uses the WordPress API for several primary reasons, each of which contributes to providing a positive user experience.'
+}
+
+<HeroPattern />
+
+# WordPress Features
+
+WordPress works as a content management system based on the ,,Headless'' architecture, using its API to deliver content to external applications 
+developed with software frameworks and libraries. {{ className: "lead" }}
+
+## Types of CMS
+
+Content Management Systems (CMS) can be classified into three main categories
+
+- **Traditional Content Management Systems**:
+  - are conceptualized and developed as platforms designed to facilitate the creation and publication of HTML-based content on the Internet
+  - feature an integrated architecture that manages the entire content lifecycle
+  - are suitable for users without in-depth technical knowledge
+
+  <Image 
+    src="/Traditional-CMS.png" 
+    alt="Traditional CMS Scheme"
+    className="my-4 mx-auto"
+    maxFigureWidth={'400px'}
+    loading="lazy" 
+  />
+
+- **Content management systems based on the ,,Headless'' architecture**:
+  - change the paradigm in the way digital content is managed and delivered
+  - separate the content management process from its presentation layer, using application programming interfaces and removing the dependency on specific software frameworks
+  - allow content to be distributed seamlessly to different endpoints, for example: mobile applications and wearable technologies
+  - software developers can adapt the presentation layer to the unique requirements of each platform or device, personalizing user interfaces and improving the user experience
+
+  <Image 
+    src="/Headless-CMS.png" 
+    alt="Headless CMS Scheme"
+    className="my-4 mx-auto"
+    maxFigureWidth={'600px'}
+    loading="lazy" 
+  />
+
+- **Hybrid Content Management Systems**:
+  - combine the advantages of the "Headless" architecture with the convenience of traditional content management systems, offering a flexible and universal platform for creating and managing content
+  - provide intuitive tools for easy updating and modification of content
+  - allow the creation of user interfaces in software frameworks according to the developers' preference
+  - unify all functionalities into a single system, overcoming the problems associated with inconsistency and additional work inherent in using separate platforms
+
+  <Image 
+    src="/Hybrid-CMS.png" 
+    alt="Hybrid CMS Scheme"
+    className="my-4 mx-auto"
+    maxFigureWidth={'550px'}
+    loading="lazy" 
+  />
+
+## WordPress
+
+WordPress can be considered a hybrid content management system depending on how it is configured and used. By default, WordPress is a traditional content management system, where the backend and frontend are connected to each other. However, with the introduction of an application programming interface for communication over HTTP/HTTPs protocols and the REST style of software architecture for implementing web services, WordPress can also function as a content management system based on the ,,Headless'' architecture, which makes it a universal hybrid solution.
+
+## Next.js Software Framework
+
+Next.js is a robust software framework based on the React software framework that improves the process of building websites in relation to the following aspects:
+
+<TABLE striped={false}>
+  <TBODY>
+    <TR>
+      <TD> Responsive design</TD>
+      <TD> Integration of responsive design libraries to adapt to different devices and screen sizes. Provides an attractive visual experience on all platforms.</TD>
+    </TR>
+    <TR>
+      <TD> Improved user experience</TD>
+      <TD> Intuitive navigation, fast page loading, and smooth transitions reduce time to complete actions and increase user satisfaction.</TD>
+    </TR>
+    <TR>
+      <TD> Search engine optimization</TD>
+      <TD> Facilitates indexing through fast loading of web pages, semantic markup, and creation of structured data.</TD>
+    </TR>
+  </TBODY>
+</TABLE>
+
+## The meaning of UX
+
+- User Experience (UX) refers to the user's interaction with a website, application, or digital platform. It encompasses all aspects of the interaction - from functionality and usability to visual design and emotional perception.
+- The main goal of user experience is to create a comfortable and intuitive environment that meets the needs of users, while satisfying and engaging them.
+- A good user experience leads to a longer stay on a particular website, application, or digital platform.
+- Methods for measuring user experience include usability metrics, user feedback, data analysis tools, and real-time usability tests.
+- Methods for improving user experience include: user-centered design, intuitive navigation, mobile compatibility, and responsive design, conducting regular testing and analysis, and adhering to web accessibility standards.
+
+## WordPress and Next.js
+
+A comparative characteristic can be made between building websites with WordPress and Next.js, taking into account the criteria:
+
+<TABLE>
+  <THEAD>
+    <TR>
+      <TH>Criterion</TH>
+      <TH>WordPress</TH>
+      <TH>Next.js</TH>
+    </TR>
+  </THEAD>
+  <TBODY>
+    <TR>
+      <TD>Productivity</TD>
+      <TD>It can be optimized using extensions, but relies more on server-side processing.</TD>
+      <TD>Excellent</TD>
+    </TR>
+    <TR>
+      <TD>Flexibility and customization</TD>
+      <TD>Huge selection of themes and extensions. Limited options for complex functionalities.</TD>
+      <TD>Ability to create complex web applications and reuse interface elements.</TD>
+    </TR>
+    <TR>
+      <TD>Scalability</TD>
+      <TD>Difficulties may be encountered when scaling high-traffic websites.</TD>
+      <TD>Highly scalable thanks to its support for serverless deployment, caching mechanisms, and optimized rendering strategies.</TD>
+    </TR>
+  </TBODY>
+</TABLE>
+
+- The integration of WordPress and Next.js provides a robust approach to building dynamic and interactive websites or applications, leveraging the strengths of both platforms.
+- In this configuration, Next.js serves as the frontend, retrieving content from WordPress using API standards such as the REST style of software architecture or the GraphQL query language and framework.
+- Next.js enables faster load times, improved SEO performance, and the design of more responsive user interfaces, while WordPress excels in its robust content management.
+- By adopting a "Headless" architecture, developers can streamline workflows and ensure an optimized experience across platforms - from websites to mobile and progressive applications.
+- The collaboration of WordPress and Next.js represents a shift from monolithic systems to more modular, efficient, and scalable web architectures, offering a modern solution for enterprise websites or applications that require scalability and high performance.
+
+## Progressive Web Apps
+
+- Built using web platform technologies, but provide a user experience similar to that of a platform-specific application.
+- Improve user experience
+- Provide offline capabilities
+- Improved performance through the use of modern APIs and caching mechanisms
+
+<Image 
+  src="/Progressive-Web-Applications.png" 
+  alt="Progressive Web Applications Image"
+  className="my-4"
+  maxFigureWidth={'400px'}
+  loading="lazy" 
+/>
