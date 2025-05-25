@@ -114,12 +114,15 @@ interface NavigationGroupProps {
 }
 
 const NavigationGroupListItem = ({ navigationGroup, className }: NavigationGroupProps) => {
-  console.log('navigationGroup', navigationGroup);
+  localStorage.setItem('navigationGroup', JSON.stringify(navigationGroup));
 
   const [isHydrated, setIsHydrated] = useState(false);
 
   let pathname: string = usePathname();
   let sections = useSectionStore((s) => s.sections);
+
+  localStorage.setItem('sections', JSON.stringify(sections));
+
   console.log('sections', sections);
   let isInsideMobileNavigation: boolean = useIsInsideMobileNavigation();
   let isNavigationGroupActive: boolean = navigationGroup.links.findIndex((link) => link.href === pathname) !== -1;
