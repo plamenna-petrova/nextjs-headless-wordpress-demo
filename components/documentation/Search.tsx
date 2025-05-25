@@ -27,6 +27,7 @@ import { type Result } from '@/mdx/search.mjs'
 
 import Highlighter from 'react-highlight-words'
 import clsx from 'clsx'
+import { useLocale } from 'next-intl'
 
 type EmptyObject = Record<string, never>
 
@@ -38,9 +39,10 @@ type Autocomplete = AutocompleteApi<
 >
 
 function useAutocomplete({ close }: { close: () => void }) {
-  let id: string = useId();
-  let router = useRouter();
-  let [autocompleteState, setAutocompleteState] = useState<AutocompleteState<Result> | EmptyObject>({});
+  const [autocompleteState, setAutocompleteState] = useState<AutocompleteState<Result> | EmptyObject>({});
+  const id: string = useId();
+  const router = useRouter();
+  const locale = useLocale();
 
   function navigate({ itemUrl }: { itemUrl?: string }) {
     if (!itemUrl) {
@@ -79,7 +81,12 @@ function useAutocomplete({ close }: { close: () => void }) {
             {
               sourceId: 'documentation',
               getItems() {
-                return search(query, { limit: 5 });
+                const items = search(query, { limit: 5 });
+
+                return items.map((item) => ({
+                  ...item,
+                  url: item.url.replace('[locale]', locale || 'bg')
+                }))
               },
               getItemUrl({ item }) {
                 return item.url;

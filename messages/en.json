@@ -17,7 +17,8 @@
     "demoApplication": "Demo Application",
     "clientApplicationDevelopmentTechnology": "The client application is developed with Next.js",
     "copyright": "© Copyright {year}. All rights reserved.",
-    "backButtonText": "Go Back"
+    "backButtonText": "Go Back",
+    "wordPressAsAHeadlessCMS": "WordPress As A Headless CMS"
   },
   "WordPressStarter": {
     "demoApplicationTitle": "Demo Application Developed with Next.js and WordPress",

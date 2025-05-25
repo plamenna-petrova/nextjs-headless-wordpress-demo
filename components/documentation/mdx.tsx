@@ -10,7 +10,6 @@ import clsx from 'clsx'
 
 export const a = Link
 
-
 export function wrapper({ children }: { children: React.ReactNode }) {
   return (
     <article className="flex h-full flex-col pb-10 pt-16">

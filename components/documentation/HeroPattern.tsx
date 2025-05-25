@@ -28,5 +28,5 @@ export function HeroPattern() {
         </svg>
       </div>
     </div>
-  )
+  );
 }

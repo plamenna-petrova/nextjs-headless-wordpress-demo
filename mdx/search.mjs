@@ -56,13 +56,14 @@ export default function (nextConfig = {}) {
         test: __filename,
         use: [
           createLoader(function () {
-            let appDir = path.resolve('app/documentation');
+            let appDir = path.resolve('app/[locale]/documentation');
+
             this.addContextDependency(appDir);
 
             let files = glob.sync('**/*.mdx', { cwd: appDir });
 
             let data = files.map((file) => {
-              let url = '/documentation/' + file.replace(/(^|\/)page\.mdx$/, '');
+              let url = '/[locale]/documentation/' + file.replace(/(^|\/)page\.mdx$/, '');
 
               let mdx = fs.readFileSync(path.join(appDir, file), 'utf8');
 

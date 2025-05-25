@@ -23,7 +23,7 @@ export const SEOPageMetadata = ({
   image = pageImage,
   type = "website",
   locale = "bg-BG",
-  siteName = "Демонстративно приложение на WordPress като система за управление на съдържанието, базирана на ,,Headless’’ архитектурата",
+  siteName = "Demo Application of WordPress as a Content Management System Based on a Headless Architecture",
   tags = [],
   publishedTime,
   modifiedTime,

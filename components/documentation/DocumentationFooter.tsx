@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation'
 import { Button } from '@/components/documentation/Button';
 import { navigationGroups } from '@/components/documentation/DocumentationNavigation';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link'
 
 function PageLink({
@@ -98,12 +99,13 @@ function SocialLink({
 }
 
 function SmallPrint() {
+  const t = useTranslations("Navigation")
   const currentYear: number = new Date().getFullYear();
 
   return (
-    <div className="flex flex-col items-center justify-between gap-5 border-t border-zinc-900/5 pt-8 dark:border-white/5 sm:flex-row">
+    <div className="flex flex-col items-center gap-5 border-t border-zinc-900/5 pt-8 dark:border-white/5 sm:flex-row">
       <p className="text-xs text-zinc-600 dark:text-zinc-400">
-        &copy; Авторско право {currentYear}. Всички права запазени.
+        {t("copyright", { year: currentYear })}
       </p>
       <div className="flex gap-4">
         <SocialLink href="https://github.com/plamenna-petrova" icon={GitHubIcon}>

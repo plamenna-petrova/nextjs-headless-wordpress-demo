@@ -17,8 +17,8 @@ const fontSans = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Демонстративно приложение на WordPress като система за управление на съдържанието, базирана на ,,Headless’’ архитектурата",
-  description: "Как WordPress може да функционира като система за управление на съдържанието, базирана на ,,Headless’’ архитектурата",
+  title: "Demo Application of WordPress as a Content Management System Based on a Headless Architecture",
+  description: "How WordPress can function as a Content Management System based on a Headless Architecture",
   generator: "Next.js",
   manifest: "/manifest.json",
   keywords: ["nextjs", "next14", "pwa", "next-pwa"],
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   ],
 };
 
-export default async function LocaleLayout({
+export default async function LocaleBasedLayout({
   children,
   params
 }: Readonly<{

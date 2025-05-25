@@ -23,7 +23,7 @@ const Navbar = ({ id, className, children }: NavbarProps) => {
     <nav id={id} className={mergeClassNames("sticky z-50 top-0 bg-background", "border-b", "fade-in", className)}>
       <div id="nav-container" className="max-w-5xl mx-auto py-4 px-6 sm:px-8 flex justify-between items-center">
         <Link href="/" className="hover:opacity-75 transition-all flex gap-2 items-center">
-          <h2 className="sr-only">WordPress As A Headless CMS</h2>
+          <h2 className="sr-only">{t("wordPressAsAHeadlessCMS")}</h2>
           <Image src={Logo} alt="Logo" width={65} height={35.54}></Image>
         </Link>
         {children}

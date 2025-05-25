@@ -17,7 +17,8 @@
     "demoApplication": "Демонстративно приложение",
     "clientApplicationDevelopmentTechnology": "Клиентското приложение е разработено със Next.js",
     "copyright": "© Авторско право {year}. Всички права запазени.",
-    "backButtonText": "Назад"
+    "backButtonText": "Назад",
+    "wordPressAsAHeadlessCMS": "WordPress като система за управление на съдържанието, базирана на Headless архитектурата"
   },
   "WordPressStarter": {
     "demoApplicationTitle": "Демонстративно приложение, разработено със Next.js и WordPress",

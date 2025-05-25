@@ -6,6 +6,7 @@ import { useIsInsideMobileNavigation } from '@/components/documentation/Document
 import { useSectionStore } from './SectionProvider'
 import { Tag } from './Tag'
 import { convertRemToPx } from '@/lib/remToPx'
+import { useLocale } from 'next-intl'
 
 import clsx from 'clsx'
 import Link from 'next/link'
@@ -112,11 +113,10 @@ interface NavigationGroupProps {
 }
 
 const NavigationGroupListItem = ({ navigationGroup, className }: NavigationGroupProps) => {
-  let pathname: string = usePathname();
-  let sections = useSectionStore((s) => s.sections);
-  let isInsideMobileNavigation: boolean = useIsInsideMobileNavigation();
-
-  let isNavigationGroupActive: boolean = navigationGroup.links.findIndex((link) => link.href === pathname) !== -1;
+  const pathname: string = usePathname();
+  const sections = useSectionStore((s) => s.sections);
+  const isInsideMobileNavigation: boolean = useIsInsideMobileNavigation();
+  const isNavigationGroupActive: boolean = navigationGroup.links.findIndex((link) => link.href === pathname) !== -1;
 
   return (
     <li className={clsx('relative mt-6', className)}>
@@ -201,14 +201,24 @@ export const navigationGroups: Array<NavigationGroup> = [
 ];
 
 export const DocumentationNavigation = (props: React.ComponentPropsWithoutRef<'nav'>) => {
+  const locale = useLocale();
+
+  const localizedNavigationGroups: Array<NavigationGroup> = navigationGroups.map((navigationGroup) => ({
+    ...navigationGroup,
+    links: navigationGroup.links.map((link) => ({
+      ...link,
+      href: `/${locale}${link.href}` 
+    }))
+  }));
+  
   return (
     <nav {...props}>
       <ul role="list">
-        {navigationGroups.map((navigationGroup, navigationGroupIndex) => (
+        {localizedNavigationGroups.map((localizedNavigationGroup, localizedNavigationGroupIndex) => (
           <NavigationGroupListItem
-            key={navigationGroup.title}
-            navigationGroup={navigationGroup}
-            className={navigationGroupIndex === 0 ? 'md:mt-0' : ''}
+            key={localizedNavigationGroup.title}
+            navigationGroup={localizedNavigationGroup}
+            className={localizedNavigationGroupIndex === 0 ? 'md:mt-0' : ''}
           />
         ))}
       </ul>

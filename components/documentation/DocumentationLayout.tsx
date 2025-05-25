@@ -17,10 +17,11 @@ interface DocumentationLayoutProps {
 }
 
 export function DocumentationLayout({ children, allSections }: DocumentationLayoutProps) {
-  let pathname: string = usePathname();
+  let pathname: string = usePathname().replace(/\/$/, '') || '/';
+  const currentSections = allSections[pathname] ?? [];
 
   return (
-    <SectionProvider sections={allSections[pathname] ?? []}>
+    <SectionProvider sections={currentSections}>
       <div className="h-full lg:ml-72 xl:ml-80">
         <motion.header
           layoutScroll
