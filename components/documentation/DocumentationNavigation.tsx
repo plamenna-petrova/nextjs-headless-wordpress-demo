@@ -113,10 +113,11 @@ interface NavigationGroupProps {
 }
 
 const NavigationGroupListItem = ({ navigationGroup, className }: NavigationGroupProps) => {
-  const pathname: string = usePathname();
-  const sections = useSectionStore((s) => s.sections);
-  const isInsideMobileNavigation: boolean = useIsInsideMobileNavigation();
-  const isNavigationGroupActive: boolean = navigationGroup.links.findIndex((link) => link.href === pathname) !== -1;
+  let pathname: string = usePathname();
+  let sections = useSectionStore((s) => s.sections);
+  console.log('sections', sections);
+  let isInsideMobileNavigation: boolean = useIsInsideMobileNavigation();
+  let isNavigationGroupActive: boolean = navigationGroup.links.findIndex((link) => link.href === pathname) !== -1;
 
   return (
     <li className={clsx('relative mt-6', className)}>
