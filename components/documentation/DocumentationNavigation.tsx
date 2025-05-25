@@ -55,7 +55,6 @@ interface VisibleSectionHighlightProps {
 
 const VisibleSectionHighlight = ({ navigationGroup, pathname }: VisibleSectionHighlightProps) => {
   let sections = useSectionStore((s) => s.sections);
-  localStorage.setItem('visible sections highlight', JSON.stringify(sections));
   let visibleSections = useSectionStore((s) => s.visibleSections);
 
   let isPresent: boolean = useIsPresent();
@@ -121,8 +120,6 @@ const NavigationGroupListItem = ({ navigationGroup, className }: NavigationGroup
 
   let pathname: string = usePathname();
   let sections = useSectionStore((s) => s.sections);
-
-  localStorage.setItem('sections', JSON.stringify(sections));
 
   console.log('sections', sections);
   let isInsideMobileNavigation: boolean = useIsInsideMobileNavigation();
