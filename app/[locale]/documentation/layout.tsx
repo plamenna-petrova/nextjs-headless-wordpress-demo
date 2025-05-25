@@ -6,8 +6,14 @@ import glob from 'fast-glob';
 
 export default async function Documentation({ children }: { children: React.ReactNode }) {
   const locale = await getLocale() as Locale;
-  
-  const foundMDXPages: string[] = await glob('**/*.mdx', { cwd: `app/[locale]/documentation` });
+
+  let foundMDXPages: string[] = await glob('**/*.mdx', { cwd: `app/[locale]/documentation` });
+
+  if (foundMDXPages.length === 0) { 
+    foundMDXPages = await glob('**/*.mdx', { cwd: `app/${locale}/documentation` });
+  }
+
+  console.log('Found MDX pages:', foundMDXPages);
 
   const documentationSectionsEntries = (await Promise.all(
     foundMDXPages.map(async (filename: string) => {
