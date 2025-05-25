@@ -59,6 +59,8 @@
     "usedFunctions": "Used Functions",
     "searchInDocumentation": "Search in documentation",
     "notFoundResultsFor": "Not found results for",
-    "tryAgain": "Try again"
+    "tryAgain": "Try again",
+    "nextPage": "Next",
+    "previousPage": "Previous"
   }
 }

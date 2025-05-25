@@ -3,7 +3,7 @@
 import { usePathname } from 'next/navigation'
 import { Button } from '@/components/documentation/Button';
 import { navigationGroups } from '@/components/documentation/DocumentationNavigation';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link'
 
 function PageLink({
@@ -38,9 +38,23 @@ function PageLink({
 }
 
 function PageNavigation() {
-  let pathname: string = usePathname();
-  let allPages: { title: string; href: string }[] = navigationGroups.flatMap((navigationGroup) => navigationGroup.links);
-  let currentPageIndex: number = allPages.findIndex((page) => page.href === pathname);
+  const pathname: string = usePathname();
+  const t = useTranslations("Documentation");
+  const locale = useLocale();
+
+  console.log("navigation groups", navigationGroups);
+  
+  const allPages = navigationGroups.flatMap((group) =>
+    group.links.map((link) => ({
+      title: t(link.titleKey),
+      href: `/${locale}${link.href}/content-${locale}`.replace(/\/+$/, '')
+    }))
+  );
+
+  console.log(allPages);
+
+  const normalizedPathname = pathname.replace(/\/+$/, '');
+  const currentPageIndex = allPages.findIndex((page) => page.href === normalizedPathname);
 
   if (currentPageIndex === -1) {
     return null;
@@ -57,12 +71,12 @@ function PageNavigation() {
     <div className="flex">
       {previousPage && (
         <div className="flex flex-col items-start gap-3">
-          <PageLink label="Назад" page={previousPage} previous />
+          <PageLink label={t("previousPage")} page={previousPage} previous />
         </div>
       )}
       {nextPage && (
         <div className="ml-auto flex flex-col items-end gap-3">
-          <PageLink label="Напред" page={nextPage} />
+          <PageLink label={t("nextPage")} page={nextPage} />
         </div>
       )}
     </div>
@@ -117,6 +131,8 @@ function SmallPrint() {
 }
 
 export function DocumentationFooter() {
+  console.log("from the documentation footer");
+
   return (
     <footer className="mx-auto w-full max-w-2xl space-y-10 pb-16 lg:max-w-5xl">
       <PageNavigation />

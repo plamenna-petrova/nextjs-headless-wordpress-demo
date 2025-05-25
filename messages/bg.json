@@ -59,6 +59,8 @@
     "usedFunctions": "Използвани функции",
     "searchInDocumentation": "Търси в документацията",
     "notFoundResultsFor": "Не са намерени резултати за",
-    "tryAgain": "Опитайте отново"
+    "tryAgain": "Опитайте отново",
+    "nextPage": "Напред",
+    "previousPage": "Назад"
   }
 }
