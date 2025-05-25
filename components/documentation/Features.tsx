@@ -8,6 +8,7 @@ import { ShapesIcon } from '@/components/documentation/icons/ShapesIcon'
 import { BoltIcon } from '@/components/documentation/icons/BoltIcon'
 import { SquaresPlusIcon } from '@/components/documentation/icons/SquaresPlusIcon'
 import { CogIcon } from '@/components/documentation/icons/CogIcon'
+import { useLocale, useTranslations } from 'next-intl'
 
 import Link from 'next/link'
 
@@ -19,11 +20,15 @@ interface Feature {
   pattern: Omit<React.ComponentPropsWithoutRef<typeof GridPattern>, 'width' | 'height' | 'x'>;
 }
 
-const features: Array<Feature> = [
+const baseFeatures: Array<Omit<Feature, "name" | "description" | "href"> & {
+  nameKey: string;
+  descriptionKey: string;
+  baseHref?: string;
+}> = [
   {
-    name: 'Използвани функции',
-    description: 'Научете повече за използваните функции на приложно-програмния интерфейс на WordPress',
-    href: '/documentation/rest-api-functions',
+    nameKey: 'usedFunctions.name',
+    descriptionKey: 'usedFunctions.description',
+    baseHref: '/documentation/rest-api-functions',
     icon: ShapesIcon,
     pattern: {
       y: 16,
@@ -34,8 +39,8 @@ const features: Array<Feature> = [
     },
   },
   {
-    name: 'Библиотеки с компоненти',
-    description: 'Научете повече за интегрираните библиотеки с компоненти',
+    nameKey: 'componentLibraries.name',
+    descriptionKey: 'componentLibraries.description',
     icon: SquaresPlusIcon,
     pattern: {
       y: -6,
@@ -46,8 +51,8 @@ const features: Array<Feature> = [
     },
   },
   {
-    name: 'UX дизайн',
-    description: 'Научете повече за приложените принципи на UX дизайна',
+    nameKey: 'uxDesign.name',
+    descriptionKey: 'uxDesign.description',
     icon: BoltIcon,
     pattern: {
       y: 22,
@@ -55,8 +60,8 @@ const features: Array<Feature> = [
     },
   },
   {
-    name: 'SEO стратегии',
-    description: 'Научете повече за добрите SEO практики и стратегии за Next.js приложения',
+    nameKey: 'seoStrategies.name',
+    descriptionKey: 'seoStrategies.description',
     icon: CogIcon,
     pattern: {
       y: 22,
@@ -151,14 +156,31 @@ function Feature({ feature }: { feature: Feature }) {
 }
 
 export function Features() {
+  const t = useTranslations("Documentation.features");
+  const locale = useLocale();
+
+  const localizedFeatures: Feature[] = baseFeatures.map(({ baseHref, nameKey, descriptionKey, ...rest }) => {
+    const withLocaleSuffix: string | undefined =
+      baseHref ? baseHref.includes("/documentation") ? baseHref.replace(/([^/]+)$/, `$1-${locale}`) : baseHref : undefined;
+
+    return {
+      name: t(nameKey),
+      description: t(descriptionKey),
+      href: withLocaleSuffix
+        ? `/${locale}${withLocaleSuffix.startsWith("/") ? withLocaleSuffix : `/${withLocaleSuffix}`}`
+        : `/${locale}`,
+      ...rest,
+    };
+  });
+
   return (
     <div className="my-16 xl:max-w-none">
       <Heading level={2} id="features">
-        Характеристики
+        {t("sectionName")}
       </Heading>
       <div className="not-prose mt-4 grid grid-cols-1 gap-8 border-t border-zinc-900/5 pt-10 dark:border-white/5 sm:grid-cols-2 xl:grid-cols-4">
-        {features.map((feature) => (
-          <Feature key={feature.name} feature={feature} />
+        {localizedFeatures.map((localizedFeature) => (
+          <Feature key={localizedFeature.name} feature={localizedFeature} />
         ))}
       </div>
     </div>

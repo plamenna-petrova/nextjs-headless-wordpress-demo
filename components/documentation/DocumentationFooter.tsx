@@ -42,16 +42,12 @@ function PageNavigation() {
   const t = useTranslations("Documentation");
   const locale = useLocale();
 
-  console.log("navigation groups", navigationGroups);
-  
   const allPages = navigationGroups.flatMap((group) =>
     group.links.map((link) => ({
       title: t(link.titleKey),
       href: `/${locale}${link.href}/content-${locale}`.replace(/\/+$/, '')
     }))
   );
-
-  console.log(allPages);
 
   const normalizedPathname = pathname.replace(/\/+$/, '');
   const currentPageIndex = allPages.findIndex((page) => page.href === normalizedPathname);
@@ -131,8 +127,6 @@ function SmallPrint() {
 }
 
 export function DocumentationFooter() {
-  console.log("from the documentation footer");
-
   return (
     <footer className="mx-auto w-full max-w-2xl space-y-10 pb-16 lg:max-w-5xl">
       <PageNavigation />

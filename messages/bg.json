@@ -61,6 +61,35 @@
     "notFoundResultsFor": "Не са намерени резултати за",
     "tryAgain": "Опитайте отново",
     "nextPage": "Напред",
-    "previousPage": "Назад"
+    "previousPage": "Назад",
+    "technologies": {
+      "sectionName": "Технологии",
+      "wordPress": "WordPress",
+      "nextJS": "Софтуерната рамка Next.js",
+      "pwa": "Прогресивни уеб приложения",
+      "corePrinciplesHref": "/bg/documentation/core-principles/content-bg/#word-press",
+      "nextJSHref": "/bg/documentation/core-principles/content-bg/#softuernata-ramka-next-js",
+      "pwaHref": "/bg/documentation/core-principles/content-bg/#progresivni-ueb-prilozheniya",
+      "readMore": "Прочетете повече"
+    },
+    "features": {
+      "sectionName": "Характеристики",
+      "usedFunctions": {
+        "name": "Използвани функции",
+        "description": "Научете повече за използваните функции на приложно-програмния интерфейс на WordPress"
+      },
+      "componentLibraries": {
+        "name": "Страници",
+        "description": "Научете повече за интегрираните библиотеки с компоненти"
+      },
+      "uxDesign": {
+        "name": "UX дизайн",
+        "description": "Научете повече за приложените принципи на UX дизайна"
+      },
+      "seoStrategies": {
+        "name": "SEO стратегии",
+        "description": "Научете повече за добрите SEO практики и стратегии за Next.js приложения"
+      }
+    }
   }
 }

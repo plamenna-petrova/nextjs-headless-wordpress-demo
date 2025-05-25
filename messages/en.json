@@ -61,6 +61,35 @@
     "notFoundResultsFor": "Not found results for",
     "tryAgain": "Try again",
     "nextPage": "Next",
-    "previousPage": "Previous"
+    "previousPage": "Previous",
+    "technologies": {
+      "sectionName": "Technologies",
+      "wordPress": "WordPress",
+      "nextJS": "The framework Next.js",
+      "pwa": "Progressive Web Applications",
+      "corePrinciplesHref": "/en/documentation/core-principles/content-en/#word-press",
+      "nextJSHref": "/en/documentation/core-principles/content-en/#next-js-software-framework",
+      "pwaHref": "/en/documentation/core-principles/content-en/#progressive-web-apps",
+      "readMore": "Read more"
+    },
+    "features": {
+      "sectionName": "Features",
+      "usedFunctions": {
+        "name": "Used Functions",
+        "description": "Learn more about the used functions of the WordPress Application Programming Interface"
+      },
+      "componentLibraries": {
+        "name": "Component Libraries",
+        "description": "Learn more about the integrated component libraries"
+      },
+      "uxDesign": {
+        "name": "UX Design",
+        "description": "Learn more about the applied UX design principles"
+      },
+      "seoStrategies": {
+        "name": "SEO Strategies",
+        "description": "Learn more about good SEO practices and strategies for Next.js applications"
+      }
+    }
   }
 }

@@ -1,5 +1,6 @@
 import { Button } from '@/components/documentation/Button'
 import { Heading } from '@/components/documentation/Heading'
+import { useTranslations } from 'next-intl';
 
 interface Technology {
   href: string;
@@ -7,39 +8,47 @@ interface Technology {
   description?: string;
 }
 
-const technologies: Technology[] = [
+const baseTechnologies: (Omit<Technology, "href" | "name"> & { hrefKey: string, nameKey: string })[] = [
   {
-    href: '/documentation/core-principles#word-press',
-    name: 'WordPress'
+    hrefKey: 'corePrinciplesHref',
+    nameKey: 'wordPress'
   },
   {
-    href: '/documentation/core-principles#softuernata-ramka-next-js',
-    name: 'Софтуерната рамка Next.js',
+    hrefKey: 'nextJSHref',
+    nameKey: 'nextJS',
   },
   {
-    href: '/documentation/core-principles#progresivni-ueb-prilozheniya',
-    name: 'Прогресивни уеб приложения'
+    hrefKey: 'pwaHref',
+    nameKey: 'pwa'
   },
 ];
 
 export function Technologies() {
+  const t = useTranslations("Documentation.technologies");
+
+  const localizedTechnologies: Technology[] = baseTechnologies.map(({ nameKey, hrefKey, ...rest }) => ({
+    ...rest,
+    name: t(nameKey),
+    href: t(hrefKey)
+  }));
+
   return (
     <div className="my-16 xl:max-w-none">
       <Heading level={2} id="guides">
-        Технологии
+        {t("sectionName")}
       </Heading>
       <div className="not-prose mt-4 grid grid-cols-1 gap-8 border-t border-zinc-900/5 pt-10 dark:border-white/5 sm:grid-cols-2 xl:grid-cols-4">
-        {technologies.map((technology) => (
-          <div key={technology.href}>
+        {localizedTechnologies.map((localizedTechnology) => (
+          <div key={localizedTechnology.href}>
             <h3 className="text-sm font-semibold text-zinc-900 dark:text-white">
-              {technology.name}
+              {localizedTechnology.name}
             </h3>
             <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-              {technology.description}
+              {localizedTechnology.description}
             </p>
             <p className="mt-4">
-              <Button href={technology.href} variant="text" arrow="right">
-                Прочетете повече
+              <Button href={localizedTechnology.href} variant="text" arrow="right">
+                {t("readMore")}
               </Button>
             </p>
           </div>
