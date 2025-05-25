@@ -49,5 +49,16 @@
         "description": "Какви са възможностите за работа с WordPress"
       }
     }
+  },
+  "Documentation": {
+    "guides": "Ръководство",
+    "introduction": "Начало",
+    "corePrinciples": "Основни принципи",
+    "aboutTheApplication": "За приложението",
+    "reference": "Справка",
+    "usedFunctions": "Използвани функции",
+    "searchInDocumentation": "Търси в документацията",
+    "notFoundResultsFor": "Не са намерени резултати за",
+    "tryAgain": "Опитайте отново"
   }
 }

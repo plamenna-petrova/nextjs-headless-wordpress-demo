@@ -49,5 +49,16 @@
         "description": "Capabilities for working with WordPress"
       }
     }
+  },
+  "Documentation": {
+    "guides": "Guides",
+    "introduction": "Introduction",
+    "corePrinciples": "Core principles",
+    "aboutTheApplication": "About the application",
+    "reference": "Reference",
+    "usedFunctions": "Used Functions",
+    "searchInDocumentation": "Search in documentation",
+    "notFoundResultsFor": "Not found results for",
+    "tryAgain": "Try again"
   }
 }

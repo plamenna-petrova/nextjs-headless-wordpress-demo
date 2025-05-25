@@ -38,7 +38,7 @@ const Navbar = ({ id, className, children }: NavbarProps) => {
             ))}
           </div>
           <Button asChild className="hidden sm:flex bg-blue-500 hover:bg-blue-500 text-white">
-            <Link href={`/${locale}/documentation/about-the-application`}>{t('aboutTheApplication')}</Link>
+            <Link href={`/${locale}/documentation/about-the-application/content-${locale}`}>{t('aboutTheApplication')}</Link>
           </Button>
           <MobileNavigation />
         </div>

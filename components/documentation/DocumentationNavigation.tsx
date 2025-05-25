@@ -1,13 +1,13 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { AnimatePresence, motion, useIsPresent } from 'framer-motion'
 import { useIsInsideMobileNavigation } from '@/components/documentation/DocumentationMobileNavigation'
 import { useSectionStore } from './SectionProvider'
 import { Tag } from './Tag'
 import { convertRemToPx } from '@/lib/remToPx'
-import { useLocale } from 'next-intl'
-import { useEffect, useState } from 'react'
+import { useLocale, useTranslations } from 'next-intl'
 
 import clsx from 'clsx'
 import Link from 'next/link'
@@ -44,8 +44,9 @@ const NavLink = ({ href, children, tag, active = false, isAnchorLink = false }: 
 }
 
 interface NavigationGroup {
-  title: string;
-  links: Array<{ title: string, href: string }>;
+  title?: string;
+  titleKey: string;
+  links: Array<{ title?: string, titleKey: string; href: string }>;
 }
 
 interface VisibleSectionHighlightProps {
@@ -186,28 +187,31 @@ const NavigationGroupListItem = ({ navigationGroup, className }: NavigationGroup
 
 export const navigationGroups: Array<NavigationGroup> = [
   {
-    title: 'Ръководство',
+    titleKey: 'guides',
     links: [
-      { title: 'Начало', href: '/documentation/introduction' },
-      { title: 'Основни положения', href: '/documentation/core-principles' },
-      { title: 'За приложението', href: '/documentation/about-the-application'}
+      { titleKey: 'introduction', href: '/documentation/introduction' },
+      { titleKey: 'corePrinciples', href: '/documentation/core-principles' },
+      { titleKey: 'aboutTheApplication', href: '/documentation/about-the-application'}
     ],
   },
   {
-    title: 'Справка',
+    titleKey: 'reference',
     links: [
-      { title: 'Използвани функции', href: '/documentation/rest-api-functions' }
+      { titleKey: 'usedFunctions', href: '/documentation/rest-api-functions' }
     ]
   }
 ];
 
 export const DocumentationNavigation = (props: React.ComponentPropsWithoutRef<'nav'>) => {
+  const t = useTranslations("Documentation");
   const locale = useLocale();
 
   const localizedNavigationGroups: Array<NavigationGroup> = navigationGroups.map((navigationGroup) => ({
     ...navigationGroup,
+    title: t(navigationGroup.titleKey),
     links: navigationGroup.links.map((link) => ({
       ...link,
+      title: t(link.titleKey),
       href: `/${locale}${link.href}/content-${locale}` 
     }))
   }));

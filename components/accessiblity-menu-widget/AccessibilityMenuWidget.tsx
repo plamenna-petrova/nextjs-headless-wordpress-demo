@@ -28,11 +28,11 @@ const AccessibilityMenuWidget = () => {
   const [isAccessibilityMenuOpen, setIsAccessibilityMenuOpen] = useState<boolean>(false);
   const [isLanguageSelectionDialogOpen, setIsLanguageSelectionDialogOpen] = useState<boolean>(false);
   const [languageSearchTerm, setLanguageSearchTerm] = useState<string>("");
+  const [isPending, startTransition] = useTransition();
   const t = useTranslations("AccessibilityMenuWidget");
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
-  const [isPending, startTransition] = useTransition();
 
   const languageSearchTermInputClassNames: string = "block w-full rounded-md border border-gray-300 bg-white py-2 px-3 pr-9 text-base dark:text-black " +
     "placeholder:text-sm placeholder:text-gray-600 leading-snug focus:border-blue-500 focus:outline-none " +
@@ -69,17 +69,15 @@ const AccessibilityMenuWidget = () => {
     const pathSegments = pathname.split('/');
 
     if (pathSegments[1] === 'documentation') {
-      const lastSegment: string = pathSegments[pathSegments.length - 1];
-      const updatedLastSegment: string = lastSegment.replace(/-(en|bg)$/, `-${newLocale}`);
-      pathSegments[pathSegments.length - 1] = updatedLastSegment;
+      const lastPathSegment: string = pathSegments[pathSegments.length - 1];
+      const updatedLastPathSegment: string = lastPathSegment.replace(/-(en|bg)$/, `-${newLocale}`);
+      pathSegments[pathSegments.length - 1] = updatedLastPathSegment;
     }
 
-    const newPath = pathSegments.join('/');
-
-    console.log("new path", newPath);
+    const newJoinedPath: string = pathSegments.join('/');
 
     startTransition(() => {
-      router.replace({ pathname: newPath as any }, { locale: newLocale });
+      router.replace({ pathname: newJoinedPath as any }, { locale: newLocale });
     });
     
     setLanguageSearchTerm("");

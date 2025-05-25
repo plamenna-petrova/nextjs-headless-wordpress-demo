@@ -24,10 +24,10 @@ import {
 import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react'
 import { navigationGroups } from '@/components/documentation/DocumentationNavigation'
 import { type Result } from '@/mdx/search.mjs'
+import { useLocale, useTranslations } from 'next-intl'
 
 import Highlighter from 'react-highlight-words'
 import clsx from 'clsx'
-import { useLocale } from 'next-intl'
 
 type EmptyObject = Record<string, never>
 
@@ -42,6 +42,7 @@ function useAutocomplete({ close }: { close: () => void }) {
   const [autocompleteState, setAutocompleteState] = useState<AutocompleteState<Result> | EmptyObject>({});
   const id: string = useId();
   const router = useRouter();
+  const t = useTranslations("Documentation");
   const locale = useLocale();
 
   function navigate({ itemUrl }: { itemUrl?: string }) {
@@ -64,7 +65,7 @@ function useAutocomplete({ close }: { close: () => void }) {
       React.KeyboardEvent
     >({
       id,
-      placeholder: 'Търси в документацията...',
+      placeholder: t("searchInDocumentation"),
       defaultActiveItemId: 0,
       onStateChange({ state }) {
         setAutocompleteState(state);
@@ -82,10 +83,11 @@ function useAutocomplete({ close }: { close: () => void }) {
               sourceId: 'documentation',
               getItems() {
                 const items = search(query, { limit: 5 });
+                const filteredItems = items.filter(item => item.url.includes(`/content-${locale}`));
 
-                return items.map((item) => ({
-                  ...item,
-                  url: item.url.replace('[locale]', locale || 'bg')
+                return filteredItems.map((filteredItem) => ({
+                  ...filteredItem,
+                  url: filteredItem.url.replace('[locale]', locale || 'bg')
                 }))
               },
               getItemUrl({ item }) {
@@ -243,16 +245,18 @@ function SearchResults({
   query: string
   collection: AutocompleteCollection<Result>
 }) {
+  const t = useTranslations("Documentation");
+
   if (collection.items.length === 0) {
     return (
       <div className="p-6 text-center">
         <NoResultsIcon className="mx-auto h-5 w-5 stroke-zinc-900 dark:stroke-zinc-600" />
         <p className="mt-2 text-xs text-zinc-700 dark:text-zinc-400">
-          Не са намерени резултати за {' '}
+          {t("notFoundResultsFor")} {' '}
           <strong className="break-words font-semibold text-zinc-900 dark:text-white">
             &lsquo;{query}&rsquo;
           </strong>
-          . Опитайте отново.
+          . {t("tryAgain")}.
         </p>
       </div>
     )
@@ -503,6 +507,7 @@ function useSearchProps() {
 export function Search() {
   let [modifierKey, setModifierKey] = useState<string>();
   let { buttonProps, dialogProps } = useSearchProps();
+  const t = useTranslations("Documentation");
 
   useEffect(() => {
     setModifierKey(
@@ -518,7 +523,7 @@ export function Search() {
         {...buttonProps}
       >
         <SearchIcon className="h-5 w-5 stroke-current" />
-        Търси в документацията...
+        {t("searchInDocumentation")}
         <kbd className="ml-auto text-2xs text-zinc-400 dark:text-zinc-500">
           <kbd className="font-sans">{modifierKey}</kbd>
           <kbd className="font-sans">K</kbd>

@@ -55,10 +55,11 @@ These are a set of functions designed to retrieve data from a website built with
       </Button>
     </div>
   </Col>
+
   <Col sticky>
     <CodeGroup title="Request">
       ```ts
-      export const getAllPosts = async (
+       export const getAllPosts = async (
         filterParams?: {
           search?: string;
           author?: string;
@@ -67,16 +68,36 @@ These are a set of functions designed to retrieve data from a website built with
         }
       ): Promise<Post[]> => {
         try {
-          const postsQuery: Record<string, any> = { embed: true, per_page: 100 };
-          if (filterParams?.search) { postsQuery.search = filterParams.search; }
-          if (filterParams?.author) { postsQuery.author = filterParams.author; }
-          if (filterParams?.tag) { postsQuery.tags = filterParams.tag; }
-          if (filterParams?.category) { postsQuery.categories = filterParams.category; }
+          const postsQuery: Record<string, any> = {
+            embed: true,
+            per_page: 100
+          };
+
+          if (filterParams?.search) {
+            postsQuery.search = filterParams.search;
+          }
+
+          if (filterParams?.author) {
+            postsQuery.author = filterParams.author;
+          }
+
+          if (filterParams?.tag) {
+            postsQuery.tags = filterParams.tag;
+          }
+
+          if (filterParams?.category) {
+            postsQuery.categories = filterParams.category;
+          }
+
           const postsUrl: string = getUrl("/wp-json/wp/v2/posts", postsQuery);
-          const posts = await wordPressFetch<Post[]>(
-            postsUrl,
-            { next: { ...defaultFetchOptions.next, tags: mergeQueryTags(defaultFetchOptions.next?.tags, ["posts"]) } }
-          );
+
+          const posts = wordPressFetch<Post[]>(postsUrl, {
+            next: {
+              ...defaultFetchOptions.next,
+              tags: mergeQueryTags(defaultFetchOptions.next?.tags, ["posts"])
+            }
+          });
+
           return posts;
         } catch (error: any) {
           throw new Error(`${GET_ALL_POSTS_ERROR_DETAILS} ${error.message}`);
@@ -84,43 +105,43 @@ These are a set of functions designed to retrieve data from a website built with
       };
       ```
     </CodeGroup>
-    ```ts
-    {{ title: 'Return value type' }}
-    export type Post = {
-      id: number;
-      date: string;
-      date_gmt: string;
-      guid: { rendered: string; };
-      modified: string;
-      modified_gmt: string;
-      slug: string;
-      status: "publish" | "future" | "draft" | "pending" | "private";
-      type: string;
-      link: string;
-      title: { rendered: string; };
-      content: { rendered: string; protected: boolean; };
-      excerpt: { rendered: string; protected: boolean; };
-      author: number;
-      featured_media: number;
-      comment_status: "open" | "closed";
-      ping_status: "open" | "closed";
-      sticky: boolean;
-      template: string;
-      format:
-        | "standard"
-        | "aside"
-        | "chat"
-        | "gallery"
-        | "link"
-        | "image"
-        | "quote"
-        | "status"
-        | "video"
-        | "audio";
-      meta: any;
-      categories: number[];
-      tags: number[];
-    };
+
+    ```ts {{ title: 'Return value type' }}
+      export type Post = {
+        id: number;
+        date: string;
+        date_gmt: string;
+        guid: { rendered: string; };
+        modified: string;
+        modified_gmt: string;
+        slug: string;
+        status: "publish" | "future" | "draft" | "pending" | "private";
+        type: string;
+        link: string;
+        title: { rendered: string; };
+        content: { rendered: string; protected: boolean; };
+        excerpt: { rendered: string; protected: boolean; };
+        author: number;
+        featured_media: number;
+        comment_status: "open" | "closed";
+        ping_status: "open" | "closed";
+        sticky: boolean;
+        template: string;
+        format:
+          | "standard"
+          | "aside"
+          | "chat"
+          | "gallery"
+          | "link"
+          | "image"
+          | "quote"
+          | "status"
+          | "video"
+          | "audio";
+        meta: any;
+        categories: number[];
+        tags: number[];
+      };
     ```
   </Col>
 </Row>
@@ -164,17 +185,25 @@ These are a set of functions designed to retrieve data from a website built with
       </Button>
     </div>
   </Col>
+
   <Col sticky>
     <CodeGroup title="Request">
       ```ts
-      export const getAllAuthors = async (): Promise<Author[]> => {
+       export const getAllAuthors = async (): Promise<Author[]> => {
         try {
-          const authorsQuery: Record<string, any> = { per_page: 100 };
+          const authorsQuery: Record<string, any> = {
+            per_page: 100
+          };
+
           const allAuthorsUrl: string = getUrl("/wp-json/wp/v2/users", authorsQuery);
-          const allAuthors = await wordPressFetch<Author[]>(
-            allAuthorsUrl,
-            { next: { ...defaultFetchOptions.next, tags: mergeQueryTags(defaultFetchOptions.next?.tags, ['authors']) } }
-          );
+
+          const allAuthors = await wordPressFetch<Author[]>(allAuthorsUrl, {
+            next: {
+              ...defaultFetchOptions.next,
+              tags: mergeQueryTags(defaultFetchOptions.next?.tags, ['authors'])
+            }
+          });
+
           return allAuthors;
         } catch (error: any) {
           throw new Error(`${GET_ALL_AUTHORS_ERROR_DETAILS} ${error.message}`);
@@ -182,18 +211,18 @@ These are a set of functions designed to retrieve data from a website built with
       };
       ```
     </CodeGroup>
-    ```ts
-    {{ title: 'Return Value Type' }}
-    export type Author = {
-      id: number;
-      name: string;
-      url: string;
-      description: string;
-      link: string;
-      slug: string;
-      avatar_urls: { [key: string]: string; };
-      meta: any;
-    };
+
+    ```ts {{ title: 'Return Value Type' }}
+      export type Author = {
+        id: number;
+        name: string;
+        url: string;
+        description: string;
+        link: string;
+        slug: string;
+        avatar_urls: { [key: string]: string; };
+        meta: any;
+      };
     ```
   </Col>
 </Row>
@@ -237,16 +266,21 @@ These are a set of functions designed to retrieve data from a website built with
       </Button>
     </div>
   </Col>
+
   <Col sticky>
     <CodeGroup title="Request">
       ```ts
-      export const getAllTags = async (): Promise<Tag[]> => {
+       export const getAllTags = async (): Promise<Tag[]> => {
         try {
           const allTagsUrl: string = getUrl("/wp-json/wp/v2/tags");
-          const allTags = await wordPressFetch<Tag[]>(
-            allTagsUrl,
-            { next: { ...defaultFetchOptions.next, tags: mergeQueryTags(defaultFetchOptions.next?.tags, ['tags']) } }
-          );
+
+          const allTags = await wordPressFetch<Tag[]>(allTagsUrl, {
+            next: {
+              ...defaultFetchOptions.next?.tags,
+              tags: mergeQueryTags(defaultFetchOptions.next?.tags, ['tags'])
+            }
+          });
+
           return allTags;
         } catch (error: any) {
           throw new Error(`${GET_ALL_TAGS_ERROR_DETAILS} ${error.message}`);
@@ -254,18 +288,18 @@ These are a set of functions designed to retrieve data from a website built with
       };
       ```
     </CodeGroup>
-    ```ts
-    {{ title: 'Return Value Type' }}
-    export type Tag = {
-      id: number;
-      count: number;
-      description: string;
-      link: string;
-      name: string;
-      slug: string;
-      taxonomy: "post_tag";
-      meta: any;
-    };
+
+    ```ts {{ title: 'Return Value Type' }}
+      export type Tag = {
+        id: number;
+        count: number;
+        description: string;
+        link: string;
+        name: string;
+        slug: string;
+        taxonomy: "post_tag";
+        meta: any;
+      };
     ```
   </Col>
 </Row>
@@ -309,16 +343,21 @@ These are a set of functions designed to retrieve data from a website built with
       </Button>
     </div>
   </Col>
+
   <Col sticky>
     <CodeGroup title="Request">
       ```ts
-      export const getAllCategories = async (): Promise<Category[]> => {
+        export const getAllCategories = async (): Promise<Category[]> => {
         try {
           const allCategoriesUrl: string = getUrl("/wp-json/wp/v2/categories");
-          const allCategories = await wordPressFetch<Category[]>(
-            allCategoriesUrl,
-            { next: { ...defaultFetchOptions.next, tags: mergeQueryTags(defaultFetchOptions.next?.tags, ['categories']) } }
-          );
+
+          const allCategories = await wordPressFetch<Category[]>(allCategoriesUrl, {
+            next: {
+              ...defaultFetchOptions.next,
+              tags: mergeQueryTags(defaultFetchOptions.next?.tags, ['categories'])
+            }
+          });
+
           return allCategories;
         } catch (error: any) {
           throw new Error(`${GET_ALL_CATEGORIES_ERROR_DETAILS} ${error.message}`);
@@ -326,19 +365,19 @@ These are a set of functions designed to retrieve data from a website built with
       };
       ```
     </CodeGroup>
-    ```ts
-    {{ title: 'Return value type' }}
-    export type Category = {
-      id: number;
-      count: number;
-      description: string;
-      link: string;
-      name: string;
-      slug: string;
-      taxonomy: "category";
-      parent: number;
-      meta: any[];
-    };
+
+    ```ts {{ title: 'Return value type' }}
+      export type Category = {
+        id: number;
+        count: number;
+        description: string;
+        link: string;
+        name: string;
+        slug: string;
+        taxonomy: "category";
+        parent: number;
+        meta: any[];
+      };
     ```
   </Col>
 </Row>
@@ -382,48 +421,53 @@ These are a set of functions designed to retrieve data from a website built with
       </Button>
     </div>
   </Col>
+
   <Col sticky>
     <CodeGroup title="Request">
       ```ts
-      export const getAllPages = async (): Promise<Page[]> => {
-        try {
-          const allPagesUrl: string = getUrl("/wp-json/wp/v2/pages");
-          const allPages = await wordPressFetch<Page[]>(
-            allPagesUrl,
-            { next: { ...defaultFetchOptions.next, tags: mergeQueryTags(defaultFetchOptions.next?.tags, ['pages']) } }
-          );
-          return allPages;
-        } catch (error: any) {
-          throw new Error(`${GET_ALL_PAGES_ERROR_DETAILS} ${error.message}`);
-        }
-      };
+        export const getAllPages = async (): Promise<Page[]> => {
+          try {
+            const allPagesUrl: string = getUrl("/wp-json/wp/v2/pages");
+
+            const allPages = await wordPressFetch<Page[]>(allPagesUrl, {
+              next: {
+                ...defaultFetchOptions.next,
+                tags: mergeQueryTags(defaultFetchOptions.next?.tags, ['pages'])
+              }
+            });
+
+            return allPages;
+          } catch (error: any) {
+            throw new Error(`${GET_ALL_PAGES_ERROR_DETAILS} ${error.message}`);
+          } 
+        };
       ```
     </CodeGroup>
-    ```ts
-    {{ title: 'Return value type' }}
-    export type Page = {
-      id: number;
-      date: string;
-      date_gmt: string;
-      guid: { rendered: string; };
-      modified: string;
-      modified_gmt: string;
-      slug: string;
-      status: "publish" | "future" | "draft" | "pending" | "private";
-      type: string;
-      link: string;
-      title: { rendered: string; };
-      content: { rendered: string; protected: boolean; };
-      excerpt: { rendered: string; protected: boolean; };
-      author: number;
-      featured_media: number;
-      parent: number;
-      menu_order: number;
-      comment_status: "open" | "closed";
-      ping_status: "open" | "closed";
-      template: string;
-      meta: any;
-    };
+
+    ```ts {{ title: 'Return value type' }}
+      export type Page = {
+        id: number;
+        date: string;
+        date_gmt: string;
+        guid: { rendered: string; };
+        modified: string;
+        modified_gmt: string;
+        slug: string;
+        status: "publish" | "future" | "draft" | "pending" | "private";
+        type: string;
+        link: string;
+        title: { rendered: string; };
+        content: { rendered: string; protected: boolean; };
+        excerpt: { rendered: string; protected: boolean; };
+        author: number;
+        featured_media: number;
+        parent: number;
+        menu_order: number;
+        comment_status: "open" | "closed";
+        ping_status: "open" | "closed";
+        template: string;
+        meta: any;
+      };
     ```
   </Col>
 </Row>
@@ -475,60 +519,65 @@ These are a set of functions designed to retrieve data from a website built with
   <Col sticky>
     <CodeGroup title="Request">
       ```ts
-      export const getPostBySlug = async (slug: string): Promise<Post> => {
-        try {
-          const postBySlugUrl: string = getUrl("/wp-json/wp/v2/posts", { slug });
-          const postBySlugResult = await wordPressFetch<Post[]>(
-            postBySlugUrl,
-            { next: { ...defaultFetchOptions.next, tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`post-by-slug-${slug}`]) } }
-          );
-          if (!postBySlugResult || postBySlugResult.length === 0) {
-            throw new Error(`Post with slug "${slug}" not found`);
+        export const getPostBySlug = async (slug: string): Promise<Post> => {
+          try {
+            const postBySlugUrl: string = getUrl("/wp-json/wp/v2/posts", { slug });
+
+            const postBySlugResult = await wordPressFetch<Post[]>(postBySlugUrl, {
+              next: {
+                ...defaultFetchOptions.next,
+                tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`post-by-slug-${slug}`])
+              }
+            });
+
+            if (!postBySlugResult || postBySlugResult.length === 0) {
+              throw new Error(`Post with slug "${slug}" not found`);
+            }
+
+            return postBySlugResult[0];
+          } catch (error: any) {
+            throw new Error(`${GET_POST_BY_SLUG_ERROR_DETAILS} ${error.message}`);
           }
-          return postBySlugResult[0];
-        } catch (error: any) {
-          throw new Error(`${GET_POST_BY_SLUG_ERROR_DETAILS} ${error.message}`);
-        }
-      };
+        };
       ```
     </CodeGroup>
-    ```ts
-    {{ title: 'Return value type' }}
-    export type Post = {
-      id: number;
-      date: string;
-      date_gmt: string;
-      guid: { rendered: string; };
-      modified: string;
-      modified_gmt: string;
-      slug: string;
-      status: "publish" | "future" | "draft" | "pending" | "private";
-      type: string;
-      link: string;
-      title: { rendered: string; };
-      content: { rendered: string; protected: boolean; };
-      excerpt: { rendered: string; protected: boolean; };
-      author: number;
-      featured_media: number;
-      comment_status: "open" | "closed";
-      ping_status: "open" | "closed";
-      sticky: boolean;
-      template: string;
-      format:
-        | "standard"
-        | "aside"
-        | "chat"
-        | "gallery"
-        | "link"
-        | "image"
-        | "quote"
-        | "status"
-        | "video"
-        | "audio";
-      meta: any;
-      categories: number[];
-      tags: number[];
-    };
+
+    ```ts {{ title: 'Return value type' }}
+      export type Post = {
+        id: number;
+        date: string;
+        date_gmt: string;
+        guid: { rendered: string; };
+        modified: string;
+        modified_gmt: string;
+        slug: string;
+        status: "publish" | "future" | "draft" | "pending" | "private";
+        type: string;
+        link: string;
+        title: { rendered: string; };
+        content: { rendered: string; protected: boolean; };
+        excerpt: { rendered: string; protected: boolean; };
+        author: number;
+        featured_media: number;
+        comment_status: "open" | "closed";
+        ping_status: "open" | "closed";
+        sticky: boolean;
+        template: string;
+        format:
+          | "standard"
+          | "aside"
+          | "chat"
+          | "gallery"
+          | "link"
+          | "image"
+          | "quote"
+          | "status"
+          | "video"
+          | "audio";
+        meta: any;
+        categories: number[];
+        tags: number[];
+      };
     ```
   </Col>
 </Row>
@@ -577,35 +626,40 @@ These are a set of functions designed to retrieve data from a website built with
       </Button>
     </div>
   </Col>
+  
   <Col sticky>
     <CodeGroup title="Request">
       ```ts
-      export const getAuthorById = async (id: number): Promise<Author> => {
-        try {
-          const authorByIdUrl: string = getUrl(`/wp-json/wp/v2/users/${id}`);
-          const authorById = await wordPressFetch<Author>(
-            authorByIdUrl,
-            { next: { ...defaultFetchOptions.next, tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`author-by-id-${id}`]) } }
-          );
-          return authorById;
-        } catch (error: any) {
-          throw new Error(`${GET_AUTHOR_BY_ERROR_DETAILS} ${error.message}`);
-        }
-      };
+        export const getAuthorById = async (id: number): Promise<Author> => {
+          try {
+            const authorByIdUrl: string = getUrl(`/wp-json/wp/v2/users/${id}`);
+
+            const authorById = await wordPressFetch<Author>(authorByIdUrl, {
+              next: {
+                ...defaultFetchOptions.next,
+                tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`author-by-id-${id}`])
+              }
+            });
+
+            return authorById;
+          } catch (error: any) {
+            throw new Error(`${GET_AUTHOR_BY_ERROR_DETAILS} ${error.message}`);
+          }
+        };
       ```
     </CodeGroup>
-    ```ts
-    {{ title: 'Return Value Type' }}
-    export type Author = {
-      id: number;
-      name: string;
-      url: string;
-      description: string;
-      link: string;
-      slug: string;
-      avatar_urls: { [key: string]: string; };
-      meta: any;
-    };
+
+    ```ts {{ title: 'Return Value Type' }}
+      export type Author = {
+        id: number;
+        name: string;
+        url: string;
+        description: string;
+        link: string;
+        slug: string;
+        avatar_urls: { [key: string]: string; };
+        meta: any;
+      };
     ```
   </Col>
 </Row>
@@ -654,36 +708,41 @@ These are a set of functions designed to retrieve data from a website built with
       </Button>
     </div>
   </Col>
+
   <Col sticky>
     <CodeGroup title="Request">
       ```ts
-      export const getCategoryById = async (id: number): Promise<Category> => {
-        try {
-          const categoryByIdUrl: string = getUrl(`/wp-json/wp/v2/categories/${id}`);
-          const categoryById = await wordPressFetch<Category>(
-            categoryByIdUrl,
-            { next: { ...defaultFetchOptions.next, tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`category-by-${id}`]) } }
-          );
-          return categoryById;
-        } catch (error: any) {
-          throw new Error(`${GET_CATEGORY_BY_ID_ERROR_DETAILS} ${error.message}`);
-        }
-      };
+        export const getCategoryById = async (id: number): Promise<Category> => {
+          try {
+            const categoryByIdUrl: string = getUrl(`/wp-json/wp/v2/categories/${id}`);
+
+            const categoryById = await wordPressFetch<Category>(categoryByIdUrl, {
+              next: {
+                ...defaultFetchOptions.next,
+                tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`category-by-${id}`])
+              }
+            });
+
+            return categoryById;
+          } catch (error: any) {
+            throw new Error(`${GET_CATEGORY_BY_ID_ERROR_DETAILS} ${error.message}`);
+          }
+        };
       ```
     </CodeGroup>
-    ```ts
-    {{ title: 'Return value type' }}
-    export type Category = {
-      id: number;
-      count: number;
-      description: string;
-      link: string;
-      name: string;
-      slug: string;
-      taxonomy: "category";
-      parent: number;
-      meta: any[];
-    };
+
+    ```ts {{ title: 'Return value type' }}
+      export type Category = {
+        id: number;
+        count: number;
+        description: string;
+        link: string;
+        name: string;
+        slug: string;
+        taxonomy: "category";
+        parent: number;
+        meta: any[];
+      };
     ```
   </Col>
 </Row>
@@ -732,51 +791,57 @@ These are a set of functions designed to retrieve data from a website built with
       </Button>
     </div>
   </Col>
+
   <Col sticky>
     <CodeGroup title="Request">
       ```ts
-      export const getPageBySlug = async (slug: string): Promise<Page> => {
-        try {
-          const pageBySlugUrl: string = getUrl("/wp-json/wp/v2/pages", { slug });
-          const pageBySlugResult = await wordPressFetch<Page[]>(
-            pageBySlugUrl,
-            { next: { ...defaultFetchOptions.next, tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`page-by-slug-${slug}`]) } }
-          );
-          if (!pageBySlugResult || pageBySlugResult.length === 0) {
-            throw new Error(`Page with slug "${slug}" not found`);
+        export const getPageBySlug = async (slug: string): Promise<Page> => {
+          try {
+            const pageBySlugUrl: string = getUrl("/wp-json/wp/v2/pages", { slug });
+
+            const pageBySlugResult = await wordPressFetch<Page[]>(pageBySlugUrl, {
+              next: {
+                ...defaultFetchOptions.next,
+                tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`page-by-slug-${slug}`])
+              }
+            });
+
+            if (!pageBySlugResult || pageBySlugResult.length === 0) {
+              throw new Error(`Page with slug "${slug}" not found`);
+            }
+
+            return pageBySlugResult[0];
+          } catch (error: any) {
+            throw new Error(`${GET_PAGE_BY_SLUG_ERROR_DETAILS} ${error.message}`);
           }
-          return pageBySlugResult[0];
-        } catch (error: any) {
-          throw new Error(`${GET_PAGE_BY_SLUG_ERROR_DETAILS} ${error.message}`);
-        }
-      };
+        };
       ```
     </CodeGroup>
-    ```ts
-    {{ title: 'Return value type' }}
-    export type Page = {
-      id: number;
-      date: string;
-      date_gmt: string;
-      guid: { rendered: string; };
-      modified: string;
-      modified_gmt: string;
-      slug: string;
-      status: "publish" | "future" | "draft" | "pending" | "private";
-      type: string;
-      link: string;
-      title: { rendered: string; };
-      content: { rendered: string; protected: boolean; };
-      excerpt: { rendered: string; protected: boolean; };
-      author: number;
-      featured_media: number;
-      parent: number;
-      menu_order: number;
-      comment_status: "open" | "closed";
-      ping_status: "open" | "closed";
-      template: string;
-      meta: any;
-    };
+
+    ```ts {{ title: 'Return value type' }}
+      export type Page = {
+        id: number;
+        date: string;
+        date_gmt: string;
+        guid: { rendered: string; };
+        modified: string;
+        modified_gmt: string;
+        slug: string;
+        status: "publish" | "future" | "draft" | "pending" | "private";
+        type: string;
+        link: string;
+        title: { rendered: string; };
+        content: { rendered: string; protected: boolean; };
+        excerpt: { rendered: string; protected: boolean; };
+        author: number;
+        featured_media: number;
+        parent: number;
+        menu_order: number;
+        comment_status: "open" | "closed";
+        ping_status: "open" | "closed";
+        template: string;
+        meta: any;
+      };
     ```
   </Col>
 </Row>
@@ -828,50 +893,54 @@ These are a set of functions designed to retrieve data from a website built with
   <Col sticky>
     <CodeGroup title="Request">
       ```ts
-      export const getFeaturedMediaById = async (id: number): Promise<FeaturedMedia> => {
-        try {
-          const featuredMediaByIdUrl = getUrl(`/wp-json/wp/v2/media/${id}`);
-          const featuredMediaById = await wordPressFetch<FeaturedMedia>(
-            featuredMediaByIdUrl,
-            { next: { ...defaultFetchOptions.next, tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`featured-media-by-id-${id}`]) } }
-          );
-          return featuredMediaById;
-        } catch (error: any) {
-          throw new Error(`${GET_FEATURED_MEDIA_BY_ID_ERROR_DETAILS} ${error.message}`);
-        }
-      };
+        export const getFeaturedMediaById = async (id: number): Promise<FeaturedMedia> => {
+          try {
+            const featuredMediaByIdUrl = getUrl(`/wp-json/wp/v2/media/${id}`);
+
+            const featuredMediaById = await wordPressFetch<FeaturedMedia>(featuredMediaByIdUrl, {
+              next: {
+                ...defaultFetchOptions.next,
+                tags: mergeQueryTags(defaultFetchOptions.next?.tags, [`featured-media-by-id-${id}`])
+              }
+            });
+
+            return featuredMediaById;
+          } catch (error: any) {
+            throw new Error(`${GET_FEATURED_MEDIA_BY_ID_ERROR_DETAILS} ${error.message}`);
+          }
+        };
       ```
     </CodeGroup>
-    ```ts
-    {{ title: 'Return value type' }}
-    export type FeaturedMedia = {
-      id: number;
-      date: string;
-      slug: string;
-      type: string;
-      link: string;
-      title: { rendered: string; };
-      author: number;
-      caption: { rendered: string; };
-      alt_text: string;
-      media_type: string;
-      mime_type: string;
-      media_details: {
-        width: number;
-        height: number;
-        file: string;
-        sizes: {
-          [key: string]: {
-            file: string;
+    
+    ```ts {{ title: 'Return value type' }}
+        export type FeaturedMedia = {
+          id: number;
+          date: string;
+          slug: string;
+          type: string;
+          link: string;
+          title: { rendered: string; };
+          author: number;
+          caption: { rendered: string; };
+          alt_text: string;
+          media_type: string;
+          mime_type: string;
+          media_details: {
             width: number;
             height: number;
-            mime_type: string;
-            source_url: string;
+            file: string;
+            sizes: {
+              [key: string]: {
+                file: string;
+                width: number;
+                height: number;
+                mime_type: string;
+                source_url: string;
+              };
+            };
           };
+          source_url: string;
         };
-      };
-      source_url: string;
-    };
     ```
   </Col>
 </Row>
