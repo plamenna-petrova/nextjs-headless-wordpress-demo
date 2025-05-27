@@ -3,6 +3,7 @@
 import { type Section, SectionProvider } from './SectionProvider'
 
 import { usePathname } from 'next/navigation'
+import { useLocale } from 'next-intl'
 import { motion } from 'framer-motion'
 import { DocumentationNavigation } from '@/components/documentation/DocumentationNavigation'
 import { DocumentationHeader } from '@/components/documentation/DocumentationHeader'
@@ -19,6 +20,7 @@ interface DocumentationLayoutProps {
 export function DocumentationLayout({ children, allSections }: DocumentationLayoutProps) {
   let pathname: string = usePathname().replace(/\/$/, '') || '/';
   const currentSections = allSections[pathname] ?? [];
+  const locale = useLocale();
 
   return (
     <SectionProvider sections={currentSections}>
@@ -29,7 +31,7 @@ export function DocumentationLayout({ children, allSections }: DocumentationLayo
         >
           <div className="contents lg:pointer-events-auto lg:block lg:w-72 lg:overflow-y-auto lg:border-r lg:border-zinc-900/10 lg:px-6 lg:pb-8 lg:pt-4 lg:dark:border-white/10 xl:w-80">
             <div className="hidden lg:flex">
-              <Link href="/" aria-label="Documentation">
+              <Link href={`/${locale}`} aria-label="Documentation">
                 <Logo />
               </Link>
             </div>
