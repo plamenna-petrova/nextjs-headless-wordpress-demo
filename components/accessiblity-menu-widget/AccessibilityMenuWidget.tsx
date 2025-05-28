@@ -34,8 +34,8 @@ const AccessibilityMenuWidget = () => {
   const [isLanguageSelectionDialogOpen, setIsLanguageSelectionDialogOpen] = useState<boolean>(false);
   const [languageSearchTerm, setLanguageSearchTerm] = useState<string>("");
   const [isPending, startTransition] = useTransition();
-  const { setActiveAccessibilityProfile } = useAccessibilityStore();
-  const { speak, stopSpeaking } = useSpeechSynthesis();
+  const { activeAccessibilityProfile, setActiveAccessibilityProfile, setIsHoverSpeechEnabled } = useAccessibilityStore();
+  const { speakText, stopSpeaking } = useSpeechSynthesis();
   const t = useTranslations("AccessibilityMenuWidget");
   const locale = useLocale();
   const router = useRouter();
@@ -149,8 +149,10 @@ const AccessibilityMenuWidget = () => {
     setActiveAccessibilityProfile(accessibilityProfileDefinition);
 
     if (accessibilityProfileDefinition === accessibilityProfilesDefinitions.BLIND) {
-      speechSynthesis.cancel();
-      speak("Blind profile activated. Hover over text to hear it.");
+      stopSpeaking();
+      speakText(t("screenReaderEnabled"), (): void => {
+        setIsHoverSpeechEnabled(true);
+      });
     }
   }
 
@@ -255,7 +257,13 @@ const AccessibilityMenuWidget = () => {
                     <Card
                       key={accessibilityProfile.name}
                       onClick={() => handleAccessibilityProfileClick(accessibilityProfile.definition)}
-                      className="cursor-pointer bg-blue-50 dark:bg-transparent dark:hover:bg-blue-500 hover:bg-blue-500 hover:text-white transition-colors shadow-sm border border-gray-100 dark:border-gray-700 rounded-md"
+                      className={`cursor-pointer
+                        ${accessibilityProfile.definition === activeAccessibilityProfile
+                          ? 'bg-blue-500 dark:bg-blue-500 text-white'
+                          : 'bg-blue-50 dark:bg-transparent'}
+                        hover:border-blue-500 transition-colors shadow-sm border border-gray-100 dark:border-gray-700 rounded-md`
+                      }
+                      aria-label={accessibilityProfile.name}
                     >
                       <CardContent className="flex flex-col items-center justify-center p-4 gap-2">
                         <accessibilityProfile.icon className="w-6 h-6" />

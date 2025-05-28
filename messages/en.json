@@ -17,7 +17,8 @@
       "cognitiveAndLearning": "Cognitive & Learning",
       "seizureAndEpileptic": "Seizure & Epileptic",
       "adhd": "ADHD"
-    }
+    },
+    "screenReaderEnabled": "Screen reader enabled"
   },
   "Navigation": {
     "mainMenu": "Main menu",

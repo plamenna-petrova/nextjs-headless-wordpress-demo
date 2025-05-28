@@ -17,7 +17,8 @@
       "cognitiveAndLearning": "С когнитивни и обучителни затруднения",
       "seizureAndEpileptic": "Епилепсия и припадъци",
       "adhd": "СДВХ"
-    }
+    },
+    "screenReaderEnabled": "Активиран е четец на екрана"
   },
   "Navigation": {
     "mainMenu": "Основно меню",

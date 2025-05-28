@@ -16,10 +16,14 @@ export type AccessibilityProfileDefinition = (typeof accessibilityProfilesDefini
 
 interface AccessibilityStore {
   activeAccessibilityProfile: AccessibilityProfileDefinition | null;
+  isHoverSpeechEnabled: boolean;
   setActiveAccessibilityProfile: (accessibilityProfile: AccessibilityProfileDefinition) => void;
+  setIsHoverSpeechEnabled: (enabled: boolean) => void;
 }
 
 export const useAccessibilityStore = create<AccessibilityStore>((set) => ({
   activeAccessibilityProfile: null,
+  isHoverSpeechEnabled: false,
   setActiveAccessibilityProfile: (acessibilityProfile) => set({ activeAccessibilityProfile: acessibilityProfile }),
+  setIsHoverSpeechEnabled: (enabled) => set({ isHoverSpeechEnabled: enabled })
 }));

@@ -1,37 +1,78 @@
+import { Locale } from "@/lib/i18n";
+import { useLocale } from "next-intl";
 import { useEffect, useRef, useState } from "react"
 
 export const useSpeechSynthesis = () => {
-  const speechSynthesisRef = useRef<SpeechSynthesisUtterance | null>();
   const [speechSynthesisVoices, setSpeechSynthesisVoices] = useState<SpeechSynthesisVoice[]>([]);
+  const [areSpeechSynthesisVoicesLoaded, setAreSpeechSynthesisVoicesLoaded] = useState<boolean>(false);
   const [selectedSpeechSynthesisVoiceIndex, setSelectedSpeechSynthesisVoiceIndex] = useState<number>(1);
   const [selectedSpeechSynthesisVoiceRate, setSelectedSpeechSynthesisVoiceRate] = useState<number>(1.25);
   const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
+  const speechSynthesisRef = useRef<SpeechSynthesisUtterance | null>();
+  const locale = useLocale() as Locale;
 
   useEffect(() => {
-    const loadVoices = (): void => {
+    let retryCount: number = 0;
+    const maxRetries: number = 10;
+
+    const loadSpeechSynthesisVoicesWithRetry = (): void => {
       const availableSpeechSynthesisVoices: SpeechSynthesisVoice[] = window.speechSynthesis.getVoices();
-      setSpeechSynthesisVoices(availableSpeechSynthesisVoices);
+      
+      if (availableSpeechSynthesisVoices.length > 0) {
+        setSpeechSynthesisVoices(availableSpeechSynthesisVoices);
+        setAreSpeechSynthesisVoicesLoaded(true);
+
+        const storedVoiceIndex: string | null = localStorage.getItem("selectedVoice");
+        const storedVoiceRate: string | null = localStorage.getItem("selectedRate");
+        
+        if (storedVoiceRate) {
+          setSelectedSpeechSynthesisVoiceRate(parseFloat(storedVoiceRate));
+        }
+
+        if (storedVoiceIndex !== null) {
+          setSelectedSpeechSynthesisVoiceIndex(parseInt(storedVoiceIndex));
+        } else {
+          const bestVoiceMatchIndexByCurrentLocale: number = matchLocaleToVoice(availableSpeechSynthesisVoices);
+          setSelectedSpeechSynthesisVoiceIndex(bestVoiceMatchIndexByCurrentLocale);
+        }
+      } else if (retryCount < maxRetries) {
+        retryCount++;
+        setTimeout(loadSpeechSynthesisVoicesWithRetry, 200);
+      } else {
+        setAreSpeechSynthesisVoicesLoaded(false);
+      }
+    };
+
+    const matchLocaleToVoice = (voices: SpeechSynthesisVoice[]): number => {
+      const fullVoiceMatchForLanguage: number = voices.findIndex(
+        (voice) => voice.lang.toLowerCase() === locale.toLowerCase()
+      );
+
+      if (fullVoiceMatchForLanguage !== -1) {
+        return fullVoiceMatchForLanguage;
+      }
+
+      const shortLocaleName: string = locale.split("-")[0];
+      
+      const partialVoiceMatchForLanguage: number = voices.findIndex(
+        (voice) => voice.lang.toLowerCase().startsWith(shortLocaleName)
+      );
+
+      if (partialVoiceMatchForLanguage !== -1) {
+        return partialVoiceMatchForLanguage;
+      }
+
+      return 0;
     };
 
     if (typeof window !== "undefined") {
-      loadVoices();
-      window.speechSynthesis.onvoiceschanged = loadVoices;
-
-      const storedVoiceIndex: string | null = localStorage.getItem("selectedVoice");
-      const storedVoiceRate: string | null = localStorage.getItem("selectedRate");
-
-      if (storedVoiceIndex) {
-        setSelectedSpeechSynthesisVoiceIndex(parseInt(storedVoiceIndex));
-      }
-
-      if (storedVoiceRate) {
-        setSelectedSpeechSynthesisVoiceRate(parseFloat(storedVoiceRate));
-      }
+      loadSpeechSynthesisVoicesWithRetry();
+      window.speechSynthesis.onvoiceschanged = loadSpeechSynthesisVoicesWithRetry;
     }
-  }, []);
+  }, [locale]);
 
-  const speak = (text: string): void => {
-    if (!text || !speechSynthesisVoices.length) {
+  const speakText = (text: string, onSpeakingEnd?: () => void): void => {
+    if (!text || !speechSynthesisVoices.length || !areSpeechSynthesisVoicesLoaded) {
       return;
     }
 
@@ -39,13 +80,19 @@ export const useSpeechSynthesis = () => {
 
     const speechSynthesisUtterance: SpeechSynthesisUtterance = new SpeechSynthesisUtterance(text);
     speechSynthesisUtterance.voice = speechSynthesisVoices[selectedSpeechSynthesisVoiceIndex];
-    console.log(speechSynthesisUtterance.voice);
     speechSynthesisUtterance.rate = selectedSpeechSynthesisVoiceRate;
+
+    if (onSpeakingEnd) {
+      speechSynthesisUtterance.onend = () => {
+        onSpeakingEnd();
+        setIsSpeaking(false);
+      }
+    } else {
+      speechSynthesisUtterance.onend = () => setIsSpeaking(false);
+    }
+    
     window.speechSynthesis.speak(speechSynthesisUtterance);
-
     speechSynthesisRef.current = speechSynthesisUtterance;
-
-    speechSynthesisUtterance.onend = () => setIsSpeaking(false);
   };
 
   const stopSpeaking = (): void => {
@@ -63,7 +110,7 @@ export const useSpeechSynthesis = () => {
   };
 
   return {
-    speak,
+    speakText,
     stopSpeaking,
     speechSynthesisVoices,
     selectedSpeechSynthesisVoiceIndex,

@@ -99,20 +99,27 @@ function WordPressStarterCard({ link }: WordPressStarterCardProps) {
       key={link.name}
       onMouseMove={onMouseMove}
       className="group relative flex rounded-2xl bg-zinc-50 transition-shadow hover:shadow-md hover:shadow-zinc-900/5 dark:bg-white/2.5 dark:hover:shadow-black/5"
+      aria-label={`${link.name} ${link.description}`}
     >
       <FeaturePattern {...link.pattern} mouseX={mouseX} mouseY={mouseY} />
-      <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-zinc-900/7.5 group-hover:ring-zinc-900/10 dark:ring-white/10 dark:group-hover:ring-white/20" />
-      <div className="relative rounded-2xl px-4 pb-4 pt-28">
-        <div className="absolute top-5 left-4">
-          <FeatureIcon icon={link.icon} />
+      <div
+        className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-zinc-900/7.5 group-hover:ring-zinc-900/10 dark:ring-white/10 dark:group-hover:ring-white/20" 
+        aria-label={`${link.name} ${link.description}`}
+      />
+      <div className="relative rounded-2xl px-4 pb-4 pt-28" aria-label={`${link.name} ${link.description}`}>
+        <div className="absolute top-5 left-4" aria-label={`${link.name} ${link.description}`}>
+          <FeatureIcon icon={link.icon} aria-label={`${link.name} ${link.description}`} />
         </div>
-        <h3 className="mt-4 text-sm font-semibold leading-7 text-zinc-900 dark:text-white">
+        <h3
+          className="mt-4 text-sm font-semibold leading-7 text-zinc-900 dark:text-white"
+          aria-label={`${link.name} ${link.description}`}
+        >
           <Link href={link.href}>
-            <span className="absolute inset-0 rounded-2xl" />
+            <span className="absolute inset-0 rounded-2xl" aria-label={`${link.name} ${link.description}`} />
             {link.name}
           </Link>
         </h3>
-        <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+        <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400" aria-label={`${link.name} ${link.description}`}>
           {link.description}
         </p>
       </div>
