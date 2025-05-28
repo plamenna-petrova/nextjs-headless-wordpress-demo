@@ -3,7 +3,20 @@
     "title": "Меню за достъпност",
     "menuToggleShortcut": "(Ctrl + A)",
     "interfaceLanguage": "Изберете език на интерфейса",
-    "selectInterfaceLanguageDialog": "Диалог за избор на език на интерфейса"
+    "selectInterfaceLanguageDialog": "Диалог за избор на език на интерфейса",
+    "searchLanguage": "Търси език",
+    "accessibilityProfiles": "Профили за достъпност",
+    "accessibilityProfilesDefinitions": {
+      "blind": "Незрящи",
+      "elderly": "Възрастни хора",
+      "motorImpaired": "С двигателни затруднения",
+      "visuallyImpaired": "С нарушено зрение",
+      "colorBlind": "Далтонисти",
+      "dyslexia": "Дислексия",
+      "cognitiveAndLearning": "С когнитивни и обучителни затруднения",
+      "seizureAndEpileptic": "Епилепсия и припадъци",
+      "adhd": "СДВХ"
+    }
   },
   "Navigation": {
     "mainMenu": "Основно меню",

@@ -3,7 +3,20 @@
     "title": "Accessibility Menu",
     "menuToggleShortcut": "(Ctrl + A)",
     "interfaceLanguage": "Select Language of Interface",
-    "selectInterfaceLanguageDialog": "Dialog For Language Selection"
+    "selectInterfaceLanguageDialog": "Dialog For Language Selection",
+    "searchLanguage": "Search Language",
+    "accessibilityProfiles": "Accessibility Profiles",
+    "accessibilityProfilesDefinitions": {
+      "blind": "Blind",
+      "elderly": "Elderly",
+      "motorImpaired": "Motor Impaired",
+      "visuallyImpaired": "Visually Impaired",
+      "colorBlind": "Color Blind",
+      "dyslexia": "Dyslexia",
+      "cognitiveAndLearning": "Cognitive & Learning",
+      "seizureAndEpileptic": "Seizure & Epileptic",
+      "adhd": "ADHD"
+    }
   },
   "Navigation": {
     "mainMenu": "Main menu",

@@ -2,11 +2,14 @@
 
 import { ChangeEvent, useEffect, useState, useTransition } from "react";
 import { motion } from "framer-motion";
-import { PersonStanding, X, ChevronDown, Search } from "lucide-react";
+import { PersonStanding, X, ChevronDown, Search, Brain, Eye, Glasses, Hand, MousePointer, Blend, Signature, ScanLine, Zap } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogOverlay } from "@/components/ui/dialog";
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Card, CardContent } from "@/components/ui/card";
 import { localeCountries, localeNames, locales } from "@/lib/i18n";
 import { Locale, useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
@@ -24,6 +27,12 @@ const languages: Language[] = locales.map((localeCode) => ({
   country: localeCountries[localeCode]
 }));
 
+
+interface AccessibilityProfile {
+  name: string;
+  icon: LucideIcon;
+}
+
 const AccessibilityMenuWidget = () => {
   const [isAccessibilityMenuOpen, setIsAccessibilityMenuOpen] = useState<boolean>(false);
   const [isLanguageSelectionDialogOpen, setIsLanguageSelectionDialogOpen] = useState<boolean>(false);
@@ -33,6 +42,18 @@ const AccessibilityMenuWidget = () => {
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
+
+  const accessibilityProfiles: AccessibilityProfile[] = [
+    { name: t("accessibilityProfilesDefinitions.blind"), icon: Eye },
+    { name: t("accessibilityProfilesDefinitions.elderly"), icon: Glasses },
+    { name: t("accessibilityProfilesDefinitions.motorImpaired"), icon: MousePointer },
+    { name: t("accessibilityProfilesDefinitions.visuallyImpaired"), icon: ScanLine },
+    { name: t("accessibilityProfilesDefinitions.colorBlind"), icon: Blend },
+    { name: t("accessibilityProfilesDefinitions.dyslexia"), icon: Signature },
+    { name: t("accessibilityProfilesDefinitions.cognitiveAndLearning"), icon: Brain },
+    { name: t("accessibilityProfilesDefinitions.seizureAndEpileptic"), icon: Zap },
+    { name: t("accessibilityProfilesDefinitions.adhd"), icon: Hand }
+  ];
 
   const languageSearchTermInputClassNames: string = "block w-full rounded-md border border-gray-300 bg-white py-2 px-3 pr-9 text-base dark:text-black " +
     "placeholder:text-sm placeholder:text-gray-600 leading-snug focus:border-blue-500 focus:outline-none " +
@@ -63,10 +84,10 @@ const AccessibilityMenuWidget = () => {
     )
   });
 
-  const handleLocaleChange = (newLocale: Locale): void => { 
+  const handleLocaleChange = (newLocale: Locale): void => {
     Cookies.set('NEXT_LOCALE', newLocale, { expires: 365 });
 
-    const pathSegments = pathname.split('/');
+    const pathSegments: string[] = pathname.split('/');
 
     if (pathSegments[1] === 'documentation') {
       const lastPathSegment: string = pathSegments[pathSegments.length - 1];
@@ -79,7 +100,7 @@ const AccessibilityMenuWidget = () => {
     startTransition(() => {
       router.replace({ pathname: newJoinedPath as any }, { locale: newLocale });
     });
-    
+
     setLanguageSearchTerm("");
     setIsLanguageSelectionDialogOpen(false);
   }
@@ -127,7 +148,6 @@ const AccessibilityMenuWidget = () => {
                 <ChevronDown className="h-6 w-5 text-blue-500 mt-[1px]" />
               </Button>
             </DialogTrigger>
-            <DialogOverlay className="bg-black/0" />
             <DialogContent
               className="sm:max-w-xl w-full"
               onOpenAutoFocus={(event) => event.preventDefault()}
@@ -141,7 +161,7 @@ const AccessibilityMenuWidget = () => {
                   type="text"
                   name="searchLanguage"
                   autoFocus={false}
-                  placeholder="Search Language..."
+                  placeholder={`${t('searchLanguage')}...`}
                   className={languageSearchTermInputClassNames}
                   value={languageSearchTerm}
                   onChange={(event: ChangeEvent<HTMLInputElement>) => setLanguageSearchTerm(event.target.value)}
@@ -170,17 +190,36 @@ const AccessibilityMenuWidget = () => {
           </Dialog>
         </div>
         <ScrollArea className="mt-4 h-[calc(100vh-10rem)] pr-2">
-          <div className="space-y-4">
-            <Button variant="secondary" className="w-full">
-              Increase Font Size
-            </Button>
-            <Button variant="secondary" className="w-full">
-              High Contrast Mode
-            </Button>
-            <Button variant="secondary" className="w-full">
-              Screen Reader Help
-            </Button>
-          </div>
+          <Accordion type="single" collapsible className="px-4">
+            <AccordionItem value="profiles" className="border-none">
+              <AccordionTrigger className="text-blue-500 !no-underline hover:!no-underline px-2 data-[state=open]:border data-[state=open]:border-blue-500 data-[state=open]:rounded-md">
+                <div className="flex items-center gap-2">
+                  <div className="rounded-full bg-blue-500 p-1.5 dark:bg-blue-400">
+                    <PersonStanding className="h-5 w-5 text-white" />
+                  </div>
+                  <span className="font-semibold text-md">{t('accessibilityProfiles')}</span>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent className="border border-gray-300 dark:border-gray-700 rounded-md p-3 mt-2">
+                <div className="grid grid-cols-2 gap-3">
+                  {accessibilityProfiles.map((accessibilityProfile) => (
+                    <Card
+                      key={accessibilityProfile.name}
+                      onClick={() => {
+                        console.log(`Selected profile: ${accessibilityProfile.name}`)
+                      }}
+                      className="cursor-pointer bg-blue-50 dark:bg-transparent hover:bg-blue-500 hover:text-white transition-colors shadow-sm border border-gray-100 dark:border-gray-700 rounded-md"
+                    >
+                      <CardContent className="flex flex-col items-center justify-center p-4 gap-2">
+                        <accessibilityProfile.icon className="w-6 h-6" />
+                        <span className="text-sm font-medium text-center">{accessibilityProfile.name}</span>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </AccordionContent>
+            </AccordionItem>   
+          </Accordion>
         </ScrollArea>
       </SheetContent>
     </Sheet>
