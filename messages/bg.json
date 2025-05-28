@@ -105,7 +105,9 @@
         "name": "SEO стратегии",
         "description": "Научете повече за добрите SEO практики и стратегии за Next.js приложения"
       }
-    }
+    },
+    "copyText": "Копиране",
+    "copiedText": "Копирано!"
   },
   "ThemeToggle": {
     "changeTheTheme": "Сменете темата",

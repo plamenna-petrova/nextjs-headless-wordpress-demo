@@ -15,6 +15,7 @@ import { create } from 'zustand'
 import { Tag } from './Tag'
 
 import clsx from 'clsx'
+import { useTranslations } from 'next-intl'
 
 const languageNames: Record<string, string> = {
   js: 'JavaScript',
@@ -122,8 +123,9 @@ export function CodeButton({
 }
 
 function CopyButton({ code }: { code: string }) {
-  let [copyCount, setCopyCount] = useState(0);
-  let copied = copyCount > 0;
+  const [copyCount, setCopyCount] = useState(0);
+  const t = useTranslations("Documentation");
+  const copied: boolean = copyCount > 0;
 
   useEffect(() => {
     if (copyCount > 0) {
@@ -159,7 +161,7 @@ function CopyButton({ code }: { code: string }) {
         )}
       >
         <ClipboardIcon className="h-5 w-5 fill-zinc-500/20 stroke-zinc-500 transition-colors group-hover/button:stroke-zinc-400" />
-        Копиране
+        {t("copyText")}
       </span>
       <span
         aria-hidden={!copied}
@@ -168,7 +170,7 @@ function CopyButton({ code }: { code: string }) {
           !copied && 'translate-y-1.5 opacity-0',
         )}
       >
-        Копирано!
+        {t("copiedText")}
       </span>
     </button>
   )

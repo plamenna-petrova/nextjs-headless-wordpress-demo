@@ -4,7 +4,10 @@ import { useEffect } from "react";
 import { accessibilityProfilesDefinitions, useAccessibilityStore } from "@/stores/accessibilityStore"
 import { useSpeechSynthesis } from "@/hooks/useSpeechSynthesis";
 
-const tagNamesForSpeechSynthesis = ["P", "SPAN", "DIV", "LABEL", "H1", "H2", "H3", "H4", "H5", "H6", "LI", "A", "TH", "TD"] as const;
+const tagNamesForSpeechSynthesis = [
+  "P", "SPAN", "DIV", "LABEL", "H1", "H2", "H3", "H4",
+  "H5", "H6", "LI", "A", "TH", "TD", "CODE", "DD", "STRONG", "EM"
+] as const;
 
 type SpeechSynthesisTagName = (typeof tagNamesForSpeechSynthesis)[number];
 
@@ -23,8 +26,6 @@ export const TextToSpeechConversionOnHover = () => {
 
     const handleTextToSpeechConversionMouseOver = (event: MouseEvent): void => {
       const target = event.target as HTMLElement;
-
-      console.log(target);
 
       const textToConvertToSpeech: string | null = target?.innerText || target?.getAttribute("aria-label");
 

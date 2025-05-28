@@ -105,7 +105,9 @@
         "name": "SEO Strategies",
         "description": "Learn more about good SEO practices and strategies for Next.js applications"
       }
-    }
+    },
+    "copyText": "Copy",
+    "copiedText": "Copied!"
   },
   "ThemeToggle": {
     "changeTheTheme": "Change the theme",
