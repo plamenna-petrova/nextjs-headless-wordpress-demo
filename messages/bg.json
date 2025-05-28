@@ -2,6 +2,7 @@
   "AccessibilityMenuWidget": {
     "title": "Меню за достъпност",
     "menuToggleShortcut": "(Ctrl + A)",
+    "openAccessibilityMenu": "Отвори менюто за достъпност",
     "interfaceLanguage": "Изберете език на интерфейса",
     "selectInterfaceLanguageDialog": "Диалог за избор на език на интерфейса",
     "searchLanguage": "Търси език",

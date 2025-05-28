@@ -5,6 +5,7 @@ import { hasLocale, Locale, NextIntlClientProvider } from "next-intl";
 import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
+import { TextToSpeechConversionOnHover } from "@/components/accessiblity-menu-widget/TextToSpeechConversionOnHover";
 import ThemeProvider from "@/components/theme/theme-provider";
 import NavbarWrapper from "@/components/navbar/navbar-wrapper";
 import FooterWrapper from "@/components/footer/footer-wrapper";
@@ -64,6 +65,7 @@ export default async function LocaleBasedLayout({
             {children}
             <AccessibilityMenuWidget />
             <FooterWrapper />
+            <TextToSpeechConversionOnHover />
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

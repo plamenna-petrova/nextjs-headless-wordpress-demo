@@ -13,6 +13,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { localeCountries, localeNames, locales } from "@/lib/i18n";
 import { Locale, useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
+import { AccessibilityProfileDefinition, accessibilityProfilesDefinitions, useAccessibilityStore } from "@/stores/accessibilityStore";
+import { useSpeechSynthesis } from "@/hooks/useSpeechSynthesis";
 import Cookies from 'js-cookie';
 
 interface Language {
@@ -21,15 +23,9 @@ interface Language {
   country: string;
 }
 
-const languages: Language[] = locales.map((localeCode) => ({
-  code: localeCode.toUpperCase(),
-  name: localeNames[localeCode],
-  country: localeCountries[localeCode]
-}));
-
-
 interface AccessibilityProfile {
   name: string;
+  definition: AccessibilityProfileDefinition;
   icon: LucideIcon;
 }
 
@@ -38,21 +34,65 @@ const AccessibilityMenuWidget = () => {
   const [isLanguageSelectionDialogOpen, setIsLanguageSelectionDialogOpen] = useState<boolean>(false);
   const [languageSearchTerm, setLanguageSearchTerm] = useState<string>("");
   const [isPending, startTransition] = useTransition();
+  const { setActiveAccessibilityProfile } = useAccessibilityStore();
+  const { speak, stopSpeaking } = useSpeechSynthesis();
   const t = useTranslations("AccessibilityMenuWidget");
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
 
+  const languages: Language[] = locales.map((localeCode) => ({
+    code: localeCode.toUpperCase(),
+    name: localeNames[localeCode],
+    country: localeCountries[localeCode]
+  }));
+
   const accessibilityProfiles: AccessibilityProfile[] = [
-    { name: t("accessibilityProfilesDefinitions.blind"), icon: Eye },
-    { name: t("accessibilityProfilesDefinitions.elderly"), icon: Glasses },
-    { name: t("accessibilityProfilesDefinitions.motorImpaired"), icon: MousePointer },
-    { name: t("accessibilityProfilesDefinitions.visuallyImpaired"), icon: ScanLine },
-    { name: t("accessibilityProfilesDefinitions.colorBlind"), icon: Blend },
-    { name: t("accessibilityProfilesDefinitions.dyslexia"), icon: Signature },
-    { name: t("accessibilityProfilesDefinitions.cognitiveAndLearning"), icon: Brain },
-    { name: t("accessibilityProfilesDefinitions.seizureAndEpileptic"), icon: Zap },
-    { name: t("accessibilityProfilesDefinitions.adhd"), icon: Hand }
+    {
+      name: t("accessibilityProfilesDefinitions.blind"),
+      definition: accessibilityProfilesDefinitions.BLIND,
+      icon: Eye
+    },
+    {
+      name: t("accessibilityProfilesDefinitions.elderly"),
+      definition: accessibilityProfilesDefinitions.ELDERLY,
+      icon: Glasses
+    },
+    {
+      name: t("accessibilityProfilesDefinitions.motorImpaired"),
+      definition: accessibilityProfilesDefinitions.MOTOR_IMPAIRED,
+      icon: MousePointer
+    },
+    {
+      name: t("accessibilityProfilesDefinitions.visuallyImpaired"),
+      definition: accessibilityProfilesDefinitions.VISUALLY_IMPAIRED,
+      icon: ScanLine
+    },
+    {
+      name: t("accessibilityProfilesDefinitions.colorBlind"),
+      definition: accessibilityProfilesDefinitions.COLOR_BLIND,
+      icon: Blend
+    },
+    {
+      name: t("accessibilityProfilesDefinitions.dyslexia"),
+      definition: accessibilityProfilesDefinitions.DYSLEXIA,
+      icon: Signature
+    },
+    {
+      name: t("accessibilityProfilesDefinitions.cognitiveAndLearning"),
+      definition: accessibilityProfilesDefinitions.COGNITIVE_AND_LEARNING,
+      icon: Brain
+    },
+    {
+      name: t("accessibilityProfilesDefinitions.seizureAndEpileptic"),
+      definition: accessibilityProfilesDefinitions.SEIZURE_AND_EPILEPTIC,
+      icon: Zap
+    },
+    {
+      name: t("accessibilityProfilesDefinitions.adhd"),
+      definition: accessibilityProfilesDefinitions.ADHD,
+      icon: Hand
+    }
   ];
 
   const languageSearchTermInputClassNames: string = "block w-full rounded-md border border-gray-300 bg-white py-2 px-3 pr-9 text-base dark:text-black " +
@@ -105,6 +145,15 @@ const AccessibilityMenuWidget = () => {
     setIsLanguageSelectionDialogOpen(false);
   }
 
+  const handleAccessibilityProfileClick = (accessibilityProfileDefinition: AccessibilityProfileDefinition): void => {
+    setActiveAccessibilityProfile(accessibilityProfileDefinition);
+
+    if (accessibilityProfileDefinition === accessibilityProfilesDefinitions.BLIND) {
+      speechSynthesis.cancel();
+      speak("Blind profile activated. Hover over text to hear it.");
+    }
+  }
+
   return (
     <Sheet open={isAccessibilityMenuOpen} onOpenChange={setIsAccessibilityMenuOpen}>
       <SheetTrigger asChild>
@@ -115,7 +164,7 @@ const AccessibilityMenuWidget = () => {
         >
           <button
             className="bg-blue-500 text-white p-4 rounded-full shadow-xl focus:outline-none"
-            aria-label="Open Accessibility Menu"
+            aria-label={t('openAccessibilityMenu')}
           >
             <PersonStanding className="h-7 w-7 pointer-events-none" />
           </button>
@@ -192,7 +241,7 @@ const AccessibilityMenuWidget = () => {
         <ScrollArea className="mt-4 h-[calc(100vh-10rem)] pr-2">
           <Accordion type="single" collapsible className="px-4">
             <AccordionItem value="profiles" className="border-none">
-              <AccordionTrigger className="text-blue-500 !no-underline hover:!no-underline px-2 data-[state=open]:border data-[state=open]:border-blue-500 data-[state=open]:rounded-md">
+              <AccordionTrigger className="text-blue-500 dark:text-white !no-underline hover:!no-underline px-2 data-[state=open]:border data-[state=open]:border-blue-500 data-[state=open]:rounded-md">
                 <div className="flex items-center gap-2">
                   <div className="rounded-full bg-blue-500 p-1.5 dark:bg-blue-400">
                     <PersonStanding className="h-5 w-5 text-white" />
@@ -205,10 +254,8 @@ const AccessibilityMenuWidget = () => {
                   {accessibilityProfiles.map((accessibilityProfile) => (
                     <Card
                       key={accessibilityProfile.name}
-                      onClick={() => {
-                        console.log(`Selected profile: ${accessibilityProfile.name}`)
-                      }}
-                      className="cursor-pointer bg-blue-50 dark:bg-transparent hover:bg-blue-500 hover:text-white transition-colors shadow-sm border border-gray-100 dark:border-gray-700 rounded-md"
+                      onClick={() => handleAccessibilityProfileClick(accessibilityProfile.definition)}
+                      className="cursor-pointer bg-blue-50 dark:bg-transparent dark:hover:bg-blue-500 hover:bg-blue-500 hover:text-white transition-colors shadow-sm border border-gray-100 dark:border-gray-700 rounded-md"
                     >
                       <CardContent className="flex flex-col items-center justify-center p-4 gap-2">
                         <accessibilityProfile.icon className="w-6 h-6" />
