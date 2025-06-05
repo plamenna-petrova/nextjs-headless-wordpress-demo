@@ -6,6 +6,7 @@ import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { TextToSpeechConversionOnHover } from "@/components/accessiblity-menu-widget/TextToSpeechConversionOnHover";
+import Script from "next/script";
 import ThemeProvider from "@/components/theme/theme-provider";
 import NavbarWrapper from "@/components/navbar/navbar-wrapper";
 import FooterWrapper from "@/components/footer/footer-wrapper";
@@ -52,7 +53,23 @@ export default async function LocaleBasedLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning={true}>
-      <head />
+      <head>
+        {process.env.NODE_ENV === "production" && (
+          <Script
+            id="clarity-script"
+            strategy="afterInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `
+              (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+              })(window, document, "clarity", "script", "ruf2fswf6t");
+            `,
+            }}
+          />
+        )}
+      </head>
       <body className={mergeClassNames("min-h-screen font-sans antialiased", fontSans.variable)}>
         <NextIntlClientProvider>
           <ThemeProvider

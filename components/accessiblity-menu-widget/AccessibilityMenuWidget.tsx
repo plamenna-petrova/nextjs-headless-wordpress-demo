@@ -261,7 +261,7 @@ const AccessibilityMenuWidget = () => {
                         ${accessibilityProfile.definition === activeAccessibilityProfile
                           ? 'bg-blue-500 dark:bg-blue-500 text-white'
                           : 'bg-blue-50 dark:bg-transparent'}
-                        hover:border-blue-500 transition-colors shadow-sm border border-gray-100 dark:border-gray-700 rounded-md`
+                        hover:border-blue-500 hover:dark:bg-blue-500 transition-colors shadow-sm border border-gray-100 dark:border-gray-700 rounded-md`
                       }
                       aria-label={accessibilityProfile.name}
                     >
