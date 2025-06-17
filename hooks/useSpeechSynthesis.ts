@@ -12,19 +12,19 @@ export const useSpeechSynthesis = () => {
   const locale = useLocale() as Locale;
 
   useEffect(() => {
-    let retryCount: number = 0;
-    const maxRetries: number = 10;
+    let loadSpeechSynthesisVoiceRetriesCount: number = 0;
+    const MAX_LOAD_SPEECH_SYNTHESIS_VOICES_RETRIES: number = 10;
 
     const loadSpeechSynthesisVoicesWithRetry = (): void => {
       const availableSpeechSynthesisVoices: SpeechSynthesisVoice[] = window.speechSynthesis.getVoices();
-      
+
       if (availableSpeechSynthesisVoices.length > 0) {
         setSpeechSynthesisVoices(availableSpeechSynthesisVoices);
         setAreSpeechSynthesisVoicesLoaded(true);
 
         const storedVoiceIndex: string | null = localStorage.getItem("selectedVoice");
         const storedVoiceRate: string | null = localStorage.getItem("selectedRate");
-        
+
         if (storedVoiceRate) {
           setSelectedSpeechSynthesisVoiceRate(parseFloat(storedVoiceRate));
         }
@@ -35,8 +35,8 @@ export const useSpeechSynthesis = () => {
           const bestVoiceMatchIndexByCurrentLocale: number = matchLocaleToVoice(availableSpeechSynthesisVoices);
           setSelectedSpeechSynthesisVoiceIndex(bestVoiceMatchIndexByCurrentLocale);
         }
-      } else if (retryCount < maxRetries) {
-        retryCount++;
+      } else if (loadSpeechSynthesisVoiceRetriesCount < MAX_LOAD_SPEECH_SYNTHESIS_VOICES_RETRIES) {
+        loadSpeechSynthesisVoiceRetriesCount++;
         setTimeout(loadSpeechSynthesisVoicesWithRetry, 200);
       } else {
         setAreSpeechSynthesisVoicesLoaded(false);
@@ -53,7 +53,7 @@ export const useSpeechSynthesis = () => {
       }
 
       const shortLocaleName: string = locale.split("-")[0];
-      
+
       const partialVoiceMatchForLanguage: number = voices.findIndex(
         (voice) => voice.lang.toLowerCase().startsWith(shortLocaleName)
       );
@@ -90,7 +90,7 @@ export const useSpeechSynthesis = () => {
     } else {
       speechSynthesisUtterance.onend = () => setIsSpeaking(false);
     }
-    
+
     window.speechSynthesis.speak(speechSynthesisUtterance);
     speechSynthesisRef.current = speechSynthesisUtterance;
   };

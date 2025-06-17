@@ -263,9 +263,11 @@ const AccessibilityMenuWidget = () => {
                           : 'bg-blue-50 dark:bg-transparent'}
                         hover:border-blue-500 hover:dark:bg-blue-500 transition-colors shadow-sm border border-gray-100 dark:border-gray-700 rounded-md`
                       }
-                      aria-label={accessibilityProfile.name}
                     >
-                      <CardContent className="flex flex-col items-center justify-center p-4 gap-2">
+                      <CardContent 
+                        className="flex flex-col items-center justify-center p-4 gap-2" 
+                        aria-label={accessibilityProfile.name}
+                      >
                         <accessibilityProfile.icon className="w-6 h-6" />
                         <span className="text-sm font-medium text-center">{accessibilityProfile.name}</span>
                       </CardContent>
