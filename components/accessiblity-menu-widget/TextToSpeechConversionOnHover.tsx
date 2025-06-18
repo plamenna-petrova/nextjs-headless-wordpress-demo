@@ -93,9 +93,14 @@ export const TextToSpeechConversionOnHover = () => {
     };
 
     const getTextToConvertToSpeech = (element: HTMLElement): string | null => {
+      const datasetTTS: string | undefined = element.dataset.tts;
       const ariaLabel: string | null = element.getAttribute("aria-label");
       const title: string | null = element.getAttribute("title");
     
+      if (datasetTTS) {
+        return datasetTTS;
+      }
+
       if (ariaLabel) {
         return ariaLabel;
       }
@@ -104,14 +109,14 @@ export const TextToSpeechConversionOnHover = () => {
         return title;
       }
     
-      const childElementCount: number = element.children.length;
-    
+      const elementTagNameAsUppercase: string = element.tagName.toUpperCase();
       const innerText: string = element.innerText.trim();
-      console.log("Inner Text", innerText);
     
-      const isSimpleText: boolean = childElementCount === 0;
+      const isLinkWithText: boolean = elementTagNameAsUppercase === "A" && innerText.length > 0;
     
-      return isSimpleText ? innerText : null;
+      const isSimpleElement = element.children.length === 0;
+    
+      return (isLinkWithText || isSimpleElement) ? innerText : null;
     };
 
     const shouldReadTagContent = (element: HTMLElement): boolean => {
@@ -134,7 +139,8 @@ export const TextToSpeechConversionOnHover = () => {
         element.hasAttribute("aria-label") || 
         element.hasAttribute("title") ||
         element.getAttribute("role") === "button" || 
-        element.dataset.tts === "true"
+        element.dataset.tts === "true" ||
+        (elementTagNameAsUppercase === "A" && element.innerText.trim().length > 0)
       );
 
       if (!qualifiesForSpeechSynthesis) {

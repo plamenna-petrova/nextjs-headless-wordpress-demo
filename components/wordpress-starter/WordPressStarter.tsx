@@ -75,8 +75,11 @@ type WordPressStarterCardProps = {
 
 function WordPressStarterCard({ link }: WordPressStarterCardProps) {
   const wordPressStarterCardRef = useRef<HTMLDivElement | null>(null);
+
   let mouseX: MotionValue<number> = useMotionValue(100);
   let mouseY: MotionValue<number> = useMotionValue(50);
+
+  const linkAriaLabelDescription: string = `${link.name} ${link.description}`;
 
   const onMouseMove = (event: React.MouseEvent<HTMLDivElement>): void => {
     const { currentTarget, clientX, clientY } = event;
@@ -99,27 +102,27 @@ function WordPressStarterCard({ link }: WordPressStarterCardProps) {
       key={link.name}
       onMouseMove={onMouseMove}
       className="group relative flex rounded-2xl bg-zinc-50 transition-shadow hover:shadow-md hover:shadow-zinc-900/5 dark:bg-white/2.5 dark:hover:shadow-black/5"
-      aria-label={`${link.name} ${link.description}`}
+      aria-label={linkAriaLabelDescription}
     >
       <FeaturePattern {...link.pattern} mouseX={mouseX} mouseY={mouseY} />
       <div
         className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-zinc-900/7.5 group-hover:ring-zinc-900/10 dark:ring-white/10 dark:group-hover:ring-white/20" 
-        aria-label={`${link.name} ${link.description}`}
+        aria-label={linkAriaLabelDescription}
       />
-      <div className="relative rounded-2xl px-4 pb-4 pt-28" aria-label={`${link.name} ${link.description}`}>
-        <div className="absolute top-5 left-4" aria-label={`${link.name} ${link.description}`}>
-          <FeatureIcon icon={link.icon} aria-label={`${link.name} ${link.description}`} />
+      <div className="relative rounded-2xl px-4 pb-4 pt-28" aria-label={linkAriaLabelDescription}>
+        <div className="absolute top-5 left-4" aria-label={linkAriaLabelDescription}>
+          <FeatureIcon icon={link.icon} aria-label={linkAriaLabelDescription} />
         </div>
         <h3
           className="mt-4 text-sm font-semibold leading-7 text-zinc-900 dark:text-white"
-          aria-label={`${link.name} ${link.description}`}
+          aria-label={linkAriaLabelDescription}
         >
           <Link href={link.href}>
-            <span className="absolute inset-0 rounded-2xl" aria-label={`${link.name} ${link.description}`} />
+            <span className="absolute inset-0 rounded-2xl" aria-label={linkAriaLabelDescription} />
             {link.name}
           </Link>
         </h3>
-        <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400" aria-label={`${link.name} ${link.description}`}>
+        <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400" aria-label={linkAriaLabelDescription}>
           {link.description}
         </p>
       </div>
