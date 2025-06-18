@@ -72,6 +72,10 @@ export const useSpeechSynthesis = () => {
   }, [locale]);
 
   const speakText = (text: string, onSpeakingEnd?: () => void): void => {
+    if (isSpeaking) {
+      window.speechSynthesis.cancel();
+    }
+
     if (!text || !speechSynthesisVoices.length || !areSpeechSynthesisVoicesLoaded) {
       return;
     }

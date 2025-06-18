@@ -265,10 +265,10 @@ const AccessibilityMenuWidget = () => {
                       }
                     >
                       <CardContent 
-                        className="flex flex-col items-center justify-center p-4 gap-2" 
+                        className="flex flex-col items-center justify-center p-4 gap-2"
                         aria-label={accessibilityProfile.name}
                       >
-                        <accessibilityProfile.icon className="w-6 h-6" />
+                        <accessibilityProfile.icon className="w-6 h-6" aria-label={accessibilityProfile.name} />
                         <span className="text-sm font-medium text-center">{accessibilityProfile.name}</span>
                       </CardContent>
                     </Card>

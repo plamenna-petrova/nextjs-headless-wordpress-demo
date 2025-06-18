@@ -44,14 +44,9 @@ const tagNamesForSpeechSynthesis = [
   "Q"             // Inline quotes
 ] as const;
 
-const tagNamesForAriaLabelOnly = ["DIV", "SECTION", "ARTICLE"] as const;
-
 type SpeechSynthesisTagName = (typeof tagNamesForSpeechSynthesis)[number];
 
-type TagForAriaLabelOnly = (typeof tagNamesForAriaLabelOnly)[number];
-
 export const TextToSpeechConversionOnHover = () => {
-  const lastSpokenTextRef = useRef<string | null>(null);
   const { activeAccessibilityProfile, isHoverSpeechEnabled } = useAccessibilityStore();
   const { speakText, stopSpeaking } = useSpeechSynthesis();
 
@@ -64,66 +59,90 @@ export const TextToSpeechConversionOnHover = () => {
       return;
     }
 
-    let lastSpokenElement: HTMLElement | null = null;
-
     const handleTextToSpeechConversionMouseOver = (event: MouseEvent): void => {
-      const target = event.target as HTMLElement;
+      const originalTarget = event.target as HTMLElement;
+      const speechTarget: HTMLElement | null = findSpeechRoot(originalTarget);
 
-      if (lastSpokenElement && (lastSpokenElement === target || lastSpokenElement.contains(target))) {
+      if (!speechTarget) {
         return;
       }
 
-      if (!shouldReadTagContent(target)) {
-        return;
-      }
+      console.log("Original Target", originalTarget);
+      console.log("Speech Target", speechTarget);	
 
-      const textToConvertToSpeech: string | null = getTextToConvertToSpeech(target);
+      const textToConvertToSpeech: string | undefined = getTextToConvertToSpeech(speechTarget)?.trim();
 
-      if (
-        textToConvertToSpeech && 
-        textToConvertToSpeech.trim().length > 1 &&
-        textToConvertToSpeech !== lastSpokenTextRef.current
-      ) {
-        lastSpokenElement = target;
-        lastSpokenTextRef.current = textToConvertToSpeech;
-        console.log("Last Spoken Text",  lastSpokenTextRef.current);
+      if (textToConvertToSpeech && textToConvertToSpeech.length > 1) {
         console.log("Text To Convert To Speech", textToConvertToSpeech);
-        speakText(textToConvertToSpeech.trim());
+        speakText(textToConvertToSpeech);
       }
     };
 
-    const getTextToConvertToSpeech = (element: HTMLElement): string | null => { 
-      const elementTagNameAsUppercase = element.tagName.toUpperCase() as TagForAriaLabelOnly; 
-      const ariaLabel: string | null = element.getAttribute("aria-label");
+    const findSpeechRoot = (element: HTMLElement): HTMLElement | null => {
+      let currentElement: HTMLElement | null = element;
 
-      if (tagNamesForAriaLabelOnly.includes(elementTagNameAsUppercase)) {
+      while (currentElement && currentElement !== document.body) {
+        if (shouldReadTagContent(currentElement)) {
+          return currentElement;
+        }
+
+        currentElement = currentElement.parentElement;
+      }
+
+      return null;
+    };
+
+    const getTextToConvertToSpeech = (element: HTMLElement): string | null => {
+      const ariaLabel: string | null = element.getAttribute("aria-label");
+      const title: string | null = element.getAttribute("title");
+    
+      if (ariaLabel) {
         return ariaLabel;
       }
 
-      return ariaLabel || element.innerText;
-    }
+      if (title) {
+        return title;
+      }
+    
+      const childElementCount: number = element.children.length;
+    
+      const innerText: string = element.innerText.trim();
+      console.log("Inner Text", innerText);
+    
+      const isSimpleText: boolean = childElementCount === 0;
+    
+      return isSimpleText ? innerText : null;
+    };
 
-    const shouldReadTagContent = (element: HTMLElement): boolean => { 
-      console.log("should read tag content", element);
-
+    const shouldReadTagContent = (element: HTMLElement): boolean => {
       if (!isHTMLElementVisible(element)) {
         return false;
       }
 
-      const elementTagNameAsUppercase = element.tagName.toUpperCase() as TagForAriaLabelOnly;
+      const elementTagNameAsUppercase: string = element.tagName.toUpperCase();
 
-      if (tagNamesForAriaLabelOnly.includes(elementTagNameAsUppercase)) { 
-        return element.hasAttribute("aria-label");
+      if (["SVG", "PATH", "USE", "CIRCLE"].includes(elementTagNameAsUppercase)) {
+        return false;
       }
 
-      return (
-        tagNamesForSpeechSynthesis.includes(element.tagName as SpeechSynthesisTagName) ||
+      const isSpeechSynthesisTag: boolean = tagNamesForSpeechSynthesis.includes(
+        elementTagNameAsUppercase as SpeechSynthesisTagName
+      );
+
+      const qualifiesForSpeechSynthesis: boolean = (
+        isSpeechSynthesisTag || 
         element.hasAttribute("aria-label") || 
-        element.hasAttribute("title") || 
-        element.getAttribute("role") === "button" ||
+        element.hasAttribute("title") ||
+        element.getAttribute("role") === "button" || 
         element.dataset.tts === "true"
       );
-    }
+
+      if (!qualifiesForSpeechSynthesis) {
+        return false;
+      }
+
+      return true;
+    };
 
     const isHTMLElementVisible = (element: HTMLElement): boolean => { 
       const boundingClientRect: DOMRect = element.getBoundingClientRect();
@@ -136,8 +155,6 @@ export const TextToSpeechConversionOnHover = () => {
     }
 
     const handleTextToSpeechConversionMouseOut = (_: MouseEvent): void => {
-      lastSpokenElement = null;
-      lastSpokenTextRef.current = null;
       stopSpeaking();
     };
 
