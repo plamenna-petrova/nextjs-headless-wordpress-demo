@@ -7,6 +7,7 @@ import { Locale } from "@/lib/i18n";
 import { Input } from "@/components/ui/input";
 import { ChangeEvent, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
+import { useLocale, useTranslations } from "next-intl";
 
 interface Author {
   id: number;
@@ -50,7 +51,8 @@ const PostsFilter = ({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams: ReadonlyURLSearchParams = useSearchParams();
-  const locale = pathname.split("/")[1] || "bg" as Locale;
+  const t = useTranslations("Blog.filters");
+  const locale = useLocale() as Locale;
 
   const handlePostsSearchChange = (event: ChangeEvent<HTMLInputElement>): void => { 
     const postsSearchTerm = event.target.value;
@@ -101,7 +103,7 @@ const PostsFilter = ({
           value={selectedTag || "all"}
           onValueChange={(value: string) => handleFilterChange("tag", value)}
         >
-          <SelectTrigger>
+          <SelectTrigger aria-label={t("tagsFilter")}>
             <SelectValue placeholder={filterLabels.allTags} />
           </SelectTrigger>
           <SelectContent className="bg-background">
@@ -117,7 +119,7 @@ const PostsFilter = ({
           value={selectedCategory || "all"}
           onValueChange={(value: string) => handleFilterChange("category", value)}
         >
-          <SelectTrigger>
+          <SelectTrigger aria-label={t("categoriesFilter")}>
             <SelectValue placeholder={filterLabels.allCategories} />
           </SelectTrigger>
           <SelectContent className="bg-background">
@@ -133,7 +135,7 @@ const PostsFilter = ({
           value={selectedAuthor || "all"}
           onValueChange={(value: string) => handleFilterChange("author", value)}
         >
-          <SelectTrigger>
+          <SelectTrigger aria-label={t("authorsFilter")}>
             <SelectValue placeholder={filterLabels.allAuthors} />
           </SelectTrigger>
           <SelectContent className="bg-background">

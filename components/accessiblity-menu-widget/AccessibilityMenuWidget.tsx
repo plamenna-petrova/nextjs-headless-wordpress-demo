@@ -183,6 +183,7 @@ const AccessibilityMenuWidget = () => {
                 size="icon"
                 className="rounded-full bg-white hover:bg-white text-blue-500"
                 onClick={() => setIsAccessibilityMenuOpen(false)}
+                aria-label={t('closeAccessibilityMenu')}
               >
                 <X className="h-6 w-6 font-bold" />
               </Button>

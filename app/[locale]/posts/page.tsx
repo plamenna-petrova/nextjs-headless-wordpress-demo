@@ -18,7 +18,7 @@ const Posts = async ({ searchParams }: { searchParams: { [key: string]: string |
   const tags = await getAllTags();
   const originalCategories = await getAllCategories();
   const uncategorizedCategoryName: string = await translateHTML('Uncategorized', locale);
-  
+
   const translatedAuthors = await Promise.all(
     authors.map(async (author) => ({
       ...author,
@@ -122,12 +122,14 @@ const Posts = async ({ searchParams }: { searchParams: { [key: string]: string |
     translatedPreviousPageLabel,
     translatedPreviousPageAriaLabel,
     translatedNextPageLabel,
-    translatedNextPageAriaLabel
+    translatedNextPageAriaLabel,
+    translatedCurrentPageAriaLabel
   ] = await Promise.all([
     translateHTML("Previous", locale),
     translateHTML("Go to previous page", locale),
     translateHTML("Next", locale),
-    translateHTML("Go to next page", locale)
+    translateHTML("Go to next page", locale),
+    translateHTML(`Page ${currentPage}`, locale)
   ]);
 
   return (
@@ -172,7 +174,7 @@ const Posts = async ({ searchParams }: { searchParams: { [key: string]: string |
                   />
                 </PaginationItem>
                 <PaginationItem className="text-zinc-700 dark:text-zinc-300">
-                  <PaginationLink href={createPaginationUrl(currentPage)}>
+                  <PaginationLink href={createPaginationUrl(currentPage)} aria-label={translatedCurrentPageAriaLabel}>
                     {currentPage}
                   </PaginationLink>
                 </PaginationItem>

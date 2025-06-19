@@ -3,6 +3,7 @@
     "title": "Accessibility Menu",
     "menuToggleShortcut": "(Ctrl + A)",
     "openAccessibilityMenu": "Open Accessibility Menu",
+    "closeAccessibilityMenu": "Close Accessibility Menu",
     "interfaceLanguage": "Select Language of Interface",
     "selectInterfaceLanguageDialog": "Dialog For Language Selection",
     "searchLanguage": "Search Language",
@@ -63,6 +64,16 @@
         "title": "Documentation",
         "description": "Capabilities for working with WordPress"
       }
+    }
+  },
+  "Blog": {
+    "search": {
+      "searchPosts": "Search posts"
+    },
+    "filters": {
+      "tagsFilter": "Tags filter",
+      "categoriesFilter": "Categories filter",
+      "authorsFilter": "Authors filter"
     }
   },
   "Documentation": {

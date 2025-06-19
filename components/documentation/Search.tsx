@@ -537,6 +537,7 @@ export function Search() {
 }
 
 export function MobileSearch() {
+  const t = useTranslations("Documentation");
   let { buttonProps, dialogProps } = useSearchProps();
 
   return (
@@ -544,7 +545,7 @@ export function MobileSearch() {
       <button
         type="button"
         className="flex h-6 w-6 items-center justify-center rounded-md transition hover:bg-zinc-900/5 ui-not-focus-visible:outline-none dark:hover:bg-white/5 lg:hidden"
-        aria-label="Search in documentation..."
+        aria-label={t("searchInDocumentation")}
         {...buttonProps}
       >
         <SearchIcon className="h-5 w-5 stroke-zinc-900 dark:stroke-white" />

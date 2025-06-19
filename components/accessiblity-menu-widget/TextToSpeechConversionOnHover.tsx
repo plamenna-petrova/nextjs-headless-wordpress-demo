@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { accessibilityProfilesDefinitions, useAccessibilityStore } from "@/stores/accessibilityStore"
 import { useSpeechSynthesis } from "@/hooks/useSpeechSynthesis";
 
@@ -110,11 +110,36 @@ export const TextToSpeechConversionOnHover = () => {
       }
     
       const elementTagNameAsUppercase: string = element.tagName.toUpperCase();
+
+      if (element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement) {
+        const placeholder: string = element.placeholder?.trim();
+        const value : string = element.value?.trim();
+
+        if (value) {
+          return value;
+        }
+
+        if (placeholder) {
+          return placeholder;
+        }
+
+        return null;
+      }
+
       const innerText: string = element.innerText.trim();
+
+      if (!innerText || innerText.length < 2) {
+        return null;
+      }
+
+      const allowedInlineTags = new Set(["CODE", "STRONG", "EM", "ABBR", "MARK", "CITE", "Q", "SPAN", "I", "B", "U", "SMALL", "SUP", "SUB"]);
+
+      const hasOnlyInlineChildren: boolean = Array.from(element.children).every(child => 
+        allowedInlineTags.has(child.tagName.toUpperCase())
+      );
     
       const isLinkWithText: boolean = elementTagNameAsUppercase === "A" && innerText.length > 0;
-    
-      const isSimpleElement = element.children.length === 0;
+      const isSimpleElement = element.children.length === 0 || hasOnlyInlineChildren;
     
       return (isLinkWithText || isSimpleElement) ? innerText : null;
     };

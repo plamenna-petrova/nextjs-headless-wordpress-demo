@@ -14,17 +14,17 @@ export function ThemeToggle() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
+        <Button variant="outline" size="icon" aria-label={t("changeTheTheme")}>
           <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
           <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
           <span className="sr-only">{t("changeTheTheme")}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="text-white bg-blue-500">
-        <DropdownMenuItem onClick={(): void => setTheme("light")}>
+        <DropdownMenuItem onClick={(): void => setTheme("light")} aria-label={t("lightTheme")}>
           {t("lightTheme")}
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={(): void => setTheme("dark")}>
+        <DropdownMenuItem onClick={(): void => setTheme("dark")} aria-label={t("darkTheme")}>
           {t("darkTheme")}
         </DropdownMenuItem>
       </DropdownMenuContent>
