@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { accessibilityProfilesDefinitions, useAccessibilityStore } from "@/stores/accessibilityStore"
 import { useSpeechSynthesis } from "@/hooks/useSpeechSynthesis";
 
@@ -50,32 +50,48 @@ export const TextToSpeechConversionOnHover = () => {
   const { activeAccessibilityProfile, isHoverSpeechEnabled } = useAccessibilityStore();
   const { speakText, stopSpeaking } = useSpeechSynthesis();
 
+  const lastSpokenElement = useRef<HTMLElement | null>(null);
+  const lastSpokenText = useRef<string | null>(null);
+  const lastUtteranceId = useRef<string | null>(null);
+
   useEffect(() => {
-    if (!isHoverSpeechEnabled) {
+    if (!isHoverSpeechEnabled || activeAccessibilityProfile !== accessibilityProfilesDefinitions.BLIND) {
       return;
     }
 
-    if (activeAccessibilityProfile !== accessibilityProfilesDefinitions.BLIND) {
-      return;
-    }
-
-    const handleTextToSpeechConversionMouseOver = (event: MouseEvent): void => {
+    const handleTextToSpeechConversionMouseOver = (event: MouseEvent): void => {      
       const originalTarget = event.target as HTMLElement;
       const speechTarget: HTMLElement | null = findSpeechRoot(originalTarget);
 
       if (!speechTarget) {
         return;
       }
-
+      
       console.log("Original Target", originalTarget);
-      console.log("Speech Target", speechTarget);	
+      console.log("Speech Target", speechTarget);
 
       const textToConvertToSpeech: string | undefined = getTextToConvertToSpeech(speechTarget)?.trim();
 
-      if (textToConvertToSpeech && textToConvertToSpeech.length > 1) {
-        console.log("Text To Convert To Speech", textToConvertToSpeech);
-        speakText(textToConvertToSpeech);
+      if (!textToConvertToSpeech || textToConvertToSpeech.length < 2) {
+        return;
       }
+
+      if (speechTarget === lastSpokenElement.current || 
+        (lastSpokenText && textToConvertToSpeech === lastSpokenText.current)) {
+        return;
+      }
+
+      const newUtteranceId = `${speechTarget.tagName}-${textToConvertToSpeech}`;
+
+      if (newUtteranceId === lastUtteranceId.current) { 
+        return;
+      }
+
+      console.log("Speaking: ", textToConvertToSpeech);
+      speakText(textToConvertToSpeech);
+      lastSpokenElement.current = speechTarget;
+      lastSpokenText.current = textToConvertToSpeech;
+      lastUtteranceId.current = newUtteranceId;
     };
 
     const findSpeechRoot = (element: HTMLElement): HTMLElement | null => {
@@ -93,10 +109,14 @@ export const TextToSpeechConversionOnHover = () => {
     };
 
     const getTextToConvertToSpeech = (element: HTMLElement): string | null => {
+      if (element.closest("[data-tts='false']")) {
+        return null;
+      }
+
       const datasetTTS: string | undefined = element.dataset.tts;
       const ariaLabel: string | null = element.getAttribute("aria-label");
       const title: string | null = element.getAttribute("title");
-    
+
       if (datasetTTS) {
         return datasetTTS;
       }
@@ -108,12 +128,12 @@ export const TextToSpeechConversionOnHover = () => {
       if (title) {
         return title;
       }
-    
+
       const elementTagNameAsUppercase: string = element.tagName.toUpperCase();
 
       if (element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement) {
         const placeholder: string = element.placeholder?.trim();
-        const value : string = element.value?.trim();
+        const value: string = element.value?.trim();
 
         if (value) {
           return value;
@@ -134,18 +154,22 @@ export const TextToSpeechConversionOnHover = () => {
 
       const allowedInlineTags = new Set(["CODE", "STRONG", "EM", "ABBR", "MARK", "CITE", "Q", "SPAN", "I", "B", "U", "SMALL", "SUP", "SUB"]);
 
-      const hasOnlyInlineChildren: boolean = Array.from(element.children).every(child => 
+      const hasOnlyInlineChildren: boolean = Array.from(element.children).every(child =>
         allowedInlineTags.has(child.tagName.toUpperCase())
       );
-    
+
       const isLinkWithText: boolean = elementTagNameAsUppercase === "A" && innerText.length > 0;
       const isSimpleElement = element.children.length === 0 || hasOnlyInlineChildren;
-    
+
       return (isLinkWithText || isSimpleElement) ? innerText : null;
     };
 
     const shouldReadTagContent = (element: HTMLElement): boolean => {
       if (!isHTMLElementVisible(element)) {
+        return false;
+      }
+
+      if (element.closest("[data-tts='false']")) {
         return false;
       }
 
@@ -155,15 +179,17 @@ export const TextToSpeechConversionOnHover = () => {
         return false;
       }
 
-      const isSpeechSynthesisTag: boolean = tagNamesForSpeechSynthesis.includes(
+      const tagNamesForSpeechSysnthesisSet = new Set(tagNamesForSpeechSynthesis);
+      
+      const isSpeechSynthesisTag: boolean = tagNamesForSpeechSysnthesisSet.has(
         elementTagNameAsUppercase as SpeechSynthesisTagName
       );
 
       const qualifiesForSpeechSynthesis: boolean = (
-        isSpeechSynthesisTag || 
-        element.hasAttribute("aria-label") || 
+        isSpeechSynthesisTag ||
+        element.hasAttribute("aria-label") ||
         element.hasAttribute("title") ||
-        element.getAttribute("role") === "button" || 
+        element.getAttribute("role") === "button" ||
         element.dataset.tts === "true" ||
         (elementTagNameAsUppercase === "A" && element.innerText.trim().length > 0)
       );
@@ -175,7 +201,7 @@ export const TextToSpeechConversionOnHover = () => {
       return true;
     };
 
-    const isHTMLElementVisible = (element: HTMLElement): boolean => { 
+    const isHTMLElementVisible = (element: HTMLElement): boolean => {
       const boundingClientRect: DOMRect = element.getBoundingClientRect();
 
       return (
@@ -186,6 +212,9 @@ export const TextToSpeechConversionOnHover = () => {
     }
 
     const handleTextToSpeechConversionMouseOut = (_: MouseEvent): void => {
+      lastSpokenElement.current = null;
+      lastSpokenText.current = null;
+      lastUtteranceId.current = null;
       stopSpeaking();
     };
 

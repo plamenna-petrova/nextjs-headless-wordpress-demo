@@ -72,12 +72,12 @@ export const useSpeechSynthesis = () => {
   }, [locale]);
 
   const speakText = (text: string, onSpeakingEnd?: () => void): void => {
-    if (isSpeaking) {
-      window.speechSynthesis.cancel();
-    }
-
     if (!text || !speechSynthesisVoices.length || !areSpeechSynthesisVoicesLoaded) {
       return;
+    }
+
+    if (window.speechSynthesis.speaking && speechSynthesisRef.current?.text !== text) {
+      window.speechSynthesis.cancel();
     }
 
     setIsSpeaking(true);
@@ -88,15 +88,17 @@ export const useSpeechSynthesis = () => {
 
     if (onSpeakingEnd) {
       speechSynthesisUtterance.onend = () => {
-        onSpeakingEnd();
         setIsSpeaking(false);
+        onSpeakingEnd();
       }
     } else {
       speechSynthesisUtterance.onend = () => setIsSpeaking(false);
     }
 
-    window.speechSynthesis.speak(speechSynthesisUtterance);
-    speechSynthesisRef.current = speechSynthesisUtterance;
+    setTimeout(() => {
+      window.speechSynthesis.speak(speechSynthesisUtterance);
+      speechSynthesisRef.current = speechSynthesisUtterance;
+    }, 100);
   };
 
   const stopSpeaking = (): void => {

@@ -253,7 +253,7 @@ const AccessibilityMenuWidget = () => {
                 </div>
               </AccordionTrigger>
               <AccordionContent className="border border-gray-300 dark:border-gray-700 rounded-md p-3 mt-2">
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-3" ata-tts="false">
                   {accessibilityProfiles.map((accessibilityProfile) => (
                     <Card
                       key={accessibilityProfile.name}
@@ -269,8 +269,8 @@ const AccessibilityMenuWidget = () => {
                         className="flex flex-col items-center justify-center p-4 gap-2"
                         aria-label={accessibilityProfile.name}
                       >
-                        <accessibilityProfile.icon className="w-6 h-6" aria-label={accessibilityProfile.name} />
-                        <span className="text-sm font-medium text-center">{accessibilityProfile.name}</span>
+                        <accessibilityProfile.icon className="w-6 h-6" />
+                        <span className="text-sm font-medium text-center" data-tts="false">{accessibilityProfile.name}</span>
                       </CardContent>
                     </Card>
                   ))}
