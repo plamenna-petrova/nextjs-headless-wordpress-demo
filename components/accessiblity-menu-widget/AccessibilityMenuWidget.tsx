@@ -15,7 +15,7 @@ import { Locale, useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { AccessibilityProfileDefinition, accessibilityProfilesDefinitions, useAccessibilityStore } from "@/stores/accessibilityStore";
 import { useSpeechSynthesis } from "@/hooks/useSpeechSynthesis";
-import { WalkingStickIcon } from "@/lib/accessibility-icons";
+import { PersonIcon, WalkingStickIcon, BlindIcon, CoupleIcon } from "@/lib/accessibility-icons";
 import Image from "next/image";
 import Cookies from 'js-cookie';
 
@@ -53,7 +53,7 @@ const AccessibilityMenuWidget = () => {
     {
       name: t("accessibilityProfilesDefinitions.blind"),
       definition: accessibilityProfilesDefinitions.BLIND,
-      icon: WalkingStickIcon
+      icon: Eye
     },
     {
       name: t("accessibilityProfilesDefinitions.elderly"),
