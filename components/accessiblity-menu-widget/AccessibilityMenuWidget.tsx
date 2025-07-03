@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import { PersonStanding, X, ChevronDown, Search, Brain, Eye, Glasses, Hand, MousePointer, Blend, Signature, ScanLine, Zap } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -17,6 +16,7 @@ import { usePathname, useRouter } from "@/i18n/navigation";
 import { AccessibilityProfileDefinition, accessibilityProfilesDefinitions, useAccessibilityStore } from "@/stores/accessibilityStore";
 import { useSpeechSynthesis } from "@/hooks/useSpeechSynthesis";
 import { WalkingStickIcon } from "@/lib/accessibility-icons";
+import Image from "next/image";
 import Cookies from 'js-cookie';
 
 interface Language {
@@ -37,7 +37,7 @@ const AccessibilityMenuWidget = () => {
   const [languageSearchTerm, setLanguageSearchTerm] = useState<string>("");
   const [isPending, startTransition] = useTransition();
   const { activeAccessibilityProfile, setActiveAccessibilityProfile, setIsHoverSpeechEnabled } = useAccessibilityStore();
-  const { speakText, stopSpeaking } = useSpeechSynthesis();
+  const { speakText, stopSpeakingAsync } = useSpeechSynthesis();
   const t = useTranslations("AccessibilityMenuWidget");
   const locale = useLocale();
   const router = useRouter();
@@ -147,13 +147,14 @@ const AccessibilityMenuWidget = () => {
     setIsLanguageSelectionDialogOpen(false);
   }
 
-  const handleAccessibilityProfileClick = (accessibilityProfileDefinition: AccessibilityProfileDefinition): void => {
+  const handleAccessibilityProfileClick = async (accessibilityProfileDefinition: AccessibilityProfileDefinition): Promise<void> => {
     setActiveAccessibilityProfile(accessibilityProfileDefinition);
 
     if (accessibilityProfileDefinition === accessibilityProfilesDefinitions.BLIND) {
-      stopSpeaking();
-      speakText(t("screenReaderEnabled"), (): void => {
-        setIsHoverSpeechEnabled(true);
+      await stopSpeakingAsync().then(() => {
+        speakText(t("screenReaderEnabled"), (): void => {
+          setIsHoverSpeechEnabled(true);
+        });
       });
     }
   }

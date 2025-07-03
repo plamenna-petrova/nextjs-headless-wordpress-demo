@@ -106,6 +106,25 @@ export const useSpeechSynthesis = () => {
       window.speechSynthesis.cancel();
       setIsSpeaking(false);
     }
+  }
+
+  const stopSpeakingAsync = async (): Promise<void> => {
+    return new Promise((resolve) => {
+      if (!window.speechSynthesis.speaking) {
+        resolve();
+        return;
+      }
+
+      window.speechSynthesis.cancel();
+
+      const interval: NodeJS.Timeout = setInterval(() => {
+        if (!window.speechSynthesis.speaking) { 
+          clearInterval(interval);
+          setIsSpeaking(false);
+          resolve();
+        }
+      }, 50);
+    });
   };
 
   const saveSpeechSynthesisSettings = (voiceIndex: number, voiceRate: number): void => {
@@ -118,6 +137,7 @@ export const useSpeechSynthesis = () => {
   return {
     speakText,
     stopSpeaking,
+    stopSpeakingAsync,
     speechSynthesisVoices,
     selectedSpeechSynthesisVoiceIndex,
     selectedSpeechSynthesisVoiceRate,
