@@ -1,0 +1,1 @@
+export const WalkingStickIcon = "/assets/accessibility-icons/walking-stick.png";

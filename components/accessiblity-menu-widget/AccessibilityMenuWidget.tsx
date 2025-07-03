@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { PersonStanding, X, ChevronDown, Search, Brain, Eye, Glasses, Hand, MousePointer, Blend, Signature, ScanLine, Zap } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -15,6 +16,7 @@ import { Locale, useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { AccessibilityProfileDefinition, accessibilityProfilesDefinitions, useAccessibilityStore } from "@/stores/accessibilityStore";
 import { useSpeechSynthesis } from "@/hooks/useSpeechSynthesis";
+import { WalkingStickIcon } from "@/lib/accessibility-icons";
 import Cookies from 'js-cookie';
 
 interface Language {
@@ -26,7 +28,7 @@ interface Language {
 interface AccessibilityProfile {
   name: string;
   definition: AccessibilityProfileDefinition;
-  icon: LucideIcon;
+  icon: LucideIcon | string;
 }
 
 const AccessibilityMenuWidget = () => {
@@ -51,7 +53,7 @@ const AccessibilityMenuWidget = () => {
     {
       name: t("accessibilityProfilesDefinitions.blind"),
       definition: accessibilityProfilesDefinitions.BLIND,
-      icon: Eye
+      icon: WalkingStickIcon
     },
     {
       name: t("accessibilityProfilesDefinitions.elderly"),
@@ -265,10 +267,18 @@ const AccessibilityMenuWidget = () => {
                         hover:border-blue-500 hover:dark:bg-blue-500 transition-colors shadow-sm border border-gray-100 dark:border-gray-700 rounded-md`
                       }
                     >
-                      <CardContent
-                        className="flex flex-col items-center justify-center p-4 gap-2"
-                      >
-                        <accessibilityProfile.icon className="w-6 h-6" />
+                      <CardContent className="flex flex-col items-center justify-center p-4 gap-2">
+                        {typeof accessibilityProfile.icon === "string" ? (
+                          <Image
+                            src={accessibilityProfile.icon}
+                            alt={accessibilityProfile.name}
+                            width={30}
+                            height={24} 
+                            className={`object-contain ${accessibilityProfile.definition === activeAccessibilityProfile ? 'filter brightness-0 invert' : ''}`}  
+                          />
+                        ) : (
+                          <accessibilityProfile.icon className="w-6 h-6" />
+                        )}
                         <span className="text-sm font-medium text-center" aria-label={accessibilityProfile.name}>{accessibilityProfile.name}</span>
                       </CardContent>
                     </Card>
