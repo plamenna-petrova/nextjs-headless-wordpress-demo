@@ -265,18 +265,17 @@ const AccessibilityMenuWidget = () => {
                         hover:border-blue-500 hover:dark:bg-blue-500 transition-colors shadow-sm border border-gray-100 dark:border-gray-700 rounded-md`
                       }
                     >
-                      <CardContent 
+                      <CardContent
                         className="flex flex-col items-center justify-center p-4 gap-2"
-                        aria-label={accessibilityProfile.name}
                       >
                         <accessibilityProfile.icon className="w-6 h-6" />
-                        <span className="text-sm font-medium text-center" data-tts="false">{accessibilityProfile.name}</span>
+                        <span className="text-sm font-medium text-center" aria-label={accessibilityProfile.name}>{accessibilityProfile.name}</span>
                       </CardContent>
                     </Card>
                   ))}
                 </div>
               </AccordionContent>
-            </AccordionItem>   
+            </AccordionItem>
           </Accordion>
         </ScrollArea>
       </SheetContent>
