@@ -1,4 +1,4 @@
-import { mergeClassNames } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 
 type MainProps = {
   children: React.ReactNode;
@@ -9,7 +9,7 @@ type MainProps = {
 const Main = ({ children, className, id }: MainProps) => {
   return (
     <main
-      className={mergeClassNames(
+      className={cn(
         // `Main` Specific Styles
         "max-w-none prose-p:m-0",
         // General Prose

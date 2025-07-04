@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { mergeClassNames } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { useLocale, useTranslations } from "next-intl";
 import { buildMainMenu } from "@/lib/constants";
 import Link from "next/link";
@@ -20,7 +20,7 @@ const Navbar = ({ id, className, children }: NavbarProps) => {
   const mainMenu = buildMainMenu(t, locale);
 
   return (
-    <nav id={id} className={mergeClassNames("sticky z-50 top-0 bg-background", "border-b", "fade-in", className)}>
+    <nav id={id} className={cn("sticky z-50 top-0 bg-background", "border-b", "fade-in", className)}>
       <div id="nav-container" className="max-w-5xl mx-auto py-4 px-6 sm:px-8 flex justify-between items-center">
         <Link href={`/${locale}`} className="hover:opacity-75 transition-all flex gap-2 items-center">
           <h2 className="sr-only">{t("wordPressAsAHeadlessCMS")}</h2>

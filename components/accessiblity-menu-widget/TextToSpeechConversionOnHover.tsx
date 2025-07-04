@@ -78,7 +78,7 @@ export const TextToSpeechConversionOnHover = () => {
         return;
       }
 
-      const newUtteranceId = `${speechTarget.tagName}-${textToConvertToSpeech}`;
+      const newUtteranceId: string = `${speechTarget.tagName}-${textToConvertToSpeech}`;
 
       if (newUtteranceId === lastUtteranceId.current) { 
         return;

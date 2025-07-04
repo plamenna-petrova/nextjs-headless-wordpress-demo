@@ -15,7 +15,6 @@ import { Locale, useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { AccessibilityProfileDefinition, accessibilityProfilesDefinitions, useAccessibilityStore } from "@/stores/accessibilityStore";
 import { useSpeechSynthesis } from "@/hooks/useSpeechSynthesis";
-import Image from "next/image";
 import Cookies from 'js-cookie';
 
 interface Language {

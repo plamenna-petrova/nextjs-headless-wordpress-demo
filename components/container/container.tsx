@@ -1,4 +1,4 @@
-import { mergeClassNames } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 
 type ContainerProps = {
   id?: string;
@@ -8,7 +8,7 @@ type ContainerProps = {
 
 const Container = ({ id, className, children }: ContainerProps) => {
   return (
-    <div id={id} className={mergeClassNames("mx-auto max-w-5xl", "p-6 sm:p-8", className)}>
+    <div id={id} className={cn("mx-auto max-w-5xl", "p-6 sm:p-8", className)}>
       {children}
     </div>
   );

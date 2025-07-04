@@ -1,13 +1,13 @@
 import * as React from "react"
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react"
-import { mergeClassNames } from "@/lib/utils"
+import { cn } from "@/lib/utils"
 import { ButtonProps, buttonVariants } from "@/components/ui/button"
 
 const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
   <nav
     role="navigation"
     aria-label="pagination"
-    className={mergeClassNames("mx-auto flex w-full justify-center", className)}
+    className={cn("mx-auto flex w-full justify-center", className)}
     {...props}
   />
 )
@@ -20,7 +20,7 @@ const PaginationContent = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <ul
     ref={ref}
-    className={mergeClassNames("flex flex-row items-center gap-1", className)}
+    className={cn("flex flex-row items-center gap-1", className)}
     {...props}
   />
 ))
@@ -30,7 +30,7 @@ const PaginationItem = React.forwardRef<
   HTMLLIElement,
   React.ComponentProps<"li">
 >(({ className, ...props }, ref) => (
-  <li ref={ref} className={mergeClassNames("", className)} {...props} />
+  <li ref={ref} className={cn("", className)} {...props} />
 ))
 PaginationItem.displayName = "PaginationItem"
 
@@ -47,7 +47,7 @@ const PaginationLink = ({
 }: PaginationLinkProps) => (
   <a
     aria-current={isActive ? "page" : undefined}
-    className={mergeClassNames(
+    className={cn(
       buttonVariants({
         variant: isActive ? "outline" : "ghost",
         size,
@@ -73,7 +73,7 @@ const PaginationPrevious = ({
   <PaginationLink
     aria-label={ariaLabel}
     size="default"
-    className={mergeClassNames("gap-1 pl-2.5", className)}
+    className={cn("gap-1 pl-2.5", className)}
     {...props}
   >
     <ChevronLeft className="h-4 w-4" />
@@ -91,7 +91,7 @@ const PaginationNext = ({
   <PaginationLink
     aria-label={ariaLabel}
     size="default"
-    className={mergeClassNames("gap-1 pr-2.5", className)}
+    className={cn("gap-1 pr-2.5", className)}
     {...props}
   >
     <span>{label}</span>
@@ -106,7 +106,7 @@ const PaginationEllipsis = ({
 }: React.ComponentProps<"span">) => (
   <span
     aria-hidden
-    className={mergeClassNames("flex h-9 w-9 items-center justify-center", className)}
+    className={cn("flex h-9 w-9 items-center justify-center", className)}
     {...props}
   >
     <MoreHorizontal className="h-4 w-4" />
