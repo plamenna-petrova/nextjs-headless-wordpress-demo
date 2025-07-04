@@ -27,7 +27,7 @@ interface Language {
 interface AccessibilityProfile {
   name: string;
   definition: AccessibilityProfileDefinition;
-  icon: LucideIcon | string;
+  icon: LucideIcon;
 }
 
 const AccessibilityMenuWidget = () => {
@@ -268,17 +268,7 @@ const AccessibilityMenuWidget = () => {
                       }
                     >
                       <CardContent className="flex flex-col items-center justify-center p-4 gap-2">
-                        {typeof accessibilityProfile.icon === "string" ? (
-                          <Image
-                            src={accessibilityProfile.icon}
-                            alt={accessibilityProfile.name}
-                            width={30}
-                            height={24} 
-                            className={`object-contain ${accessibilityProfile.definition === activeAccessibilityProfile ? 'filter brightness-0 invert' : ''}`}  
-                          />
-                        ) : (
-                          <accessibilityProfile.icon className="w-6 h-6" />
-                        )}
+                        <accessibilityProfile.icon className="w-6 h-6" />
                         <span className="text-sm font-medium text-center" aria-label={accessibilityProfile.name}>{accessibilityProfile.name}</span>
                       </CardContent>
                     </Card>
