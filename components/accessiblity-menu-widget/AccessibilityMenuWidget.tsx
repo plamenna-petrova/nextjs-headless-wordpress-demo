@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, useEffect, useState, useTransition } from "react";
+import { ChangeEvent, useEffect, useRef, useState, useTransition } from "react";
 import { motion } from "framer-motion";
 import { PersonStanding, X, ChevronDown, Search, Brain, Eye, Glasses, Hand, MousePointer, Blend, Signature, ScanLine, Zap } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -16,6 +16,7 @@ import { usePathname, useRouter } from "@/i18n/navigation";
 import { AccessibilityProfileDefinition, accessibilityProfilesDefinitions, useAccessibilityStore } from "@/stores/accessibilityStore";
 import { useSpeechSynthesis } from "@/hooks/useSpeechSynthesis";
 import Cookies from 'js-cookie';
+import { cn } from "@/lib/utils";
 
 interface Language {
   code: string;
@@ -33,6 +34,8 @@ const AccessibilityMenuWidget = () => {
   const [isAccessibilityMenuOpen, setIsAccessibilityMenuOpen] = useState<boolean>(false);
   const [isLanguageSelectionDialogOpen, setIsLanguageSelectionDialogOpen] = useState<boolean>(false);
   const [languageSearchTerm, setLanguageSearchTerm] = useState<string>("");
+  const [openAccessibilityMenuAccordionItem, setOpenAccessibilityMenuAccordionItem] = useState<string | null>(null);
+  const accessibilityProfilesAccordionItemRef = useRef<HTMLDivElement | null>(null);
   const [isPending, startTransition] = useTransition();
   const { activeAccessibilityProfile, setActiveAccessibilityProfile, setIsHoverSpeechEnabled } = useAccessibilityStore();
   const { speakText, stopSpeakingAsync } = useSpeechSynthesis();
@@ -146,7 +149,7 @@ const AccessibilityMenuWidget = () => {
   }
 
   const handleAccessibilityProfileClick = async (accessibilityProfileDefinition: AccessibilityProfileDefinition): Promise<void> => {
-    if (activeAccessibilityProfile === accessibilityProfileDefinition) { 
+    if (activeAccessibilityProfile === accessibilityProfileDefinition) {
       setActiveAccessibilityProfile(null);
 
       if (accessibilityProfileDefinition === accessibilityProfilesDefinitions.BLIND) {
@@ -156,7 +159,7 @@ const AccessibilityMenuWidget = () => {
 
       return;
     }
-    
+
     setActiveAccessibilityProfile(accessibilityProfileDefinition);
 
     if (accessibilityProfileDefinition === accessibilityProfilesDefinitions.BLIND) {
@@ -253,10 +256,23 @@ const AccessibilityMenuWidget = () => {
             </DialogContent>
           </Dialog>
         </div>
-        <ScrollArea className="mt-4 h-[calc(100vh-10rem)] pr-2">
-          <Accordion type="single" collapsible className="px-4">
-            <AccordionItem value="profiles" className="border-none">
-              <AccordionTrigger className="text-blue-500 dark:text-white !no-underline hover:!no-underline px-2 data-[state=open]:border data-[state=open]:border-blue-500 data-[state=open]:rounded-md">
+        <ScrollArea className="mt-4 h-[calc(100vh-10rem)]">
+          <Accordion 
+            type="single" 
+            collapsible 
+            className="px-4"
+            onValueChange={(value: string) => setOpenAccessibilityMenuAccordionItem(value)}
+          >
+            <AccordionItem value="profiles" className="border-none" ref={accessibilityProfilesAccordionItemRef}>
+              <AccordionTrigger
+                size="w-6 h-5"
+                className={cn(
+                  "text-blue-500 dark:text-white !no-underline hover:!no-underline px-2 border rounded-md transition-all",
+                  openAccessibilityMenuAccordionItem === "profiles"
+                    ? "border-blue-500 dark:border-blue-500"
+                    : "border-transparent"
+                )}
+              >
                 <div className="flex items-center gap-2">
                   <div className="rounded-full bg-blue-500 p-1.5 dark:bg-blue-400">
                     <PersonStanding className="h-5 w-5 text-white" />
