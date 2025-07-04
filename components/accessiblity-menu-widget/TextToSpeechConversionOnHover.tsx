@@ -66,9 +66,6 @@ export const TextToSpeechConversionOnHover = () => {
       if (!speechTarget) {
         return;
       }
-      
-      console.log("Original Target", originalTarget);
-      console.log("Speech Target", speechTarget);
 
       const textToConvertToSpeech: string | undefined = getTextToConvertToSpeech(speechTarget)?.trim();
 
@@ -87,8 +84,8 @@ export const TextToSpeechConversionOnHover = () => {
         return;
       }
 
-      console.log("Speaking: ", textToConvertToSpeech);
       speakText(textToConvertToSpeech);
+
       lastSpokenElement.current = speechTarget;
       lastSpokenText.current = textToConvertToSpeech;
       lastUtteranceId.current = newUtteranceId;
@@ -152,14 +149,14 @@ export const TextToSpeechConversionOnHover = () => {
         return null;
       }
 
-      const allowedInlineTags = new Set(["CODE", "STRONG", "EM", "ABBR", "MARK", "CITE", "Q", "SPAN", "I", "B", "U", "SMALL", "SUP", "SUB"]);
+      const allowedInlineTags: Set<string> = new Set(["CODE", "STRONG", "EM", "ABBR", "MARK", "CITE", "Q", "SPAN", "I", "B", "U", "SMALL", "SUP", "SUB"]);
 
       const hasOnlyInlineChildren: boolean = Array.from(element.children).every(child =>
         allowedInlineTags.has(child.tagName.toUpperCase())
       );
 
       const isLinkWithText: boolean = elementTagNameAsUppercase === "A" && innerText.length > 0;
-      const isSimpleElement = element.children.length === 0 || hasOnlyInlineChildren;
+      const isSimpleElement: boolean = element.children.length === 0 || hasOnlyInlineChildren;
 
       return (isLinkWithText || isSimpleElement) ? innerText : null;
     };
