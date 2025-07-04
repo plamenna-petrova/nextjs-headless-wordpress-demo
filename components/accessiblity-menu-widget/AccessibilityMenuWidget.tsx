@@ -147,6 +147,17 @@ const AccessibilityMenuWidget = () => {
   }
 
   const handleAccessibilityProfileClick = async (accessibilityProfileDefinition: AccessibilityProfileDefinition): Promise<void> => {
+    if (activeAccessibilityProfile === accessibilityProfileDefinition) { 
+      setActiveAccessibilityProfile(null);
+
+      if (accessibilityProfileDefinition === accessibilityProfilesDefinitions.BLIND) {
+        setIsHoverSpeechEnabled(false);
+        await stopSpeakingAsync();
+      }
+
+      return;
+    }
+    
     setActiveAccessibilityProfile(accessibilityProfileDefinition);
 
     if (accessibilityProfileDefinition === accessibilityProfilesDefinitions.BLIND) {

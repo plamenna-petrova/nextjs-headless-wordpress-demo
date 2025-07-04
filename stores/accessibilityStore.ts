@@ -17,7 +17,7 @@ export type AccessibilityProfileDefinition = (typeof accessibilityProfilesDefini
 interface AccessibilityStore {
   activeAccessibilityProfile: AccessibilityProfileDefinition | null;
   isHoverSpeechEnabled: boolean;
-  setActiveAccessibilityProfile: (accessibilityProfile: AccessibilityProfileDefinition) => void;
+  setActiveAccessibilityProfile: (accessibilityProfile: AccessibilityProfileDefinition | null) => void;
   setIsHoverSpeechEnabled: (enabled: boolean) => void;
 }
 
