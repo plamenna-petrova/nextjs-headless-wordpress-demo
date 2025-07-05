@@ -19,6 +19,30 @@
       "seizureAndEpileptic": "Seizure & Epileptic",
       "adhd": "ADHD"
     },
+    "accessibilityOptionsDefinitions": {
+      "colorBlindness": "Color Blindness",
+      "screenReader": "Screen Reader",
+      "dictionary": "Dictionary",
+      "readingMask": "Reading Mask",
+      "invertColors": "Invert Colors",
+      "lightContrast": "Light Contrast",
+      "darkContrast": "Dark Contrast",
+      "highContrast": "High Contrast",
+      "smartContrast": "Smart Contrast"
+    },
+    "colorBlindnessTypes": {
+      "none": "None",
+      "protanomaly": "Protanomaly",
+      "deuteranomaly": "Deuteranomaly",
+      "tritanomaly": "Tritanomaly",
+      "protanopia": "Protanopia",
+      "deuteranopia": "Deuteranopia",
+      "tritanopia": "Tritanopia",
+      "achromatomaly": "Achromatomaly",
+      "achromatopsia": "Achromatopsia",
+      "searchType": "Search",
+      "noResultsFound": "No results found"
+    },
     "screenReaderEnabled": "Screen reader enabled"
   },
   "Navigation": {

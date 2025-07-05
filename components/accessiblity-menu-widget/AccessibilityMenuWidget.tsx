@@ -2,7 +2,7 @@
 
 import { ChangeEvent, useEffect, useState, useTransition } from "react";
 import { motion } from "framer-motion";
-import { PersonStanding, X, ChevronDown, Search, Brain, Eye, Glasses, Hand, MousePointer, Blend, Signature, ScanLine, Zap } from "lucide-react";
+import { PersonStanding, X, ChevronDown, Search, Brain, Eye, Glasses, Hand, MousePointer, Blend, Signature, ScanLine, Zap, BookA, MonitorPlay, Droplet, Sun, Moon, Contrast, Eclipse, ChevronsUpDown, Check } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -10,11 +10,14 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Card, CardContent } from "@/components/ui/card";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { localeCountries, localeNames, locales } from "@/lib/i18n";
 import { Locale, useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
-import { AccessibilityProfileDefinition, accessibilityProfilesDefinitions, useAccessibilityStore } from "@/stores/accessibilityStore";
+import { AccessibilityOptionDefinition, accessibilityOptionsDefinitions, AccessibilityProfileDefinition, accessibilityProfilesDefinitions, ColorBlindnessCommandValueType, colorBlindnessTypes, useAccessibilityStore } from "@/stores/accessibilityStore";
 import { useSpeechSynthesis } from "@/hooks/useSpeechSynthesis";
+import { mergeClassNames } from "@/lib/utils";
 import Cookies from 'js-cookie';
 
 interface Language {
@@ -26,16 +29,29 @@ interface Language {
 interface AccessibilityProfile {
   name: string;
   definition: AccessibilityProfileDefinition;
-  icon: LucideIcon | string;
+  icon: LucideIcon;
+}
+
+interface AccessibilityOption {
+  name: string;
+  definition: AccessibilityOptionDefinition;
+  icon?: LucideIcon;
+  actionElement?: JSX.Element;
+}
+
+interface ColorBlindnessCommandItem {
+  value: string;
+  label: string;
 }
 
 const AccessibilityMenuWidget = () => {
   const [isAccessibilityMenuOpen, setIsAccessibilityMenuOpen] = useState<boolean>(false);
   const [isLanguageSelectionDialogOpen, setIsLanguageSelectionDialogOpen] = useState<boolean>(false);
   const [languageSearchTerm, setLanguageSearchTerm] = useState<string>("");
-  const [openAccessibilityMenuAccordionItem, setOpenAccessibilityMenuAccordionItem] = useState<string | null>(null);
+  const [isColorBlindnessPopoverOpen, setIsColorBlindnessPopoverOpen] = useState<boolean>(false);
+  const [colorBlindnessCommandValue, setColorBlindnessCommandValue] = useState<string>(Object.keys(colorBlindnessTypes)[0]);
   const [isPending, startTransition] = useTransition();
-  const { activeAccessibilityProfile, setActiveAccessibilityProfile, setIsHoverSpeechEnabled } = useAccessibilityStore();
+  const { activeAccessibilityProfile, activeAccessibilityOptions, setActiveAccessibilityProfile, setIsHoverSpeechEnabled, setActiveAccessibilityOptions } = useAccessibilityStore();
   const { speakText, stopSpeakingAsync } = useSpeechSynthesis();
   const t = useTranslations("AccessibilityMenuWidget");
   const locale = useLocale();
@@ -46,6 +62,11 @@ const AccessibilityMenuWidget = () => {
     code: localeCode.toUpperCase(),
     name: localeNames[localeCode],
     country: localeCountries[localeCode]
+  }));
+
+  const colorBlindnessCommandItems: ColorBlindnessCommandItem[] = Object.entries(colorBlindnessTypes).map(([key, value]) => ({
+    value: key as ColorBlindnessCommandValueType,
+    label: t(`colorBlindnessTypes.${value.toLowerCase()}`)
   }));
 
   const accessibilityProfiles: AccessibilityProfile[] = [
@@ -96,24 +117,112 @@ const AccessibilityMenuWidget = () => {
     }
   ];
 
-  const languageSearchTermInputClassNames: string = "block w-full rounded-md border border-gray-300 bg-white py-2 px-3 pr-9 text-base dark:text-black " +
-    "placeholder:text-sm placeholder:text-gray-600 leading-snug focus:border-blue-500 focus:outline-none " +
-    "focus:ring-1 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50 transition duration-150 ease-in-out";
+  const accessibilityOptions: AccessibilityOption[] = [
+    {
+      name: t("accessibilityOptionsDefinitions.colorBlindness"),
+      definition: accessibilityOptionsDefinitions.COLOR_BLINDNESS,
+      actionElement: (
+        <Popover open={isColorBlindnessPopoverOpen} onOpenChange={setIsColorBlindnessPopoverOpen}>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              role="combobox"
+              aria-expanded={isColorBlindnessPopoverOpen}
+              className="w-[150px] justify-between text-[0.75rem]"
+            >
+              {colorBlindnessCommandValue
+                ? colorBlindnessCommandItems.find((colorBlindnessCommandItem) => colorBlindnessCommandItem.value === colorBlindnessCommandValue)?.label
+                : `${t("colorBlindnessTypes.searchType")}...`
+              }
+              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent
+            className="w-[150px] p-0 overflow-y-auto pointer-events-auto"
+            onWheel={(event) => event.stopPropagation()}
+          >
+            <Command>
+              <CommandInput
+                placeholder={`${t("colorBlindnessTypes.searchType")}...`}
+                className="text-[0.75rem]"
+              />
+              <CommandList className="overflow-y-auto">
+                <CommandEmpty>{t("colorBlindnessTypes.noResultsFound")}</CommandEmpty>
+                <CommandGroup>
+                  {colorBlindnessCommandItems.map((colorBlindnessCommandItem) => (
+                    <CommandItem
+                      key={colorBlindnessCommandItem.value}
+                      value={colorBlindnessCommandItem.value}
+                      keywords={[colorBlindnessCommandItem.label.toLowerCase()]}
+                      onSelect={(currentValue: string) => {
+                        setColorBlindnessCommandValue(currentValue === colorBlindnessCommandValue ? "" : currentValue);
+                        setIsColorBlindnessPopoverOpen(false);
+                      }}
+                      className="text-[0.75rem]"
+                    >
+                      <Check
+                        className={mergeClassNames(
+                          "h-4 w-4",
+                          colorBlindnessCommandValue === colorBlindnessCommandItem.value ? "opacity-100" : "opacity-0"
+                        )}
+                      />
+                      {colorBlindnessCommandItem.label}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </CommandList>
+            </Command>
+          </PopoverContent>
+        </Popover>
+      )
+    },
+    {
+      name: t("accessibilityOptionsDefinitions.screenReader"),
+      definition: accessibilityOptionsDefinitions.SCREEN_READER,
+      icon: MonitorPlay
+    },
+    {
+      name: t("accessibilityOptionsDefinitions.dictionary"),
+      definition: accessibilityOptionsDefinitions.DICTIONARY,
+      icon: BookA
+    },
+    {
+      name: t("accessibilityOptionsDefinitions.readingMask"),
+      definition: accessibilityOptionsDefinitions.READING_MASK,
+      icon: Blend
+    },
+    {
+      name: t("accessibilityOptionsDefinitions.invertColors"),
+      definition: accessibilityOptionsDefinitions.INVERT_COLORS,
+      icon: Droplet
+    },
+    {
+      name: t("accessibilityOptionsDefinitions.lightContrast"),
+      definition: accessibilityOptionsDefinitions.LIGHT_CONTRAST,
+      icon: Sun
+    },
+    {
+      name: t("accessibilityOptionsDefinitions.darkContrast"),
+      definition: accessibilityOptionsDefinitions.DARK_CONTRAST,
+      icon: Moon
+    },
+    {
+      name: t("accessibilityOptionsDefinitions.highContrast"),
+      definition: accessibilityOptionsDefinitions.HIGH_CONTRAST,
+      icon: Contrast
+    },
+    {
+      name: t("accessibilityOptionsDefinitions.smartContrast"),
+      definition: accessibilityOptionsDefinitions.SMART_CONTRAST,
+      icon: Eclipse
+    }
+  ];
 
-  useEffect(() => {
-    const handleAccesibilityMenuToggleOnKeyDown = (keyboardEvent: KeyboardEvent): void => {
-      const isMac: boolean = /Mac/i.test(navigator.userAgent);
-      const ctrlKey: boolean = isMac ? keyboardEvent.metaKey : keyboardEvent.ctrlKey;
-
-      if (ctrlKey && keyboardEvent.key.toLowerCase() === "a") {
-        keyboardEvent.preventDefault();
-        setIsAccessibilityMenuOpen((prev) => !prev);
-      }
-    };
-
-    window.addEventListener("keydown", handleAccesibilityMenuToggleOnKeyDown);
-    return () => window.removeEventListener("keydown", handleAccesibilityMenuToggleOnKeyDown);
-  }, []);
+  const languageSearchTermInputClassNames: string = mergeClassNames(
+    "block w-full rounded-md border border-gray-300 bg-white py-2 px-3 pr-9 text-base dark:text-black",
+    "placeholder:text-sm placeholder:text-gray-600 leading-snug focus:border-blue-500 focus:outline-none",
+    "focus:ring-1 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50 transition duration-150 ease-in-out"
+  );
 
   const filteredLanguages: Language[] = languages.filter(({ name, code, country }) => {
     const languageSearchTermAsLowerCase: string = languageSearchTerm.toLowerCase();
@@ -168,6 +277,33 @@ const AccessibilityMenuWidget = () => {
       });
     }
   }
+
+  const handleAccessibilityOptionClick = (accessibilityOptionDefinition: AccessibilityOptionDefinition): void => {
+    const updatedAccessibilityOptions: Set<AccessibilityOptionDefinition> = new Set(activeAccessibilityOptions || []);
+
+    if (activeAccessibilityOptions?.has(accessibilityOptionDefinition)) {
+      updatedAccessibilityOptions.delete(accessibilityOptionDefinition);
+      setActiveAccessibilityOptions(updatedAccessibilityOptions);
+    } else {
+      updatedAccessibilityOptions.add(accessibilityOptionDefinition);
+      setActiveAccessibilityOptions(updatedAccessibilityOptions);
+    }
+  }
+
+  useEffect(() => {
+    const handleAccesibilityMenuToggleOnKeyDown = (keyboardEvent: KeyboardEvent): void => {
+      const isMac: boolean = /Mac/i.test(navigator.userAgent);
+      const ctrlKey: boolean = isMac ? keyboardEvent.metaKey : keyboardEvent.ctrlKey;
+
+      if (ctrlKey && keyboardEvent.key.toLowerCase() === "a") {
+        keyboardEvent.preventDefault();
+        setIsAccessibilityMenuOpen((prev) => !prev);
+      }
+    };
+
+    window.addEventListener("keydown", handleAccesibilityMenuToggleOnKeyDown);
+    return () => window.removeEventListener("keydown", handleAccesibilityMenuToggleOnKeyDown);
+  }, []);
 
   return (
     <Sheet open={isAccessibilityMenuOpen} onOpenChange={setIsAccessibilityMenuOpen}>
@@ -255,12 +391,7 @@ const AccessibilityMenuWidget = () => {
           </Dialog>
         </div>
         <ScrollArea className="h-[calc(100vh-10rem)]">
-          <Accordion
-            type="single"
-            collapsible
-            className="px-4"
-            onValueChange={(value: string) => setOpenAccessibilityMenuAccordionItem(value)}
-          >
+          <Accordion type="single" collapsible className="px-4">
             <AccordionItem value="profiles" className="border-none">
               <AccordionTrigger className="text-blue-500 dark:text-white !no-underline hover:!no-underline px-2 border rounded-md transition-all border-blue-500 dark:border-blue-500">
                 <div className="flex items-center gap-2">
@@ -271,7 +402,7 @@ const AccessibilityMenuWidget = () => {
                 </div>
               </AccordionTrigger>
               <AccordionContent className="border border-gray-300 dark:border-gray-700 rounded-md p-3 mt-2">
-                <div className="grid grid-cols-2 gap-3" ata-tts="false">
+                <div className="grid grid-cols-2 gap-3">
                   {accessibilityProfiles.map((accessibilityProfile) => (
                     <Card
                       key={accessibilityProfile.name}
@@ -285,7 +416,7 @@ const AccessibilityMenuWidget = () => {
                     >
                       <CardContent className="flex flex-col items-center justify-center p-4 gap-2">
                         <accessibilityProfile.icon className="w-6 h-6" />
-                        <span aria-label={accessibilityProfile.name} className="text-sm font-medium text-center">{accessibilityProfile.name}</span>
+                        <span aria-label={accessibilityProfile.name} className="text-xs font-medium text-center">{accessibilityProfile.name}</span>
                       </CardContent>
                     </Card>
                   ))}
@@ -293,6 +424,38 @@ const AccessibilityMenuWidget = () => {
               </AccordionContent>
             </AccordionItem>
           </Accordion>
+          <div className="px-4 mt-4">
+            <div className="border border-gray-300 dark:border-gray-700 rounded-md p-3">
+              <div className="grid grid-cols-2 gap-3">
+                {accessibilityOptions.map((accessibilityOption) => {
+                  const isColorBlindnessOption: boolean = accessibilityOption.definition === accessibilityOptionsDefinitions.COLOR_BLINDNESS;
+
+                  return (
+                    <Card
+                      key={accessibilityOption.name}
+                      onClick={isColorBlindnessOption
+                        ? undefined
+                        : () => handleAccessibilityOptionClick(accessibilityOption.definition)
+                      }
+                      className={`
+                        cursor-pointer ${!isColorBlindnessOption ? 'hover:border-blue-500 hover:dark:bg-blue-500': ''}
+                        ${activeAccessibilityOptions?.has(accessibilityOption.definition)
+                          ? 'bg-blue-500 dark:bg-blue-500 text-white'
+                          : 'bg-blue-50 dark:bg-transparent'}
+                          transition-colors shadow-sm border border-gray-100 dark:border-gray-700 rounded-md
+                      `}
+                    >
+                      <CardContent className="flex flex-col items-center justify-center p-4 gap-2">
+                        {accessibilityOption.icon && <accessibilityOption.icon className="w-6 h-6" />}
+                        <span aria-label={accessibilityOption.name} className="text-xs font-medium text-center">{accessibilityOption.name}</span>
+                        {accessibilityOption.actionElement}
+                      </CardContent>
+                    </Card>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
         </ScrollArea>
       </SheetContent>
     </Sheet>

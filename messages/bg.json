@@ -19,6 +19,30 @@
       "seizureAndEpileptic": "Епилепсия и припадъци",
       "adhd": "СДВХ"
     },
+    "accessibilityOptionsDefinitions": {
+      "colorBlindness": "Далтонизъм",
+      "screenReader": "Екранен Четец",
+      "dictionary": "Речник",
+      "readingMask": "Маска за Четене",
+      "invertColors": "Обръщане на цветовете",
+      "lightContrast": "Светъл Контраст",
+      "darkContrast": "Тъмен Контраст",
+      "highContrast": "Висок Контраст",
+      "smartContrast": "Интелигентен Контраст"
+    },
+    "colorBlindnessTypes": {
+      "none": "Няма",
+      "protanomaly": "Протаномалия",
+      "deuteranomaly": "Дейтераномалия",
+      "tritanomaly": "Тританомалия",
+      "protanopia": "Протанопия",
+      "deuteranopia": "Дейтеранопия",
+      "tritanopia": "Тританопия",
+      "achromatomaly": "Ахроматомалия",
+      "achromatopsia": "Ахроматопсия",
+      "searchType": "Търси",
+      "noResultsFound": "Не са намерени резултати"
+    },
     "screenReaderEnabled": "Активиран е четец на екрана"
   },
   "Navigation": {
