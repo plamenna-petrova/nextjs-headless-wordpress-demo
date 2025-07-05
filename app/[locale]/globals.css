@@ -75,6 +75,26 @@
     @apply bg-background text-foreground;
   }
 
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--heading-color, inherit);
+    transition: color 0.3s ease;
+  }
+
+  .prose h1.text-colorblind,
+  .prose h2.text-colorblind,
+  .prose h3.text-colorblind,
+  .prose h4.text-colorblind,
+  .prose h5.text-colorblind,
+  .prose h6.text-colorblind {
+    color: var(--heading-color, currentColor);
+    transition: color 0.3s ease;
+  }
+
+  .text-primary.text-colorblind {
+    color: var(--heading-color, inherit);
+    transition: color 0.3s ease;
+  }
+
   :root {
     --shiki-color-text: theme('colors.white'); /* #ffffff */
     --shiki-token-constant: theme('colors.blue.400'); /* #60a5fa */

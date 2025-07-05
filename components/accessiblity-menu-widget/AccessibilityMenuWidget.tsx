@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, useEffect, useState, useTransition } from "react";
+import { ChangeEvent, useEffect, useMemo, useState, useTransition } from "react";
 import { motion } from "framer-motion";
 import { PersonStanding, X, ChevronDown, Search, Brain, Eye, Glasses, Hand, MousePointer, Blend, Signature, ScanLine, Zap, BookA, MonitorPlay, Droplet, Sun, Moon, Contrast, Eclipse, ChevronsUpDown, Check } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -15,7 +15,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { localeCountries, localeNames, locales } from "@/lib/i18n";
 import { Locale, useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
-import { AccessibilityOptionDefinition, accessibilityOptionsDefinitions, AccessibilityProfileDefinition, accessibilityProfilesDefinitions, ColorBlindnessCommandValueType, colorBlindnessTypes, useAccessibilityStore } from "@/stores/accessibilityStore";
+import { AccessibilityOptionDefinition, accessibilityOptionsDefinitions, AccessibilityProfileDefinition, accessibilityProfilesDefinitions, ColorBlindnessCommandValueType, ColorBlindnessType, colorBlindnessTypes, useAccessibilityStore } from "@/stores/accessibilityStore";
 import { useSpeechSynthesis } from "@/hooks/useSpeechSynthesis";
 import { mergeClassNames } from "@/lib/utils";
 import Cookies from 'js-cookie';
@@ -49,7 +49,7 @@ const AccessibilityMenuWidget = () => {
   const [isLanguageSelectionDialogOpen, setIsLanguageSelectionDialogOpen] = useState<boolean>(false);
   const [languageSearchTerm, setLanguageSearchTerm] = useState<string>("");
   const [isColorBlindnessPopoverOpen, setIsColorBlindnessPopoverOpen] = useState<boolean>(false);
-  const [colorBlindnessCommandValue, setColorBlindnessCommandValue] = useState<string>(Object.keys(colorBlindnessTypes)[0]);
+  const [colorBlindnessCommandValue, setColorBlindnessCommandValue] = useState<string>(Object.values(colorBlindnessTypes)[0]);
   const [isPending, startTransition] = useTransition();
   const { activeAccessibilityProfile, activeAccessibilityOptions, setActiveAccessibilityProfile, setIsHoverSpeechEnabled, setActiveAccessibilityOptions } = useAccessibilityStore();
   const { speakText, stopSpeakingAsync } = useSpeechSynthesis();
@@ -65,9 +65,20 @@ const AccessibilityMenuWidget = () => {
   }));
 
   const colorBlindnessCommandItems: ColorBlindnessCommandItem[] = Object.entries(colorBlindnessTypes).map(([key, value]) => ({
-    value: key as ColorBlindnessCommandValueType,
-    label: t(`colorBlindnessTypes.${value.toLowerCase()}`)
+    value: value as ColorBlindnessCommandValueType,
+    label: t(`colorBlindnessTypes.${key.toLowerCase()}`)
   }));
+
+  const colorBlindnessColors: Record<string, string> = useMemo(() => ({
+    [colorBlindnessTypes.PROTANOMALY]: "#A05046",
+    [colorBlindnessTypes.DEUTERANOMALY]: "#AE6D40",
+    [colorBlindnessTypes.TRITANOMALY]: "#DC363D",
+    [colorBlindnessTypes.PROTANOPIA]: "#5D5D47",
+    [colorBlindnessTypes.DEUTERANOPIA]: "#85853c",
+    [colorBlindnessTypes.TRITANOPIA]: "#DC3737",
+    [colorBlindnessTypes.ACHROMATOMALY]: "#B46B6F",
+    [colorBlindnessTypes.ACHROMATOPSIA]: "#878787",
+  }), []);
 
   const accessibilityProfiles: AccessibilityProfile[] = [
     {
@@ -304,6 +315,31 @@ const AccessibilityMenuWidget = () => {
     window.addEventListener("keydown", handleAccesibilityMenuToggleOnKeyDown);
     return () => window.removeEventListener("keydown", handleAccesibilityMenuToggleOnKeyDown);
   }, []);
+
+  useEffect(() => {
+    const colorBlindnessColor: string | null =
+      colorBlindnessCommandValue !== colorBlindnessTypes.NONE
+        ? colorBlindnessColors[colorBlindnessCommandValue]
+        : null;
+
+    if (colorBlindnessColor) {
+      document.body.style.setProperty("--heading-color", colorBlindnessColor);
+
+      document.querySelectorAll(".text-primary").forEach((element) => {
+        element.classList.add("text-colorblind");
+      });
+
+      document.querySelectorAll(".prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6").forEach((element) => {
+        element.classList.add("text-colorblind");
+      });
+    } else {
+      document.body.style.removeProperty("--heading-color");
+
+      document.querySelectorAll(".text-primary, .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6").forEach((el) => {
+        el.classList.remove("text-colorblind");
+      });
+    }
+  }, [activeAccessibilityOptions, colorBlindnessColors, colorBlindnessCommandValue]);
 
   return (
     <Sheet open={isAccessibilityMenuOpen} onOpenChange={setIsAccessibilityMenuOpen}>
