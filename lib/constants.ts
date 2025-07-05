@@ -1,5 +1,5 @@
 export const buildMainMenu = (t: (key: string) => string, locale: string): Record<string, string> => ({
-  [t('home')]: "/",
+  [t('home')]: `/${locale}`,
   [t('blog')]: `/${locale}/posts?page=1`,
 });
 
