@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, useEffect, useRef, useState, useTransition } from "react";
+import { ChangeEvent, useEffect, useState, useTransition } from "react";
 import { motion } from "framer-motion";
 import { PersonStanding, X, ChevronDown, Search, Brain, Eye, Glasses, Hand, MousePointer, Blend, Signature, ScanLine, Zap } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -16,7 +16,6 @@ import { usePathname, useRouter } from "@/i18n/navigation";
 import { AccessibilityProfileDefinition, accessibilityProfilesDefinitions, useAccessibilityStore } from "@/stores/accessibilityStore";
 import { useSpeechSynthesis } from "@/hooks/useSpeechSynthesis";
 import Cookies from 'js-cookie';
-import { cn } from "@/lib/utils";
 
 interface Language {
   code: string;
@@ -27,7 +26,7 @@ interface Language {
 interface AccessibilityProfile {
   name: string;
   definition: AccessibilityProfileDefinition;
-  icon: LucideIcon;
+  icon: LucideIcon | string;
 }
 
 const AccessibilityMenuWidget = () => {
@@ -35,7 +34,6 @@ const AccessibilityMenuWidget = () => {
   const [isLanguageSelectionDialogOpen, setIsLanguageSelectionDialogOpen] = useState<boolean>(false);
   const [languageSearchTerm, setLanguageSearchTerm] = useState<string>("");
   const [openAccessibilityMenuAccordionItem, setOpenAccessibilityMenuAccordionItem] = useState<string | null>(null);
-  const accessibilityProfilesAccordionItemRef = useRef<HTMLDivElement | null>(null);
   const [isPending, startTransition] = useTransition();
   const { activeAccessibilityProfile, setActiveAccessibilityProfile, setIsHoverSpeechEnabled } = useAccessibilityStore();
   const { speakText, stopSpeakingAsync } = useSpeechSynthesis();
@@ -104,7 +102,7 @@ const AccessibilityMenuWidget = () => {
 
   useEffect(() => {
     const handleAccesibilityMenuToggleOnKeyDown = (keyboardEvent: KeyboardEvent): void => {
-      const isMac: boolean = /Mac/i.test(navigator.userAgent) || navigator.platform.toUpperCase().includes("MAC");
+      const isMac: boolean = /Mac/i.test(navigator.userAgent);
       const ctrlKey: boolean = isMac ? keyboardEvent.metaKey : keyboardEvent.ctrlKey;
 
       if (ctrlKey && keyboardEvent.key.toLowerCase() === "a") {
@@ -256,23 +254,15 @@ const AccessibilityMenuWidget = () => {
             </DialogContent>
           </Dialog>
         </div>
-        <ScrollArea className="mt-4 h-[calc(100vh-10rem)]">
-          <Accordion 
-            type="single" 
-            collapsible 
+        <ScrollArea className="h-[calc(100vh-10rem)]">
+          <Accordion
+            type="single"
+            collapsible
             className="px-4"
             onValueChange={(value: string) => setOpenAccessibilityMenuAccordionItem(value)}
           >
-            <AccordionItem value="profiles" className="border-none" ref={accessibilityProfilesAccordionItemRef}>
-              <AccordionTrigger
-                size="w-6 h-5"
-                className={cn(
-                  "text-blue-500 dark:text-white !no-underline hover:!no-underline px-2 border rounded-md transition-all",
-                  openAccessibilityMenuAccordionItem === "profiles"
-                    ? "border-blue-500 dark:border-blue-500"
-                    : "border-transparent"
-                )}
-              >
+            <AccordionItem value="profiles" className="border-none">
+              <AccordionTrigger className="text-blue-500 dark:text-white !no-underline hover:!no-underline px-2 border rounded-md transition-all border-blue-500 dark:border-blue-500">
                 <div className="flex items-center gap-2">
                   <div className="rounded-full bg-blue-500 p-1.5 dark:bg-blue-400">
                     <PersonStanding className="h-5 w-5 text-white" />
@@ -295,7 +285,7 @@ const AccessibilityMenuWidget = () => {
                     >
                       <CardContent className="flex flex-col items-center justify-center p-4 gap-2">
                         <accessibilityProfile.icon className="w-6 h-6" />
-                        <span className="text-sm font-medium text-center" aria-label={accessibilityProfile.name}>{accessibilityProfile.name}</span>
+                        <span aria-label={accessibilityProfile.name} className="text-sm font-medium text-center">{accessibilityProfile.name}</span>
                       </CardContent>
                     </Card>
                   ))}

@@ -1,7 +1,6 @@
 import { getPostBySlug, getFeaturedMediaById, getAuthorById, getCategoryById, getTagsByPost } from "@/lib/wordpressRequests";
 import { Metadata } from "next";
 import { badgeVariants } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
 import { translateHTML } from "@/lib/translateHTML";
 import { getLocale } from "next-intl/server";
 import { Locale } from "@/lib/i18n";
@@ -13,6 +12,7 @@ import Container from "@/components/container/container";
 import Article from "@/components/article/article";
 import SEOPageMetadata from "@/components/seo/SEOPageMetadata";
 import he from "he";
+import { mergeClassNames } from "@/lib/utils";
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const locale = await getLocale() as Locale;
@@ -92,7 +92,7 @@ export default async function Page({ params }: { params: { slug: string, locale:
               </h5>
               <Link
                 href={`/${locale}/posts/?category=${category.id}`}
-                className={cn(badgeVariants({ variant: "outline" }), "not-prose")}
+                className={mergeClassNames(badgeVariants({ variant: "outline" }), "not-prose")}
               >
                 {translatedPostFirstCategoryName}
               </Link>

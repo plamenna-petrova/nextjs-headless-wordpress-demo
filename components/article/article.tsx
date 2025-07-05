@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { mergeClassNames } from "@/lib/utils";
 
 type ArticleProps = {
   children?: React.ReactNode;
@@ -16,7 +16,7 @@ const Article = ({
   return (
     <article
       dangerouslySetInnerHTML={dangerouslySetInnerHTML}
-      className={cn(
+      className={mergeClassNames(
         // General Prose
         "prose prose-neutral prose:font-sans dark:prose-invert xl:prose-lg",
         // Prose Headings

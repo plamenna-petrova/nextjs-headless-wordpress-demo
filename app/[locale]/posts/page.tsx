@@ -86,11 +86,11 @@ const Posts = async ({ searchParams }: { searchParams: { [key: string]: string |
 
   const getPostsCountText = async (): Promise<string> => {
     if (posts.length === 0) {
-      return await translateHTML("No posts found", locale);
+      return await translateHTML("Не са намерени публикации", locale);
     } else if (posts.length === 1) {
-      return await translateHTML(`1 post found${search ? ', matching the search' : ''}`, locale);
+      return await translateHTML(`1 намерена публикация${search ? ', отговаряща на търсенето' : ''}`, locale);
     } else {
-      return await translateHTML(`${posts.length} found posts${search ? ', matching the search' : ''}`, locale);
+      return await translateHTML(`${posts.length} намерени публикации${search ? ', отговарящи на търсенето' : ''}`, locale);
     }
   }
 
@@ -100,17 +100,17 @@ const Posts = async ({ searchParams }: { searchParams: { [key: string]: string |
     translatedPostsCountText,
     translatedPostSearchInputPlaceholder
   ] = await Promise.all([
-    translateHTML("Posts", locale),
-    translateHTML("No posts found", locale),
+    translateHTML("Публикации", locale),
+    translateHTML("Не са намерени публикации", locale),
     getPostsCountText(),
-    translateHTML("Search posts...", locale)
+    translateHTML("Търси публикации...", locale)
   ]);
 
   const translatedFiltersLabels: Record<string, string> = await Promise.all([
-    translateHTML("All tags", locale),
-    translateHTML("All categories", locale),
-    translateHTML("All authors", locale),
-    translateHTML("Clear filters", locale)
+    translateHTML("Всички етикети", locale),
+    translateHTML("Всички категории", locale),
+    translateHTML("Всички автори", locale),
+    translateHTML("Изчисти филтрите", locale)
   ]).then(([tags, categories, authors, clearFilters]) => ({
     allTags: tags,
     allCategories: categories,
@@ -125,11 +125,11 @@ const Posts = async ({ searchParams }: { searchParams: { [key: string]: string |
     translatedNextPageAriaLabel,
     translatedCurrentPageAriaLabel
   ] = await Promise.all([
-    translateHTML("Previous", locale),
-    translateHTML("Go to previous page", locale),
-    translateHTML("Next", locale),
-    translateHTML("Go to next page", locale),
-    translateHTML(`Page ${currentPage}`, locale)
+    translateHTML("Предходна", locale),
+    translateHTML("Отидете на предходната страница", locale),
+    translateHTML("Следваща", locale),
+    translateHTML("Отидете на следващата страница", locale),
+    translateHTML(`Страница ${currentPage}`, locale)
   ]);
 
   return (

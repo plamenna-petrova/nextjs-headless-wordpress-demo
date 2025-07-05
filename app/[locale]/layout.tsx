@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { cn } from "@/lib/utils";
+import { mergeClassNames } from "@/lib/utils";
 import { hasLocale, Locale, NextIntlClientProvider } from "next-intl";
 import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
@@ -70,7 +70,7 @@ export default async function LocaleBasedLayout({
           />
         )}
       </head>
-      <body className={cn("min-h-screen font-sans antialiased", fontSans.variable)}>
+      <body className={mergeClassNames("min-h-screen font-sans antialiased", fontSans.variable)}>
         <NextIntlClientProvider>
           <ThemeProvider
             attribute="class"

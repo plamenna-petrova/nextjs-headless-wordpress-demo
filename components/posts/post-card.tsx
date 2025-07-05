@@ -1,5 +1,5 @@
 import { Post } from "@/types/Post";
-import { cn } from "@/lib/utils";
+import { mergeClassNames } from "@/lib/utils";
 import { getFeaturedMediaById, getCategoryById } from "@/lib/wordpressRequests";
 import { translateHTML } from "@/lib/translateHTML";
 import { Locale } from "@/lib/i18n";
@@ -29,7 +29,7 @@ const PostCard = async ({ post }: { post: Post }) => {
   return (
     <Link
       href={`/${locale}/posts/${post.slug}`}
-      className={cn(
+      className={mergeClassNames(
         "border p-4 bg-accent/30 rounded-lg group flex justify-between flex-col not-prose gap-8",
         "hover:bg-accent/75 transition-all"
       )}
