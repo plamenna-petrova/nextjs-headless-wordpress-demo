@@ -335,8 +335,8 @@ const AccessibilityMenuWidget = () => {
     } else {
       document.body.style.removeProperty("--heading-color");
 
-      document.querySelectorAll(".text-primary, .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6").forEach((el) => {
-        el.classList.remove("text-colorblind");
+      document.querySelectorAll(".text-primary, .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6").forEach((element) => {
+        element.classList.remove("text-colorblind");
       });
     }
   }, [activeAccessibilityOptions, colorBlindnessColors, colorBlindnessCommandValue]);
